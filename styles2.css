@@ -63,8 +63,8 @@ body {
     background-color: #0088cc;
     color: white;
     border: none;
-    padding: 10px;
-    font-size: 36px;
+    padding: 5px 15px;
+    font-size: 28px;
     font-family: "Arial", sans-serif;
     font-weight: bold;
     border-radius: 30px;
@@ -73,7 +73,11 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     width: 250px;
     height: 80px;
-    line-height: 1.1;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .button-nikitos:hover {
@@ -85,8 +89,8 @@ body {
     background: linear-gradient(45deg, #833AB4, #E1306C, #F56040, #FFDC80);
     color: white;
     border: none;
-    padding: 10px;
-    font-size: 36px;
+    padding: 5px 15px;
+    font-size: 28px;
     font-family: "Arial", sans-serif;
     font-weight: bold;
     border-radius: 30px;
@@ -95,7 +99,11 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     width: 250px;
     height: 80px;
-    line-height: 1.1;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .button-german:hover {
@@ -107,8 +115,8 @@ body {
     background-color: transparent;
     color: white;
     border: 2px solid white;
-    padding: 10px;
-    font-size: 36px;
+    padding: 5px 15px;
+    font-size: 32px;
     font-family: "Arial", sans-serif;
     font-weight: bold;
     border-radius: 30px;
@@ -116,7 +124,11 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
     width: 250px;
     height: 80px;
-    line-height: 1.1;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .button-also:hover {
@@ -129,8 +141,8 @@ body {
     background: linear-gradient(45deg, #FF0000, #000000);
     color: white;
     border: none;
-    padding: 10px;
-    font-size: 36px;
+    padding: 5px 15px;
+    font-size: 32px;
     font-family: "Arial", sans-serif;
     font-weight: bold;
     border-radius: 30px;
@@ -139,7 +151,11 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     width: 250px;
     height: 80px;
-    line-height: 1.1;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .button-party:hover {
