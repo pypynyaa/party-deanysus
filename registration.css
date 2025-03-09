@@ -178,7 +178,7 @@ textarea:focus {
 .transport-card {
     background: var(--input-background);
     border: 2px solid var(--input-border);
-    border-radius: 12px;
+    border-radius: 20px;
     padding: 20px;
     text-align: center;
     transition: all 0.3s ease;
@@ -187,15 +187,16 @@ textarea:focus {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    overflow: hidden;
 }
 
 .transport-card img {
     width: 100%;
     height: calc(100% - 40px);
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: 16px;
     margin-bottom: 10px;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .transport-card span {
@@ -210,7 +211,9 @@ textarea:focus {
 }
 
 .transport-option input[type="radio"]:checked + .transport-card img {
-    transform: scale(1.1);
+    transform: scale(1.15);
+    border-radius: 0;
+    height: calc(100% - 30px);
 }
 
 .transport-option:hover .transport-card {
@@ -240,7 +243,7 @@ textarea:focus {
 .activity-card {
     background: var(--input-background);
     border: 2px solid var(--input-border);
-    border-radius: 12px;
+    border-radius: 20px;
     padding: 15px;
     text-align: center;
     transition: all 0.3s ease;
@@ -255,8 +258,8 @@ textarea:focus {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
+    border-radius: 16px;
+    transition: all 0.3s ease;
 }
 
 .activity-option input[type="checkbox"]:checked + .activity-card {
@@ -266,7 +269,8 @@ textarea:focus {
 }
 
 .activity-option input[type="checkbox"]:checked + .activity-card img {
-    transform: scale(1.1);
+    transform: scale(1.15);
+    border-radius: 0;
 }
 
 .activity-option:hover .activity-card {
