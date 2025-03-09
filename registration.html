@@ -5,6 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Регистрация на Party Dionysus</title>
+  
+  <!-- Предварительная загрузка изображений -->
+  <link rel="preload" as="image" href="Volleyball.jpg">
+  <link rel="preload" as="image" href="Basketball.jpg">
+  <link rel="preload" as="image" href="Football.jpg">
+  <link rel="preload" as="image" href="Tennis.jpg">
+  <link rel="preload" as="image" href="Mcqueen.jpg">
+  <link rel="preload" as="image" href="Mater.jpg">
+  <link rel="preload" as="image" href="Chat.jpg">
+  
   <link rel="stylesheet" href="registration.css?v=3">
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -54,14 +64,14 @@
           <label class="transport-option">
             <input type="radio" name="transport" value="self" required>
             <div class="transport-card">
-              <img src="mcqueen.jpg" alt="Своя машина">
+              <img src="Mcqueen.jpg" alt="Своя машина">
               <span>На своей машине</span>
             </div>
           </label>
           <label class="transport-option">
             <input type="radio" name="transport" value="bus" required>
             <div class="transport-card">
-              <img src="mater.jpg" alt="Автобус">
+              <img src="Mater.jpg" alt="Автобус">
               <span>На общем автобусе</span>
             </div>
           </label>
@@ -79,25 +89,25 @@
           <label class="activity-option">
             <input type="checkbox" name="activities" value="basketball">
             <div class="activity-card">
-              <img src="basketball.jpg" alt="Баскетбол">
+              <img src="Basketball.jpg" alt="Баскетбол">
             </div>
           </label>
           <label class="activity-option">
             <input type="checkbox" name="activities" value="football">
             <div class="activity-card">
-              <img src="football.jpg" alt="Футбол">
+              <img src="Football.jpg" alt="Футбол">
             </div>
           </label>
           <label class="activity-option">
             <input type="checkbox" name="activities" value="volleyball">
             <div class="activity-card">
-              <img src="volleyball.jpg" alt="Волейбол">
+              <img src="Volleyball.jpg" alt="Волейбол">
             </div>
           </label>
           <label class="activity-option">
             <input type="checkbox" name="activities" value="tennis">
             <div class="activity-card">
-              <img src="tennis.jpg" alt="Теннис">
+              <img src="Tennis.jpg" alt="Теннис">
             </div>
           </label>
         </div>
@@ -137,7 +147,7 @@
   </div>
 
   <div class="chat-button" id="chatButton">
-    <img src="chat.jpg" alt="Чат">
+    <img src="Chat.jpg" alt="Чат">
   </div>
 
   <div class="chat-popup hidden" id="chatPopup">
