@@ -2,9 +2,9 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=1700, initial-scale=0.28, minimum-scale=0.28, maximum-scale=2.0, user-scalable=yes">
+  <meta name="viewport" content="width=1700, initial-scale=0.3, minimum-scale=0.3, maximum-scale=2.0, user-scalable=yes">
   <title>Party Dionysus</title>
-  <link rel="stylesheet" href="styles2.css?v=11">
+  <link rel="stylesheet" href="styles2.css?v=12">
 </head>
 <body style="margin: 0; padding: 0; text-align: center; background-color: black;">
 <div class="container">
@@ -32,11 +32,11 @@
 // Устанавливаем масштаб в зависимости от устройства
 function setInitialScale() {
     const screenWidth = window.screen.width;
-    let scale = 0.28; // стандартное значение для всех устройств
+    let scale = 0.3; // стандартное значение для всех устройств
 
     // Для iPhone 11 и других широких экранов немного уменьшаем масштаб
     if (screenWidth >= 414 && screenWidth <= 428) {
-        scale = 0.26;
+        scale = 0.28;
     }
 
     document.querySelector('meta[name="viewport"]').setAttribute('content', 
