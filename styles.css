@@ -45,7 +45,7 @@ h1 {
 
 
 .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 label {
@@ -58,12 +58,12 @@ label {
 
 input, select, textarea {
     width: 100%;
-    padding: 15px;
+    padding: 10px;
     border: none;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.2);
     color: #fff;
-    font-size: 1rem;
+    font-size: 16px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -168,4 +168,31 @@ button:active {
     button {
         padding: 12px;
     }
+
+    /* Стили для экранов меньше 768px */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .button-nikitos, .button-german, .button-also, .button-party {
+        width: 100%; /* Кнопки занимают всю ширину экрана */
+        padding: 15px; /* Уменьшаем отступы */
+        font-size: 16px; /* Уменьшаем размер шрифта */
+    }
+
+    h1 {
+        font-size: 1.5rem; /* Уменьшаем размер заголовка */
+    }
+
+    input, select, textarea {
+        padding: 10px; /* Уменьшаем отступы для полей ввода */
+    }
+}
+
+img {
+    max-width: 100%; /* Изображение не превышает ширину экрана */
+    height: auto; /* Сохраняет пропорции */
+}
+
 }
