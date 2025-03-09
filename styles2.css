@@ -17,7 +17,7 @@ body {
 /* Медиа-запросы для мобильных устройств */
 @media screen and (max-width: 1700px) {
     html {
-        zoom: 0.7;
+        zoom: 0.8;
         overflow-x: hidden;
     }
     
@@ -30,7 +30,7 @@ body {
 /* Специальный масштаб для широких экранов мобильных устройств */
 @media screen and (min-width: 414px) and (max-width: 428px) {
     html {
-        zoom: 0.65;
+        zoom: 0.75;
     }
 }
 
