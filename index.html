@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=1700, initial-scale=0.35, minimum-scale=0.25, maximum-scale=2.0, user-scalable=yes">
+  <meta name="viewport" content="width=1700, initial-scale=0.3, minimum-scale=0.3, maximum-scale=2.0, user-scalable=yes">
   <title>Party Dionysus</title>
   <link rel="stylesheet" href="styles2.css">
 </head>
@@ -29,36 +29,18 @@
   </div>
 </div>
 <script>
-// Устанавливаем разный масштаб для разных устройств
+// Устанавливаем масштаб в зависимости от устройства
 function setInitialScale() {
     const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-    let scale = 0.35; // значение по умолчанию
+    let scale = 0.3; // стандартное значение для всех устройств
 
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // iPhone 11 и похожие модели (более широкие экраны)
-        if (screenWidth >= 414 && screenWidth <= 428) {
-            scale = 0.25;
-        }
-        // iPhone 14 Pro и новее (более узкие экраны)
-        else if (screenWidth >= 390 && screenWidth < 414) {
-            scale = 0.35;
-        }
-        // Маленькие iPhone (SE и т.д.)
-        else if (screenWidth < 390) {
-            scale = 0.23;
-        }
-        // Большие iPhone (Plus, Pro Max)
-        else if (screenWidth > 428) {
-            scale = 0.4;
-        }
-
-        document.querySelector('meta[name="viewport"]').setAttribute('content', 
-            `width=1700, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=2.0, user-scalable=yes`);
-    } else {
-        document.querySelector('meta[name="viewport"]').setAttribute('content', 
-            'width=1700, initial-scale=0.5, minimum-scale=0.3, maximum-scale=2.0, user-scalable=yes');
+    // Для iPhone 11 и других широких экранов немного уменьшаем масштаб
+    if (screenWidth >= 414 && screenWidth <= 428) {
+        scale = 0.28;
     }
+
+    document.querySelector('meta[name="viewport"]').setAttribute('content', 
+        `width=1700, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=2.0, user-scalable=yes`);
 }
 // Вызываем функцию при загрузке страницы
 window.onload = setInitialScale;

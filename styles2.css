@@ -149,29 +149,9 @@ body {
 }
 
 /* Медиа-запросы для мобильных устройств */
-@media (max-width: 768px) {
-    .container {
-        width: 1700px;
-        overflow-x: auto;
-    }
-
-    .background-wrapper {
-        width: 1700px;
-    }
-
-    .background-image {
-        width: 1700px;
-    }
-
-    /* Сохраняем оригинальное позиционирование кнопок */
-    .button-container {
-        position: absolute;
-    }
-}
-
 @media screen and (max-width: 1700px) {
     html {
-        zoom: calc(100vw / 1700);
+        zoom: 0.3;
         overflow-x: hidden;
     }
     
@@ -181,28 +161,10 @@ body {
     }
 }
 
-/* Специальные стили для мобильных устройств */
-@media screen and (max-width: 428px) and (min-width: 414px) {
+/* Специальный масштаб для широких экранов мобильных устройств */
+@media screen and (min-width: 414px) and (max-width: 428px) {
     html {
-        zoom: 0.25; /* для iPhone 11 */
-    }
-}
-
-@media screen and (max-width: 414px) and (min-width: 390px) {
-    html {
-        zoom: 0.35; /* для iPhone 14 Pro */
-    }
-}
-
-@media screen and (max-width: 390px) {
-    html {
-        zoom: 0.23; /* для маленьких iPhone */
-    }
-}
-
-@media screen and (min-width: 428px) {
-    html {
-        zoom: 0.4; /* для больших iPhone */
+        zoom: 0.28;
     }
 }
 
