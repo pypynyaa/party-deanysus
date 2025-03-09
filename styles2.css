@@ -5,6 +5,7 @@ body {
     text-align: center;
     background-color: black;
     min-width: 1700px;
+    overflow-x: hidden;
 }
 
 .container {
@@ -169,18 +170,23 @@ body {
 }
 
 @media screen and (max-width: 1700px) {
-    body {
-        width: 1700px;
+    html, body {
+        width: 100%;
+        overflow-x: hidden;
     }
     
     .container {
         transform-origin: top left;
         transform: scale(calc(100vw / 1700));
-        height: calc(100vw * (8000 / 1700)); /* Примерная высота контента */
+        height: calc(100vw * (8000 / 1700));
+        margin-left: 50%;
+        transform: translateX(-50%) scale(calc(100vw / 1700));
     }
 }
 
 img {
-    width: 100%;
+    display: block;
+    width: 1700px;
     height: auto;
+    margin: 0 auto;
 }
