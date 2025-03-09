@@ -14,13 +14,33 @@ body {
     margin: 0 auto;
 }
 
+/* Медиа-запросы для мобильных устройств */
+@media screen and (max-width: 1700px) {
+    html {
+        zoom: 0.6;
+        overflow-x: hidden;
+    }
+    
+    body {
+        margin: 0 auto;
+        overflow-x: hidden;
+    }
+}
+
+/* Специальный масштаб для широких экранов мобильных устройств */
+@media screen and (min-width: 414px) and (max-width: 428px) {
+    html {
+        zoom: 0.55;
+    }
+}
+
 .background-wrapper {
     position: relative;
-    width: 100%;
+    width: 1700px;
 }
 
 .background-image {
-    width: 100%;
+    width: 1700px;
     height: auto;
     display: block;
 }
@@ -29,7 +49,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 1700px;
     height: 100%;
 }
 
@@ -64,8 +84,8 @@ body {
     background: linear-gradient(45deg, #833AB4, #E1306C, #F56040, #FFDC80);
     color: white;
     border: none;
-    padding: 20px 40px;
-    font-size: 20px;
+    padding: 10px;
+    font-size: 36px;
     font-family: "Arial", sans-serif;
     font-weight: bold;
     border-radius: 30px;
@@ -74,6 +94,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     width: 250px;
     height: 80px;
+    line-height: 1.1;
 }
 
 .button-german:hover {
@@ -85,8 +106,8 @@ body {
     background-color: transparent;
     color: white;
     border: 2px solid white;
-    padding: 20px 40px;
-    font-size: 20px;
+    padding: 10px;
+    font-size: 36px;
     font-family: "Arial", sans-serif;
     font-weight: bold;
     border-radius: 30px;
@@ -94,6 +115,7 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
     width: 250px;
     height: 80px;
+    line-height: 1.1;
 }
 
 .button-also:hover {
@@ -106,8 +128,8 @@ body {
     background: linear-gradient(45deg, #FF0000, #000000);
     color: white;
     border: none;
-    padding: 20px 40px;
-    font-size: 20px;
+    padding: 10px;
+    font-size: 36px;
     font-family: "Arial", sans-serif;
     font-weight: bold;
     border-radius: 30px;
@@ -116,6 +138,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     width: 250px;
     height: 80px;
+    line-height: 1.1;
 }
 
 .button-party:hover {
@@ -146,26 +169,6 @@ body {
     top: 7690px;
     left: 50%;
     transform: translateX(-50%);
-}
-
-/* Медиа-запросы для мобильных устройств */
-@media screen and (max-width: 1700px) {
-    html {
-        zoom: 0.3;
-        overflow-x: hidden;
-    }
-    
-    body {
-        margin: 0 auto;
-        overflow-x: hidden;
-    }
-}
-
-/* Специальный масштаб для широких экранов мобильных устройств */
-@media screen and (min-width: 414px) and (max-width: 428px) {
-    html {
-        zoom: 0.28;
-    }
 }
 
 img {
