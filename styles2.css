@@ -8,139 +8,166 @@ body {
 
 .container {
     position: relative;
-    width: 1700px;  /* Ширина фонового изображения */
-    height: 1080px; /* Высота фонового изображения */
-    overflow: auto;
-    background-size: cover;
-    background-position: center;/* Добавление прокрутки при необходимости */
+    width: 1700px;
+    margin: 0 auto;
+}
+
+.background-wrapper {
+    position: relative;
+    width: 100%;
 }
 
 .background-image {
     width: 100%;
-    height: 100%;
-    object-fit: none;/* Отключает масштабирование изображения */
+    height: auto;
+    display: block;
 }
 
-/* Изолированный контейнер для кнопок */
-.button-container {
+.buttons-wrapper {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Чтобы кнопки оставались кликабельными */
 }
 
-/* Кнопка под Никитосом */
-/* Кнопка под Никитосом (Telegram) */
-/* Кнопка в стиле Telegram */
+.button-container {
+    position: absolute;
+    width: 250px;
+}
+
+/* Стили кнопок */
 .button-nikitos {
-    background-color: #0088cc; /* Синий цвет Telegram */
-    color: white; /* Белый текст */
+    background-color: #0088cc;
+    color: white;
     border: none;
-    padding: 20px 40px; /* Увеличиваем размер */
-    font-size: 20px; /* Увеличиваем шрифт */
+    padding: 20px 40px;
+    font-size: 20px;
     font-family: "Arial", sans-serif;
     font-weight: bold;
-    border-radius: 30px; /* Закругленные углы */
+    border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    width: 250px; /* Ширина кнопки */
-    height: 80px; /* Высота кнопки */
+    width: 250px;
+    height: 80px;
 }
 
 .button-nikitos:hover {
-    background-color: #006699; /* Темный оттенок синего при наведении */
-    transform: scale(1.05); /* Увеличение при наведении */
+    background-color: #006699;
+    transform: scale(1.05);
 }
 
-/* Кнопка в стиле Instagram */
 .button-german {
-    background: linear-gradient(45deg, #833AB4, #E1306C, #F56040, #FFDC80); /* Градиент Instagram */
+    background: linear-gradient(45deg, #833AB4, #E1306C, #F56040, #FFDC80);
     color: white;
     border: none;
-    padding: 20px 40px; /* Увеличиваем размер */
-    font-size: 20px; /* Увеличиваем шрифт */
+    padding: 20px 40px;
+    font-size: 20px;
     font-family: "Arial", sans-serif;
     font-weight: bold;
-    border-radius: 30px; /* Закругленные углы */
+    border-radius: 30px;
     cursor: pointer;
     transition: background 0.3s ease, transform 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    width: 250px; /* Ширина кнопки */
-    height: 80px; /* Высота кнопки */
+    width: 250px;
+    height: 80px;
 }
 
 .button-german:hover {
-    background: linear-gradient(45deg, #FFDC80, #F56040, #E1306C, #833AB4); /* Инвертируем градиент при наведении */
-    transform: scale(1.05); /* Увеличение при наведении */
+    background: linear-gradient(45deg, #FFDC80, #F56040, #E1306C, #833AB4);
+    transform: scale(1.05);
 }
 
-/* Кнопка с прозрачным фоном и белым текстом */
 .button-also {
-    background-color: transparent; /* Прозрачный фон */
-    color: white; /* Белый текст */
-    border: 2px solid white; /* Белая рамка */
-    padding: 20px 40px; /* Увеличиваем размер */
-    font-size: 20px; /* Увеличиваем шрифт */
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 20px 40px;
+    font-size: 20px;
     font-family: "Arial", sans-serif;
     font-weight: bold;
-    border-radius: 30px; /* Закругленные углы */
+    border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-    width: 250px; /* Ширина кнопки */
-    height: 80px; /* Высота кнопки */
+    width: 250px;
+    height: 80px;
 }
 
 .button-also:hover {
-    background-color: white; /* Белый фон при наведении */
-    color: black; /* Черный текст при наведении */
-    transform: scale(1.05); /* Увеличение при наведении */
+    background-color: white;
+    color: black;
+    transform: scale(1.05);
 }
 
-/* Яркая праздничная кнопка */
 .button-party {
-    background: linear-gradient(45deg, #FF0000, #000000); /* Радужный градиент */
+    background: linear-gradient(45deg, #FF0000, #000000);
     color: white;
     border: none;
-    padding: 20px 40px; /* Увеличиваем размер */
-    font-size: 20px; /* Увеличиваем шрифт */
+    padding: 20px 40px;
+    font-size: 20px;
     font-family: "Arial", sans-serif;
     font-weight: bold;
-    border-radius: 30px; /* Закругленные углы */
+    border-radius: 30px;
     cursor: pointer;
     transition: transform 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    width: 250px; /* Ширина кнопки */
-    height: 80px; /* Высота кнопки */
+    width: 250px;
+    height: 80px;
 }
 
 .button-party:hover {
-    transform: scale(1.05); /* Увеличение при наведении */
+    transform: scale(1.05);
 }
 
+/* Позиционирование кнопок */
+.button-container.nikitos {
+    position: absolute;
+    top: 1970px;
+    left: 974px;
+}
+
+.button-container.german {
+    position: absolute;
+    top: 2910px;
+    left: 195px;
+}
+
+.button-container.also {
+    position: absolute;
+    top: 5900px;
+    left: 248px;
+}
+
+.button-container.party {
+    position: absolute;
+    top: 7690px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Медиа-запросы для мобильных устройств */
 @media (max-width: 768px) {
     .container {
-        padding: 10px;
+        width: 1700px;
+        overflow-x: auto;
     }
 
-    .button-nikitos, .button-german, .button-also, .button-party {
-        width: 100%; /* Кнопки занимают всю ширину экрана */
-        padding: 15px; /* Уменьшаем отступы */
-        font-size: 16px; /* Уменьшаем размер шрифта */
+    .background-wrapper {
+        width: 1700px;
     }
 
-    h1 {
-        font-size: 1.5rem; /* Уменьшаем размер заголовка */
+    .background-image {
+        width: 1700px;
     }
 
-    input, select, textarea {
-        padding: 10px; /* Уменьшаем отступы для полей ввода */
+    /* Сохраняем оригинальное позиционирование кнопок */
+    .button-container {
+        position: absolute;
     }
 }
 
 img {
-    max-width: 100%; /* Изображение не превышает ширину экрана */
-    height: auto; /* Сохраняет пропорции */
+    width: 100%;
+    height: auto;
 }
