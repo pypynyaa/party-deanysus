@@ -172,6 +172,7 @@ form.addEventListener('submit', async (e) => {
         if (saved) {
             alert('Регистрация успешно завершена! Мы свяжемся с вами в ближайшее время.');
             form.reset();
+            resetFileInput();
         } else {
             throw new Error('Ошибка при сохранении данных');
         }
@@ -181,4 +182,9 @@ form.addEventListener('submit', async (e) => {
     } finally {
         animateSubmitButton(submitButton, false);
     }
+});
+
+// Добавляем обработчик события reset для формы
+form.addEventListener('reset', () => {
+    resetFileInput();
 }); 
