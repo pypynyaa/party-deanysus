@@ -33,6 +33,71 @@ transportOptions.forEach(option => {
     });
 });
 
+// Обработка чата
+const chatButton = document.getElementById('chatButton');
+const chatPopup = document.getElementById('chatPopup');
+const chatMessages = document.getElementById('chatMessages');
+const messageInput = document.getElementById('messageInput');
+
+function toggleChat() {
+    chatPopup.classList.toggle('hidden');
+}
+
+function sendMessage() {
+    const message = messageInput.value.trim();
+    if (!message) return;
+
+    // Добавляем сообщение пользователя
+    const userMessageDiv = document.createElement('div');
+    userMessageDiv.className = 'message user';
+    userMessageDiv.textContent = message;
+    chatMessages.appendChild(userMessageDiv);
+
+    // Добавляем ответ системы
+    const systemMessageDiv = document.createElement('div');
+    systemMessageDiv.className = 'message system';
+    systemMessageDiv.textContent = 'Бля, ты серьезно думаешь, что мы бы стали поднимать базы данных на сайте для бухича?';
+    chatMessages.appendChild(systemMessageDiv);
+
+    // Очищаем поле ввода
+    messageInput.value = '';
+
+    // Прокручиваем чат вниз
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+chatButton.addEventListener('click', toggleChat);
+messageInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
+
+// Обновляем обработку загрузки файла
+const paymentProofInput = document.getElementById('paymentProof');
+const fileNameSpan = document.querySelector('.file-name');
+const deleteFileBtn = document.querySelector('.delete-file');
+
+paymentProofInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        fileNameSpan.textContent = file.name;
+        deleteFileBtn.classList.remove('hidden');
+    } else {
+        resetFileInput();
+    }
+});
+
+function removeFile() {
+    paymentProofInput.value = '';
+    resetFileInput();
+}
+
+function resetFileInput() {
+    fileNameSpan.textContent = 'Прикрепить скриншот оплаты';
+    deleteFileBtn.classList.add('hidden');
+}
+
 // Генерация уникального ID для пользователя
 function generateUserId() {
     return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);

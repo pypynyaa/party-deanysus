@@ -39,15 +39,14 @@
         </div>
 
         <h2>Оплата</h2>
-        <div class="form-group">
-          <label class="checkbox-label">
-            <input type="checkbox" id="paymentDone" name="paymentDone">
-            <span>Оплатил(а) дом</span>
-          </label>
-        </div>
-        <div class="form-group payment-proof hidden">
-          <input type="file" id="paymentProof" name="paymentProof" accept="image/*">
-          <label for="paymentProof">Прикрепить скриншот оплаты</label>
+        <div class="form-group payment-proof">
+          <input type="file" id="paymentProof" name="paymentProof" accept="image/*" required>
+          <div class="file-upload-container">
+            <label for="paymentProof" class="file-upload-label">
+              <span class="file-name">Прикрепить скриншот оплаты</span>
+            </label>
+            <button type="button" class="delete-file hidden" onclick="removeFile()">×</button>
+          </div>
         </div>
 
         <h2>Как доберешься?</h2>
@@ -77,24 +76,34 @@
 
         <h2>Активности</h2>
         <div class="activities-grid">
-          <label class="checkbox-label">
+          <label class="activity-option">
             <input type="checkbox" name="activities" value="basketball">
-            <span>Баскетбол</span>
+            <div class="activity-card">
+              <img src="basketball.jpg" alt="Баскетбол">
+            </div>
           </label>
-          <label class="checkbox-label">
+          <label class="activity-option">
             <input type="checkbox" name="activities" value="football">
-            <span>Футбол</span>
+            <div class="activity-card">
+              <img src="football.jpg" alt="Футбол">
+            </div>
           </label>
-          <label class="checkbox-label">
+          <label class="activity-option">
             <input type="checkbox" name="activities" value="volleyball">
-            <span>Волейбол</span>
+            <div class="activity-card">
+              <img src="volleyball.jpg" alt="Волейбол">
+            </div>
           </label>
-          <label class="checkbox-label">
+          <label class="activity-option">
             <input type="checkbox" name="activities" value="tennis">
-            <span>Теннис</span>
+            <div class="activity-card">
+              <img src="tennis.jpg" alt="Теннис">
+            </div>
           </label>
         </div>
-        <div class="form-grid">
+
+        <h2>Дополнительные активности</h2>
+        <div class="other-activities">
           <label class="checkbox-label">
             <input type="checkbox" id="sauna" name="sauna">
             <span>Пойду в баню</span>
@@ -115,7 +124,7 @@
             </select>
           </div>
           <div class="form-group">
-            <input type="text" id="music" name="music" placeholder="Ссылка на музыку или название трека">
+            <input type="text" id="music" name="music" placeholder="Ссылка на трек в Яндекс.Музыке">
           </div>
           <div class="form-group full-width">
             <textarea id="foodPreferences" name="foodPreferences" placeholder="Предпочтения по еде (аллергии, вегетарианство и т.д.)"></textarea>
@@ -125,6 +134,24 @@
         <button type="submit" class="submit-btn">Отправить</button>
       </div>
     </form>
+  </div>
+
+  <div class="chat-button" id="chatButton">
+    <img src="chat.jpg" alt="Чат">
+  </div>
+
+  <div class="chat-popup hidden" id="chatPopup">
+    <div class="chat-header">
+      <span>Чат поддержки</span>
+      <button class="close-chat" onclick="toggleChat()">×</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="message system">Задайте ваш вопрос</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="messageInput" placeholder="Введите сообщение...">
+      <button onclick="sendMessage()">Отправить</button>
+    </div>
   </div>
 
   <script src="registration.js"></script>
