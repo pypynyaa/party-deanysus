@@ -61,9 +61,9 @@ function setInitialScale() {
             }
             break;
         case 'mobile-safari':
-            scale = 0.28; // еще немного увеличиваем для мобильного Safari
+            scale = 0.285; // еще немного увеличиваем для мобильного Safari
             if (screenWidth >= 414 && screenWidth <= 428) {
-                scale = 0.258; // точная настройка для iPhone
+                scale = 0.265; // точная настройка для iPhone
             }
             break;
         case 'safari':
@@ -82,11 +82,18 @@ function setInitialScale() {
     // Устанавливаем viewport с точным масштабом
     document.querySelector('meta[name="viewport"]').setAttribute('content', 
         `width=1700, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=2.0, user-scalable=yes`);
+
+    // Добавляем небольшую задержку для повторной установки масштаба
+    setTimeout(() => {
+        document.querySelector('meta[name="viewport"]').setAttribute('content', 
+            `width=1700, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=2.0, user-scalable=yes`);
+    }, 100);
 }
 
 // Вызываем функцию при загрузке страницы и при изменении ориентации
 window.onload = setInitialScale;
 window.addEventListener('orientationchange', setInitialScale);
+window.addEventListener('resize', setInitialScale);
 </script>
 </body>
 </html>
