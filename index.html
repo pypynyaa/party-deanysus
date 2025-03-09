@@ -32,11 +32,11 @@
 // Устанавливаем масштаб в зависимости от устройства
 function setInitialScale() {
     const screenWidth = window.screen.width;
-    let scale = 0.3; // стандартное значение для всех устройств
+    let scale = 0.2; // уменьшаем стандартное значение для всех устройств
 
     // Для iPhone 11 и других широких экранов немного уменьшаем масштаб
     if (screenWidth >= 414 && screenWidth <= 428) {
-        scale = 0.28;
+        scale = 0.18;
     }
 
     document.querySelector('meta[name="viewport"]').setAttribute('content', 
