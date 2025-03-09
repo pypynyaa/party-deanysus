@@ -93,6 +93,7 @@
   <script>
     const chatMessages = document.getElementById('chatMessages');
     const messageInput = document.getElementById('messageInput');
+    let isFirstMessage = true;
 
     function sendMessage() {
       const message = messageInput.value.trim();
@@ -104,22 +105,26 @@
       userMessageDiv.textContent = message;
       chatMessages.appendChild(userMessageDiv);
 
-      // Добавляем ответ системы
-      const systemMessageDiv = document.createElement('div');
-      systemMessageDiv.className = 'message system';
-      systemMessageDiv.textContent = 'пока';
-      chatMessages.appendChild(systemMessageDiv);
-
       // Очищаем поле ввода
       messageInput.value = '';
 
       // Прокручиваем чат вниз
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
-      // Перенаправляем на видео после небольшой задержки
-      setTimeout(() => {
-        window.open('https://vk.com/video-28878216_166290347', '_blank');
-      }, 500);
+      if (isFirstMessage) {
+        // Добавляем ответ "пока" с небольшой задержкой
+        setTimeout(() => {
+          const systemMessageDiv = document.createElement('div');
+          systemMessageDiv.className = 'message system';
+          systemMessageDiv.textContent = 'пока';
+          chatMessages.appendChild(systemMessageDiv);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+          isFirstMessage = false;
+        }, 500);
+      } else {
+        // При второй попытке отправить сообщение - перенаправляем на видео
+        window.location.href = 'https://vk.com/video-28878216_166290347';
+      }
     }
 
     messageInput.addEventListener('keypress', (e) => {
