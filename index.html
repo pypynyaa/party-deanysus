@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1700, initial-scale=0.3, minimum-scale=0.3, maximum-scale=2.0, user-scalable=yes">
   <title>Party Dionysus</title>
-  <link rel="stylesheet" href="styles2.css?v=13">
+  <link rel="stylesheet" href="styles2.css?v=14">
 </head>
 <body style="margin: 0; padding: 0; text-align: center; background-color: black;">
 <div class="container">
@@ -29,14 +29,15 @@
   </div>
 </div>
 <script>
-// Определяем браузер
+// Определяем браузер и устройство
 function getBrowser() {
     const userAgent = navigator.userAgent.toLowerCase();
+    const isMobile = /iphone|ipod|android/.test(userAgent);
     
     if (userAgent.indexOf('chrome') > -1) {
         return 'chrome';
     } else if (userAgent.indexOf('safari') > -1) {
-        return 'safari';
+        return isMobile ? 'mobile-safari' : 'safari';
     } else {
         return 'other';
     }
@@ -49,31 +50,40 @@ function setInitialScale() {
     let scale = 0.3; // значение по умолчанию
 
     // Настройки для разных браузеров
-    if (browser === 'chrome') {
-        scale = 0.35; // больше для Chrome
-        if (screenWidth >= 414 && screenWidth <= 428) {
-            scale = 0.32;
-        }
-    } else if (browser === 'safari') {
-        scale = 0.33; // среднее значение для Safari
-        if (screenWidth >= 414 && screenWidth <= 428) {
+    switch(browser) {
+        case 'chrome':
+            scale = 0.35;
+            if (screenWidth >= 414 && screenWidth <= 428) {
+                scale = 0.32;
+            }
+            break;
+        case 'mobile-safari':
+            scale = 0.25; // уменьшаем для мобильного Safari
+            if (screenWidth >= 414 && screenWidth <= 428) {
+                scale = 0.23;
+            }
+            break;
+        case 'safari':
+            scale = 0.33;
+            if (screenWidth >= 414 && screenWidth <= 428) {
+                scale = 0.3;
+            }
+            break;
+        default:
             scale = 0.3;
-        }
-    } else {
-        // Для других браузеров (включая Telegram)
-        scale = 0.3;
-        if (screenWidth >= 414 && screenWidth <= 428) {
-            scale = 0.28;
-        }
+            if (screenWidth >= 414 && screenWidth <= 428) {
+                scale = 0.28;
+            }
     }
 
-    // Устанавливаем viewport
+    // Устанавливаем viewport с принудительной шириной
     document.querySelector('meta[name="viewport"]').setAttribute('content', 
         `width=1700, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=2.0, user-scalable=yes`);
 }
 
-// Вызываем функцию при загрузке страницы
+// Вызываем функцию при загрузке страницы и при изменении ориентации
 window.onload = setInitialScale;
+window.addEventListener('orientationchange', setInitialScale);
 </script>
 </body>
 </html>
