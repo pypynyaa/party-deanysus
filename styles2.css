@@ -119,3 +119,28 @@ body {
 .button-party:hover {
     transform: scale(1.05); /* Увеличение при наведении */
 }
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .button-nikitos, .button-german, .button-also, .button-party {
+        width: 100%; /* Кнопки занимают всю ширину экрана */
+        padding: 15px; /* Уменьшаем отступы */
+        font-size: 16px; /* Уменьшаем размер шрифта */
+    }
+
+    h1 {
+        font-size: 1.5rem; /* Уменьшаем размер заголовка */
+    }
+
+    input, select, textarea {
+        padding: 10px; /* Уменьшаем отступы для полей ввода */
+    }
+}
+
+img {
+    max-width: 100%; /* Изображение не превышает ширину экрана */
+    height: auto; /* Сохраняет пропорции */
+}
