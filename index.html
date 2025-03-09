@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width=1700, initial-scale=0.3">
+  <meta name="viewport" content="width=1700, initial-scale=0.3, minimum-scale=0.3, maximum-scale=2.0, user-scalable=yes">
   <title>Party Dionysus</title>
   <link rel="stylesheet" href="styles2.css?v=17">
 </head>
@@ -32,68 +32,68 @@
   <div style="height: 150px;"></div>
 </div>
 <script>
-  // Определяем браузер и устройство
-  function getBrowser() {
+// Определяем браузер и устройство
+function getBrowser() {
     const userAgent = navigator.userAgent.toLowerCase();
     const isMobile = /iphone|ipod|android/.test(userAgent);
 
     if (userAgent.indexOf('chrome') > -1) {
-      return 'chrome';
+        return 'chrome';
     } else if (userAgent.indexOf('safari') > -1) {
-      return isMobile ? 'mobile-safari' : 'safari';
+        return isMobile ? 'mobile-safari' : 'safari';
     } else {
-      return 'other';
+        return 'other';
     }
-  }
+}
 
-  // Устанавливаем масштаб в зависимости от устройства и браузера
-  function setInitialScale() {
+// Устанавливаем масштаб в зависимости от устройства и браузера
+function setInitialScale() {
     const screenWidth = window.screen.width;
     const browser = getBrowser();
     let scale = 0.3; // значение по умолчанию
 
     // Настройки для разных браузеров
     switch(browser) {
-      case 'chrome':
-        scale = 0.35;
-        if (screenWidth >= 414 && screenWidth <= 428) {
-          scale = 0.32;
-        }
-        break;
-      case 'mobile-safari':
-        scale = 0.285; // еще немного увеличиваем для мобильного Safari
-        if (screenWidth >= 414 && screenWidth <= 428) {
-          scale = 0.265; // точная настройка для iPhone
-        }
-        break;
-      case 'safari':
-        scale = 0.33;
-        if (screenWidth >= 414 && screenWidth <= 428) {
-          scale = 0.3;
-        }
-        break;
-      default:
-        scale = 0.3;
-        if (screenWidth >= 414 && screenWidth <= 428) {
-          scale = 0.28;
-        }
+        case 'chrome':
+            scale = 0.35;
+            if (screenWidth >= 414 && screenWidth <= 428) {
+                scale = 0.32;
+            }
+            break;
+        case 'mobile-safari':
+            scale = 0.285; // еще немного увеличиваем для мобильного Safari
+            if (screenWidth >= 414 && screenWidth <= 428) {
+                scale = 0.265; // точная настройка для iPhone
+            }
+            break;
+        case 'safari':
+            scale = 0.33;
+            if (screenWidth >= 414 && screenWidth <= 428) {
+                scale = 0.3;
+            }
+            break;
+        default:
+            scale = 0.3;
+            if (screenWidth >= 414 && screenWidth <= 428) {
+                scale = 0.28;
+            }
     }
 
     // Устанавливаем viewport с точным масштабом
     document.querySelector('meta[name="viewport"]').setAttribute('content',
-            width=1700, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=2.0, user-scalable=yes);
+        `width=1700, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=2.0, user-scalable=yes`);
 
     // Добавляем небольшую задержку для повторной установки масштаба
     setTimeout(() => {
-      document.querySelector('meta[name="viewport"]').setAttribute('content',
-              width=1700, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=2.0, user-scalable=yes);
+        document.querySelector('meta[name="viewport"]').setAttribute('content',
+            `width=1700, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=2.0, user-scalable=yes`);
     }, 100);
-  }
+}
 
-  // Вызываем функцию при загрузке страницы и при изменении ориентации
-  window.onload = setInitialScale;
-  window.addEventListener('orientationchange', setInitialScale);
-  window.addEventListener('resize', setInitialScale);
+// Вызываем функцию при загрузке страницы и при изменении ориентации
+window.onload = setInitialScale;
+window.addEventListener('orientationchange', setInitialScale);
+window.addEventListener('resize', setInitialScale);
 </script>
 </body>
 </html>
