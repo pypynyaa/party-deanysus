@@ -5,25 +5,26 @@ body {
     text-align: center;
     background-color: black;
     width: 1700px;
-    overflow-x: hidden;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .container {
     position: relative;
     width: 1700px;
-    margin: 0 auto;
 }
 
 /* Медиа-запросы для мобильных устройств */
 @media screen and (max-width: 1700px) {
     html {
         zoom: 0.8;
-        overflow-x: hidden;
+        background-color: black;
     }
     
     body {
-        margin: 0 auto;
-        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
     }
 }
 
