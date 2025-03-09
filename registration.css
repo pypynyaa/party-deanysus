@@ -555,6 +555,10 @@ textarea:focus {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
     z-index: 1000;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .chat-button img {
@@ -562,11 +566,6 @@ textarea:focus {
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    background-color: var(--input-background);
-    will-change: transform;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-    -webkit-font-smoothing: subpixel-antialiased;
 }
 
 .chat-button:hover {
@@ -617,6 +616,7 @@ textarea:focus {
     padding: 8px 12px;
     border-radius: 10px;
     max-width: 80%;
+    word-wrap: break-word;
 }
 
 .message.user {
