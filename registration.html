@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Регистрация на Party Dionysus</title>
-  <link rel="stylesheet" href="registration.css?v=2">
+  <link rel="stylesheet" href="registration.css?v=3">
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -23,20 +23,22 @@
       
       <div class="form-section">
         <h2>Основная информация</h2>
-        <div class="form-group">
-          <input type="text" id="fullName" name="fullName" required>
-          <label for="fullName">ФИО</label>
-        </div>
-        <div class="form-group">
-          <input type="tel" id="phone" name="phone" required>
-          <label for="phone">Номер телефона</label>
-        </div>
-        <div class="form-group">
-          <input type="text" id="telegram" name="telegram" required>
-          <label for="telegram">Ссылка на Telegram</label>
+        <div class="form-grid">
+          <div class="form-group">
+            <input type="text" id="fullName" name="fullName" required>
+            <label for="fullName">ФИО</label>
+          </div>
+          <div class="form-group">
+            <input type="tel" id="phone" name="phone" required>
+            <label for="phone">Номер телефона</label>
+          </div>
+          <div class="form-group">
+            <input type="text" id="telegram" name="telegram" required>
+            <label for="telegram">Ссылка на Telegram</label>
+          </div>
         </div>
 
-        <h2>Оплата и транспорт</h2>
+        <h2>Оплата</h2>
         <div class="form-group">
           <label class="checkbox-label">
             <input type="checkbox" id="paymentDone" name="paymentDone">
@@ -47,18 +49,30 @@
           <input type="file" id="paymentProof" name="paymentProof" accept="image/*">
           <label for="paymentProof">Прикрепить скриншот оплаты</label>
         </div>
-        <div class="form-group">
+
+        <h2>Как доберешься?</h2>
+        <div class="transport-options">
+          <label class="transport-option">
+            <input type="radio" name="transport" value="self" required>
+            <div class="transport-card">
+              <img src="mcqueen.jpg" alt="Своя машина">
+              <span>На своей машине</span>
+            </div>
+          </label>
+          <label class="transport-option">
+            <input type="radio" name="transport" value="bus" required>
+            <div class="transport-card">
+              <img src="mater.jpg" alt="Автобус">
+              <span>На общем автобусе</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-group license-group hidden">
           <label class="checkbox-label">
             <input type="checkbox" id="hasLicense" name="hasLicense">
             <span>Есть водительские права</span>
           </label>
-        </div>
-        <div class="form-group">
-          <select id="transport" name="transport" required>
-            <option value="">Выберите транспорт</option>
-            <option value="self">Доеду сам(а)</option>
-            <option value="bus">Поеду на автобусе</option>
-          </select>
         </div>
 
         <h2>Активности</h2>
@@ -80,13 +94,11 @@
             <span>Теннис</span>
           </label>
         </div>
-        <div class="form-group">
+        <div class="form-grid">
           <label class="checkbox-label">
             <input type="checkbox" id="sauna" name="sauna">
             <span>Пойду в баню</span>
           </label>
-        </div>
-        <div class="form-group">
           <label class="checkbox-label">
             <input type="checkbox" id="hideAndSeek" name="hideAndSeek">
             <span>Буду играть в прятки</span>
@@ -94,18 +106,20 @@
         </div>
 
         <h2>Дополнительная информация</h2>
-        <div class="form-group">
-          <select id="relationship" name="relationship" required>
-            <option value="">Выберите статус</option>
-            <option value="single">Свободен/Свободна</option>
-            <option value="relationship">Есть вторая половинка</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <textarea id="foodPreferences" name="foodPreferences" placeholder="Предпочтения по еде (аллергии, вегетарианство и т.д.)"></textarea>
-        </div>
-        <div class="form-group">
-          <input type="text" id="music" name="music" placeholder="Ссылка на музыку или название трека">
+        <div class="form-grid">
+          <div class="form-group">
+            <select id="relationship" name="relationship" required>
+              <option value="">Выберите статус</option>
+              <option value="single">Свободен/Свободна</option>
+              <option value="relationship">Есть вторая половинка</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" id="music" name="music" placeholder="Ссылка на музыку или название трека">
+          </div>
+          <div class="form-group full-width">
+            <textarea id="foodPreferences" name="foodPreferences" placeholder="Предпочтения по еде (аллергии, вегетарианство и т.д.)"></textarea>
+          </div>
         </div>
         
         <button type="submit" class="submit-btn">Отправить</button>

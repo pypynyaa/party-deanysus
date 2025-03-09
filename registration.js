@@ -18,10 +18,19 @@ const storage = firebase.storage();
 const form = document.getElementById('registrationForm');
 const paymentCheckbox = document.getElementById('paymentDone');
 const paymentProofDiv = document.querySelector('.payment-proof');
+const transportOptions = document.querySelectorAll('input[name="transport"]');
+const licenseGroup = document.querySelector('.license-group');
 
 // Обработка показа/скрытия поля для загрузки скриншота
 paymentCheckbox.addEventListener('change', () => {
     paymentProofDiv.classList.toggle('hidden', !paymentCheckbox.checked);
+});
+
+// Обработка выбора транспорта
+transportOptions.forEach(option => {
+    option.addEventListener('change', () => {
+        licenseGroup.classList.toggle('hidden', option.value !== 'self');
+    });
 });
 
 // Генерация уникального ID для пользователя
