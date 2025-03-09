@@ -5,14 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Регистрация на Party Dionysus</title>
-  <link rel="stylesheet" href="registration.css?v=1">
+  <link rel="stylesheet" href="registration.css?v=2">
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 </head>
 <body>
-  <div class="chromatic-bg"></div>
+  <div class="video-background">
+    <video autoplay muted loop playsinline id="bgVideo">
+      <source src="фонтоп.mp4" type="video/mp4">
+    </video>
+  </div>
   <div class="container">
     <form id="registrationForm" class="registration-form">
       <h1>Регистрация на вечеринку</h1>
