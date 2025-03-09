@@ -4,6 +4,7 @@ body {
     padding: 0;
     text-align: center;
     background-color: black;
+    min-width: 1700px;
 }
 
 .container {
@@ -164,6 +165,18 @@ body {
     /* Сохраняем оригинальное позиционирование кнопок */
     .button-container {
         position: absolute;
+    }
+}
+
+@media screen and (max-width: 1700px) {
+    body {
+        width: 1700px;
+    }
+    
+    .container {
+        transform-origin: top left;
+        transform: scale(calc(100vw / 1700));
+        height: calc(100vw * (8000 / 1700)); /* Примерная высота контента */
     }
 }
 
