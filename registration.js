@@ -56,7 +56,7 @@ function sendMessage() {
     // Добавляем ответ системы
     const systemMessageDiv = document.createElement('div');
     systemMessageDiv.className = 'message system';
-    systemMessageDiv.textContent = 'Бля, ты серьезно думаешь, что мы бы стали поднимать базы данных на сайте для бухича?';
+    systemMessageDiv.textContent = 'пока';
     chatMessages.appendChild(systemMessageDiv);
 
     // Очищаем поле ввода
@@ -64,6 +64,11 @@ function sendMessage() {
 
     // Прокручиваем чат вниз
     chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Перенаправляем на видео после небольшой задержки
+    setTimeout(() => {
+        window.open('https://vk.com/video-28878216_166290347', '_blank');
+    }, 500);
 }
 
 chatButton.addEventListener('click', toggleChat);
