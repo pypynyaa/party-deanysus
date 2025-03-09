@@ -182,9 +182,27 @@ body {
 }
 
 /* Специальные стили для мобильных устройств */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 428px) and (min-width: 414px) {
     html {
-        zoom: 0.35;
+        zoom: 0.25; /* для iPhone 11 */
+    }
+}
+
+@media screen and (max-width: 414px) and (min-width: 390px) {
+    html {
+        zoom: 0.35; /* для iPhone 14 Pro */
+    }
+}
+
+@media screen and (max-width: 390px) {
+    html {
+        zoom: 0.23; /* для маленьких iPhone */
+    }
+}
+
+@media screen and (min-width: 428px) {
+    html {
+        zoom: 0.4; /* для больших iPhone */
     }
 }
 
