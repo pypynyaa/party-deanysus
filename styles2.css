@@ -1,49 +1,37 @@
 /* Общие стили */
-html {
-    background-color: black;
+html, body {
     margin: 0;
     padding: 0;
-    width: 100%;
+    background-color: black;
+    width: 100vw;
+    height: 100%;
     overflow-x: hidden;
+    position: relative;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    background-color: black;
-    width: 1700px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .container {
     position: relative;
     width: 1700px;
+    margin: 0 auto;
 }
 
 /* Медиа-запросы для мобильных устройств */
 @media screen and (max-width: 1700px) {
     html {
-        zoom: 0.9;
-        background-color: black;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        overflow-x: hidden;
-    }
-    
-    body {
-        margin: 0;
-        padding: 0;
+        zoom: 0.85;
     }
 }
 
 /* Специальный масштаб для широких экранов мобильных устройств */
 @media screen and (min-width: 414px) and (max-width: 428px) {
     html {
-        zoom: 0.85;
+        zoom: 0.8;
     }
 }
 
