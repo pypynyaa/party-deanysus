@@ -117,11 +117,11 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
       if (isFirstMessage) {
-        // Добавляем ответ "пока" с небольшой задержкой
+        // Добавляем ответ с небольшой задержкой
         setTimeout(() => {
           const systemMessageDiv = document.createElement('div');
           systemMessageDiv.className = 'message system';
-          systemMessageDiv.textContent = 'пока';
+          systemMessageDiv.textContent = 'бля, ты серьезно думаешь, что мы бы стали поднимать серваки для бухича?';
           chatMessages.appendChild(systemMessageDiv);
           chatMessages.scrollTop = chatMessages.scrollHeight;
           isFirstMessage = false;
