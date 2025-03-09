@@ -181,6 +181,13 @@ body {
     }
 }
 
+/* Специальные стили для мобильных устройств */
+@media screen and (max-width: 768px) {
+    html {
+        zoom: 0.15;
+    }
+}
+
 img {
     display: block;
     width: 1700px;
