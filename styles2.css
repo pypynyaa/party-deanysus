@@ -184,7 +184,7 @@ body {
 /* Специальные стили для мобильных устройств */
 @media screen and (max-width: 768px) {
     html {
-        zoom: 0.15;
+        zoom: 0.2;
     }
 }
 
