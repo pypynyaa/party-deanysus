@@ -1,19 +1,43 @@
 :root {
     --primary-color: #ff6b6b;
     --secondary-color: #4ecdc4;
-    --background-color: rgba(0, 0, 0, 0.8);
+    --background-color: rgba(0, 0, 0, 0.7);
     --text-color: #fff;
     --input-background: rgba(255, 255, 255, 0.1);
     --input-border: rgba(255, 255, 255, 0.2);
+}
+
+.chromatic-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #ff0055, #ff00a2, #8800ff, #0040ff);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    z-index: -1;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    background: url('Desktop - 17.png') center/cover fixed;
     font-family: 'Helvetica Neue', Arial, sans-serif;
     color: var(--text-color);
+    overflow-x: hidden;
 }
 
 .container {
@@ -21,21 +45,23 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 20px;
+    align-items: flex-start;
+    padding: 40px 20px;
     box-sizing: border-box;
-    background-color: var(--background-color);
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
 }
 
 .registration-form {
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
+    background: var(--background-color);
+    backdrop-filter: blur(20px);
     padding: 40px;
     border-radius: 20px;
     width: 100%;
-    max-width: 600px;
+    max-width: 800px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     animation: formAppear 0.5s ease-out;
+    margin: 20px auto;
 }
 
 @keyframes formAppear {
@@ -53,29 +79,35 @@ h1, h2 {
     text-align: center;
     color: var(--text-color);
     margin-bottom: 30px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 h1 {
-    font-size: 2em;
+    font-size: 2.5em;
     font-weight: 700;
+    margin-bottom: 40px;
+}
+
+h2 {
+    font-size: 1.8em;
+    margin-top: 40px;
+    position: relative;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 2px;
 }
 
 .form-section {
-    display: none;
     animation: fadeIn 0.5s ease-out;
-}
-
-.form-section.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }
 
 .form-group {
@@ -89,13 +121,18 @@ input[type="email"],
 select,
 textarea {
     width: 100%;
-    padding: 12px;
+    padding: 15px;
     background: var(--input-background);
     border: 1px solid var(--input-border);
-    border-radius: 8px;
+    border-radius: 12px;
     color: var(--text-color);
     font-size: 16px;
     transition: all 0.3s ease;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
 }
 
 input:focus,
@@ -103,7 +140,8 @@ select:focus,
 textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+    transform: translateY(-2px);
 }
 
 .checkbox-label {
@@ -111,7 +149,12 @@ textarea:focus {
     align-items: center;
     cursor: pointer;
     user-select: none;
-    padding: 8px 0;
+    padding: 10px 0;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label:hover {
+    transform: translateX(5px);
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -121,6 +164,7 @@ textarea:focus {
 .checkbox-label span {
     position: relative;
     padding-left: 35px;
+    font-size: 16px;
 }
 
 .checkbox-label span:before {
@@ -129,10 +173,10 @@ textarea:focus {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border: 2px solid var(--input-border);
-    border-radius: 4px;
+    border-radius: 6px;
     transition: all 0.3s ease;
 }
 
@@ -144,7 +188,7 @@ textarea:focus {
 .checkbox-label input[type="checkbox"]:checked + span:after {
     content: '✓';
     position: absolute;
-    left: 6px;
+    left: 7px;
     top: 50%;
     transform: translateY(-50%);
     color: white;
@@ -153,91 +197,41 @@ textarea:focus {
 
 .activities-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-button {
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    margin: 5px;
-}
-
-button:hover {
-    background: #ff8585;
-    transform: translateY(-2px);
-}
-
-.prev-btn {
-    background: transparent;
-    border: 2px solid var(--primary-color);
-}
-
-.prev-btn:hover {
-    background: rgba(255, 107, 107, 0.1);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
 }
 
 .submit-btn {
-    background: var(--secondary-color);
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.3s ease;
     width: 100%;
+    margin-top: 40px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .submit-btn:hover {
-    background: #5fdfd7;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(-1px);
 }
 
 .hidden {
     display: none;
 }
 
-/* Анимация для переходов между секциями */
-.form-section {
-    transform-origin: top;
-}
-
-.form-section.slide-in {
-    animation: slideIn 0.5s ease forwards;
-}
-
-.form-section.slide-out {
-    animation: slideOut 0.5s ease forwards;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideOut {
-    from {
-        opacity: 1;
-        transform: translateX(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateX(-50px);
-    }
-}
-
 /* Стили для загрузки файлов */
-input[type="file"] {
-    display: none;
-}
-
 .form-group label[for="paymentProof"] {
     display: inline-block;
     padding: 12px 20px;
@@ -246,30 +240,17 @@ input[type="file"] {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-align: center;
+    width: 100%;
 }
 
 .form-group label[for="paymentProof"]:hover {
     background: #5fdfd7;
-}
-
-/* Прогресс-бар */
-.progress-bar {
-    width: 100%;
-    height: 4px;
-    background: var(--input-background);
-    margin: 20px 0;
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.progress-bar-fill {
-    height: 100%;
-    background: var(--primary-color);
-    transition: width 0.3s ease;
+    transform: translateY(-2px);
 }
 
 /* Адаптивность */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .registration-form {
         padding: 20px;
     }
@@ -278,8 +259,11 @@ input[type="file"] {
         grid-template-columns: 1fr;
     }
 
-    button {
-        width: 100%;
-        margin: 5px 0;
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
     }
 } 

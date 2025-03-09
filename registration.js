@@ -16,62 +16,8 @@ const storage = firebase.storage();
 
 // Получение элементов формы
 const form = document.getElementById('registrationForm');
-const sections = document.querySelectorAll('.form-section');
-const nextButtons = document.querySelectorAll('.next-btn');
-const prevButtons = document.querySelectorAll('.prev-btn');
 const paymentCheckbox = document.getElementById('paymentDone');
 const paymentProofDiv = document.querySelector('.payment-proof');
-
-// Обработка переключения секций
-let currentSection = 0;
-
-function showSection(index) {
-    sections.forEach(section => {
-        section.classList.remove('active', 'slide-in', 'slide-out');
-    });
-    sections[index].classList.add('active', 'slide-in');
-    updateProgressBar();
-}
-
-function updateProgressBar() {
-    const progress = ((currentSection + 1) / sections.length) * 100;
-    document.querySelector('.progress-bar-fill').style.width = `${progress}%`;
-}
-
-// Обработчики для кнопок навигации
-nextButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        if (validateSection(currentSection)) {
-            currentSection = Math.min(currentSection + 1, sections.length - 1);
-            showSection(currentSection);
-        }
-    });
-});
-
-prevButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        currentSection = Math.max(currentSection - 1, 0);
-        showSection(currentSection);
-    });
-});
-
-// Валидация секций
-function validateSection(sectionIndex) {
-    const section = sections[sectionIndex];
-    const inputs = section.querySelectorAll('input[required], select[required]');
-    let isValid = true;
-
-    inputs.forEach(input => {
-        if (!input.value) {
-            isValid = false;
-            input.classList.add('error');
-        } else {
-            input.classList.remove('error');
-        }
-    });
-
-    return isValid;
-}
 
 // Обработка показа/скрытия поля для загрузки скриншота
 paymentCheckbox.addEventListener('change', () => {
@@ -102,17 +48,23 @@ async function saveToFirestore(formData, userId) {
     }
 }
 
+// Анимация отправки формы
+function animateSubmitButton(button, isLoading) {
+    if (isLoading) {
+        button.disabled = true;
+        button.innerHTML = '<span class="loading-spinner"></span> Отправка...';
+    } else {
+        button.disabled = false;
+        button.textContent = 'Отправить';
+    }
+}
+
 // Обработка отправки формы
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    if (!validateSection(currentSection)) {
-        return;
-    }
-
     const submitButton = form.querySelector('.submit-btn');
-    submitButton.disabled = true;
-    submitButton.textContent = 'Отправка...';
+    animateSubmitButton(submitButton, true);
 
     try {
         const userId = generateUserId();
@@ -146,8 +98,6 @@ form.addEventListener('submit', async (e) => {
         if (saved) {
             alert('Регистрация успешно завершена! Мы свяжемся с вами в ближайшее время.');
             form.reset();
-            currentSection = 0;
-            showSection(0);
         } else {
             throw new Error('Ошибка при сохранении данных');
         }
@@ -155,7 +105,6 @@ form.addEventListener('submit', async (e) => {
         console.error('Error:', error);
         alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
     } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Отправить';
+        animateSubmitButton(submitButton, false);
     }
 }); 
