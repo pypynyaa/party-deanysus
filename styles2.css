@@ -21,7 +21,7 @@ body {
     position: relative;
     width: 1700px;
     margin: 0 auto;
-    overflow: hidden;
+    transform-origin: top center;
 }
 
 /* Медиа-запросы для мобильных устройств */
@@ -196,7 +196,7 @@ body {
 
 img {
     display: block;
-    width: 1700px;
+    width: 100%;
     height: auto;
     margin: 0 auto;
 }
