@@ -1,0 +1,121 @@
+/* Общие стили */
+body {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background-color: black;
+}
+
+.container {
+    position: relative;
+    width: 1700px;  /* Ширина фонового изображения */
+    height: 1080px; /* Высота фонового изображения */
+    overflow: auto;
+    background-size: cover;
+    background-position: center;/* Добавление прокрутки при необходимости */
+}
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: none;/* Отключает масштабирование изображения */
+}
+
+/* Изолированный контейнер для кнопок */
+.button-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Чтобы кнопки оставались кликабельными */
+}
+
+/* Кнопка под Никитосом */
+/* Кнопка под Никитосом (Telegram) */
+/* Кнопка в стиле Telegram */
+.button-nikitos {
+    background-color: #0088cc; /* Синий цвет Telegram */
+    color: white; /* Белый текст */
+    border: none;
+    padding: 20px 40px; /* Увеличиваем размер */
+    font-size: 20px; /* Увеличиваем шрифт */
+    font-family: "Arial", sans-serif;
+    font-weight: bold;
+    border-radius: 30px; /* Закругленные углы */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    width: 250px; /* Ширина кнопки */
+    height: 80px; /* Высота кнопки */
+}
+
+.button-nikitos:hover {
+    background-color: #006699; /* Темный оттенок синего при наведении */
+    transform: scale(1.05); /* Увеличение при наведении */
+}
+
+/* Кнопка в стиле Instagram */
+.button-german {
+    background: linear-gradient(45deg, #833AB4, #E1306C, #F56040, #FFDC80); /* Градиент Instagram */
+    color: white;
+    border: none;
+    padding: 20px 40px; /* Увеличиваем размер */
+    font-size: 20px; /* Увеличиваем шрифт */
+    font-family: "Arial", sans-serif;
+    font-weight: bold;
+    border-radius: 30px; /* Закругленные углы */
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    width: 250px; /* Ширина кнопки */
+    height: 80px; /* Высота кнопки */
+}
+
+.button-german:hover {
+    background: linear-gradient(45deg, #FFDC80, #F56040, #E1306C, #833AB4); /* Инвертируем градиент при наведении */
+    transform: scale(1.05); /* Увеличение при наведении */
+}
+
+/* Кнопка с прозрачным фоном и белым текстом */
+.button-also {
+    background-color: transparent; /* Прозрачный фон */
+    color: white; /* Белый текст */
+    border: 2px solid white; /* Белая рамка */
+    padding: 20px 40px; /* Увеличиваем размер */
+    font-size: 20px; /* Увеличиваем шрифт */
+    font-family: "Arial", sans-serif;
+    font-weight: bold;
+    border-radius: 30px; /* Закругленные углы */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    width: 250px; /* Ширина кнопки */
+    height: 80px; /* Высота кнопки */
+}
+
+.button-also:hover {
+    background-color: white; /* Белый фон при наведении */
+    color: black; /* Черный текст при наведении */
+    transform: scale(1.05); /* Увеличение при наведении */
+}
+
+/* Яркая праздничная кнопка */
+.button-party {
+    background: linear-gradient(45deg, #FF0000, #000000); /* Радужный градиент */
+    color: white;
+    border: none;
+    padding: 20px 40px; /* Увеличиваем размер */
+    font-size: 20px; /* Увеличиваем шрифт */
+    font-family: "Arial", sans-serif;
+    font-weight: bold;
+    border-radius: 30px; /* Закругленные углы */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    width: 250px; /* Ширина кнопки */
+    height: 80px; /* Высота кнопки */
+}
+
+.button-party:hover {
+    transform: scale(1.05); /* Увеличение при наведении */
+}
