@@ -1,4 +1,12 @@
 /* Общие стили */
+html {
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -18,8 +26,12 @@ body {
 /* Медиа-запросы для мобильных устройств */
 @media screen and (max-width: 1700px) {
     html {
-        zoom: 0.8;
+        zoom: 0.9;
         background-color: black;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        overflow-x: hidden;
     }
     
     body {
@@ -31,7 +43,7 @@ body {
 /* Специальный масштаб для широких экранов мобильных устройств */
 @media screen and (min-width: 414px) and (max-width: 428px) {
     html {
-        zoom: 0.75;
+        zoom: 0.85;
     }
 }
 
