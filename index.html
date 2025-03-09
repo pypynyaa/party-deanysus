@@ -2,51 +2,88 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=1700, initial-scale=0.3, minimum-scale=0.3, maximum-scale=2.0, user-scalable=yes">
   <title>Party Dionysus</title>
-  <link rel="stylesheet" href="styles2.css?v=15">
+  <link rel="stylesheet" href="styles2.css?v=16">
 </head>
 <body style="margin: 0; padding: 0; text-align: center; background-color: black;">
 <div class="container">
   <!-- Full Image as Background -->
-  <img src="Desktop - 17.png" alt="Party Dionysus">
+  <img src="Desktop - 17.png" alt="Party Dionysus" style="width: 1700px; height: auto;">
 
   <!-- Buttons for Орги Category -->
-  <div style="position: absolute; top: 116%; left: 57.3%;">
+  <div style="position: absolute; top: 1970px; left: 974px;">
     <button class="button-nikitos" onclick="window.open('https://web.telegram.org/k/#@two_nn', '_blank')">Узнать больше</button>
   </div>
 
-  <div style="position: absolute; top: 171%; left: 11.5%;">
+  <div style="position: absolute; top: 2910px; left: 195px;">
     <button class="button-german" onclick="window.open('https://www.instagram.com/xssantty?igsh=MXIxY3lncHB0Y3Nlaw%3D%3D&utm_source=qr', '_blank')">Узнать больше</button>
   </div>
 
-  <div style="position: absolute; top: 347%; left: 14.6%;">
+  <div style="position: absolute; top: 5900px; left: 248px;">
     <button class="button-also" onclick="window.open('https://vk.com/video807566_169118280', '_blank')">Еще</button>
   </div>
 
-  <div style="position: absolute; top: 452%; left: 50%; transform: translateX(-50%);">
+  <div style="position: absolute; top: 7690px; left: 50%; transform: translateX(-50%);">
     <button class="button-party" onclick="window.location.href='test.html'">Хочу на тусу!</button>
   </div>
 </div>
 <script>
-// Устанавливаем масштаб в зависимости от устройства
-function setInitialScale() {
-    const container = document.querySelector('.container');
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-    const imageWidth = 1700;
+// Определяем браузер и устройство
+function getBrowser() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobile = /iphone|ipod|android/.test(userAgent);
     
-    // Рассчитываем оптимальный масштаб
-    const scale = screenWidth / imageWidth;
-    
-    // Применяем масштаб к контейнеру
-    container.style.transform = `scale(${scale})`;
-    container.style.transformOrigin = 'top center';
+    if (userAgent.indexOf('chrome') > -1) {
+        return 'chrome';
+    } else if (userAgent.indexOf('safari') > -1) {
+        return isMobile ? 'mobile-safari' : 'safari';
+    } else {
+        return 'other';
+    }
 }
 
-// Вызываем функцию при загрузке страницы и при изменении размера окна
+// Устанавливаем масштаб в зависимости от устройства и браузера
+function setInitialScale() {
+    const screenWidth = window.screen.width;
+    const browser = getBrowser();
+    let scale = 0.3; // значение по умолчанию
+
+    // Настройки для разных браузеров
+    switch(browser) {
+        case 'chrome':
+            scale = 0.35;
+            if (screenWidth >= 414 && screenWidth <= 428) {
+                scale = 0.32;
+            }
+            break;
+        case 'mobile-safari':
+            scale = 0.25;
+            if (screenWidth >= 414 && screenWidth <= 428) {
+                scale = 0.23;
+            }
+            break;
+        case 'safari':
+            scale = 0.33;
+            if (screenWidth >= 414 && screenWidth <= 428) {
+                scale = 0.3;
+            }
+            break;
+        default:
+            scale = 0.3;
+            if (screenWidth >= 414 && screenWidth <= 428) {
+                scale = 0.28;
+            }
+    }
+
+    // Устанавливаем viewport
+    document.querySelector('meta[name="viewport"]').setAttribute('content', 
+        `width=1700, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=2.0, user-scalable=yes`);
+}
+
+// Вызываем функцию при загрузке страницы и при изменении ориентации
 window.onload = setInitialScale;
-window.onresize = setInitialScale;
+window.addEventListener('orientationchange', setInitialScale);
 </script>
 </body>
 </html>
