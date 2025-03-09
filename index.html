@@ -58,9 +58,9 @@ function setInitialScale() {
             }
             break;
         case 'mobile-safari':
-            scale = 0.25;
+            scale = 0.27; // увеличиваем для мобильного Safari
             if (screenWidth >= 414 && screenWidth <= 428) {
-                scale = 0.23;
+                scale = 0.245; // точная настройка для iPhone
             }
             break;
         case 'safari':
@@ -76,7 +76,7 @@ function setInitialScale() {
             }
     }
 
-    // Устанавливаем viewport
+    // Устанавливаем viewport с точным масштабом
     document.querySelector('meta[name="viewport"]').setAttribute('content', 
         `width=1700, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=2.0, user-scalable=yes`);
 }
