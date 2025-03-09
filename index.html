@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1700, initial-scale=0.3, minimum-scale=0.3, maximum-scale=2.0, user-scalable=yes">
   <title>Party Dionysus</title>
-  <link rel="stylesheet" href="styles2.css?v=12">
+  <link rel="stylesheet" href="styles2.css?v=13">
 </head>
 <body style="margin: 0; padding: 0; text-align: center; background-color: black;">
 <div class="container">
@@ -29,19 +29,49 @@
   </div>
 </div>
 <script>
-// Устанавливаем масштаб в зависимости от устройства
+// Определяем браузер
+function getBrowser() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    
+    if (userAgent.indexOf('chrome') > -1) {
+        return 'chrome';
+    } else if (userAgent.indexOf('safari') > -1) {
+        return 'safari';
+    } else {
+        return 'other';
+    }
+}
+
+// Устанавливаем масштаб в зависимости от устройства и браузера
 function setInitialScale() {
     const screenWidth = window.screen.width;
-    let scale = 0.3; // стандартное значение для всех устройств
+    const browser = getBrowser();
+    let scale = 0.3; // значение по умолчанию
 
-    // Для iPhone 11 и других широких экранов немного уменьшаем масштаб
-    if (screenWidth >= 414 && screenWidth <= 428) {
-        scale = 0.28;
+    // Настройки для разных браузеров
+    if (browser === 'chrome') {
+        scale = 0.35; // больше для Chrome
+        if (screenWidth >= 414 && screenWidth <= 428) {
+            scale = 0.32;
+        }
+    } else if (browser === 'safari') {
+        scale = 0.33; // среднее значение для Safari
+        if (screenWidth >= 414 && screenWidth <= 428) {
+            scale = 0.3;
+        }
+    } else {
+        // Для других браузеров (включая Telegram)
+        scale = 0.3;
+        if (screenWidth >= 414 && screenWidth <= 428) {
+            scale = 0.28;
+        }
     }
 
+    // Устанавливаем viewport
     document.querySelector('meta[name="viewport"]').setAttribute('content', 
         `width=1700, initial-scale=${scale}, minimum-scale=${scale}, maximum-scale=2.0, user-scalable=yes`);
 }
+
 // Вызываем функцию при загрузке страницы
 window.onload = setInitialScale;
 </script>
