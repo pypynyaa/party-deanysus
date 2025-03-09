@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Чат поддержки - Party Dionysus</title>
+  <link rel="stylesheet" href="registration.css">
+  <style>
+    .chat-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 40px auto;
+      background: var(--background-color);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .chat-header {
+      padding: 20px;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .chat-messages {
+      padding: 20px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .chat-input {
+      padding: 20px;
+      border-top: 1px solid var(--input-border);
+    }
+
+    .chat-input input {
+      width: calc(100% - 120px);
+      margin-right: 10px;
+    }
+
+    .chat-input button {
+      width: 100px;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="video-background">
+    <video autoplay muted loop playsinline id="bgVideo">
+      <source src="фонтоп.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <button class="back-button" onclick="window.location.href='registration.html'">← Назад</button>
+
+  <div class="container">
+    <div class="chat-container">
+      <div class="chat-header">
+        Чат поддержки
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="message system">Задайте ваш вопрос</div>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="messageInput" placeholder="Введите сообщение...">
+        <button onclick="sendMessage()">Отправить</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const chatMessages = document.getElementById('chatMessages');
+    const messageInput = document.getElementById('messageInput');
+
+    function sendMessage() {
+      const message = messageInput.value.trim();
+      if (!message) return;
+
+      // Добавляем сообщение пользователя
+      const userMessageDiv = document.createElement('div');
+      userMessageDiv.className = 'message user';
+      userMessageDiv.textContent = message;
+      chatMessages.appendChild(userMessageDiv);
+
+      // Добавляем ответ системы
+      const systemMessageDiv = document.createElement('div');
+      systemMessageDiv.className = 'message system';
+      systemMessageDiv.textContent = 'пока';
+      chatMessages.appendChild(systemMessageDiv);
+
+      // Очищаем поле ввода
+      messageInput.value = '';
+
+      // Прокручиваем чат вниз
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // Перенаправляем на видео после небольшой задержки
+      setTimeout(() => {
+        window.open('https://vk.com/video-28878216_166290347', '_blank');
+      }, 500);
+    }
+
+    messageInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html> 
