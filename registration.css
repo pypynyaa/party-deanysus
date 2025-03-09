@@ -243,8 +243,8 @@ textarea:focus {
 .activity-card {
     background: var(--input-background);
     border: 2px solid var(--input-border);
-    border-radius: 20px;
-    padding: 15px;
+    border-radius: 25px;
+    padding: 12px;
     text-align: center;
     transition: all 0.3s ease;
     height: 250px;
@@ -252,30 +252,35 @@ textarea:focus {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    position: relative;
 }
 
 .activity-card img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-radius: 16px;
-    transition: all 0.3s ease;
+    border-radius: 20px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 5px;
 }
 
 .activity-option input[type="checkbox"]:checked + .activity-card {
     border-color: var(--primary-color);
     background: rgba(255, 107, 107, 0.1);
     transform: translateY(-5px);
+    padding: 0;
 }
 
 .activity-option input[type="checkbox"]:checked + .activity-card img {
-    transform: scale(1.15);
-    border-radius: 0;
+    transform: scale(1.2);
+    border-radius: 25px;
+    padding: 0;
 }
 
 .activity-option:hover .activity-card {
     border-color: var(--primary-color);
     transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.2);
 }
 
 .other-activities {
@@ -475,12 +480,14 @@ textarea:focus {
     }
 
     .activity-card {
-        height: 200px;
+        height: 220px;
+        padding: 10px;
     }
 
     .activity-card img {
-        width: 140px;
-        height: 140px;
+        width: 100%;
+        height: 100%;
+        border-radius: 18px;
     }
 
     .other-activities {
