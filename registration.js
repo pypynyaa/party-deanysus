@@ -1,15 +1,16 @@
 // Объявляем переменную db глобально
 let db;
 
-// Инициализация базы данных после загрузки DOM
+// Получение объекта базы данных после загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
     try {
+        // Firebase уже инициализирован в HTML
         db = firebase.firestore();
-        console.log('Firebase успешно инициализирован');
+        console.log('База данных успешно подключена');
         // Загружаем существующую регистрацию после инициализации базы данных
         loadExistingRegistration();
     } catch (error) {
-        console.error('Ошибка инициализации Firebase:', error);
+        console.error('Ошибка подключения к базе данных:', error);
         alert('Ошибка подключения к базе данных. Пожалуйста, обратитесь к администратору.');
     }
 });
