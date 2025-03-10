@@ -1,45 +1,77 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+require 'vendor/autoload.php';
 
-// Подключение к базе данных (MySQL) - ЗАМЕНИТЕ ЭТИ ДАННЫЕ НА ВАШИ!
-$host = 'localhost';
-$dbname = 'your_database_name';
-$user = 'your_username';
-$password = 'your_password';
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Google\Cloud\Firestore\FirestoreClient;
 
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    echo "Ошибка подключения к базе данных: " . $e->getMessage();
-    exit();
+// Инициализация Firestore
+$firestore = new FirestoreClient([
+    'projectId' => 'party-registration-web',
+    'keyFilePath' => 'path/to/your/service-account-key.json'
+]);
+
+// Создаем новый Excel документ
+$spreadsheet = new Spreadsheet();
+$sheet = $spreadsheet->getActiveSheet();
+
+// Заголовки столбцов
+$headers = [
+    'ФИО', 'Телефон', 'Telegram', 'Оплата', 'Транспорт', 'Права', 
+    'Активности', 'Баня', 'Прятки', 'Статус', 'Музыка',
+    'Оборудование', 'Предпочтения по еде', 'Дата регистрации'
+];
+
+// Записываем заголовки
+foreach ($headers as $columnIndex => $header) {
+    $sheet->setCellValueByColumnAndRow($columnIndex + 1, 1, $header);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $fullName = $_POST['fullName'];
-    $phoneNumber = $_POST['phoneNumber'];
-    $telegramLink = $_POST['telegramLink'];
-    $moneySent = ($_POST['moneySent'] === 'Да') ? 1 : 0;
-    $hasLicense = ($_POST['hasLicense'] === 'Да') ? 1 : 0;
-    $foodPreferences = $_POST['foodPreferences'];
-    $musicPreferences = $_POST['musicPreferences'];
-    $sports = implode(', ', $_POST['sport']);
-    $sauna = ($_POST['sauna'] === 'Да') ? 1 : 0;
+// Получаем данные из Firestore
+$registrations = $firestore->collection('registrations')->documents();
+$row = 2;
 
-    try {
-        $stmt = $conn->prepare("INSERT INTO users (fullName, phoneNumber, telegramLink, moneySent, hasLicense, foodPreferences, musicPreferences, sports, sauna) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$fullName, $phoneNumber, $telegramLink, $moneySent, $hasLicense, $foodPreferences, $musicPreferences, $sports, $sauna]);
-        echo "Данные успешно сохранены в базу данных.";
-    } catch(PDOException $e) {
-        echo "Ошибка сохранения данных в базу данных: " . $e->getMessage();
-    }
-} else {
-    http_response_code(405);
-    echo "Метод не поддерживается";
+foreach ($registrations as $registration) {
+    $data = $registration->data();
+    
+    // Форматируем данные
+    $activities = isset($data['activities']) ? implode(', ', $data['activities']) : '';
+    $musicLinks = isset($data['musicLinks']) ? implode(', ', $data['musicLinks']) : '';
+    $timestamp = isset($data['timestamp']) ? $data['timestamp']->get()->format('Y-m-d H:i:s') : '';
+    
+    // Записываем данные в строку
+    $sheet->setCellValueByColumnAndRow(1, $row, $data['fullName'] ?? '');
+    $sheet->setCellValueByColumnAndRow(2, $row, $data['phone'] ?? '');
+    $sheet->setCellValueByColumnAndRow(3, $row, $data['telegram'] ?? '');
+    $sheet->setCellValueByColumnAndRow(4, $row, $data['paymentDone'] ? 'Да' : 'Нет');
+    $sheet->setCellValueByColumnAndRow(5, $row, $data['transport'] ?? '');
+    $sheet->setCellValueByColumnAndRow(6, $row, $data['hasLicense'] ? 'Да' : 'Нет');
+    $sheet->setCellValueByColumnAndRow(7, $row, $activities);
+    $sheet->setCellValueByColumnAndRow(8, $row, $data['sauna'] ? 'Да' : 'Нет');
+    $sheet->setCellValueByColumnAndRow(9, $row, $data['hideAndSeek'] ? 'Да' : 'Нет');
+    $sheet->setCellValueByColumnAndRow(10, $row, $data['relationship'] ?? '');
+    $sheet->setCellValueByColumnAndRow(11, $row, $musicLinks);
+    $sheet->setCellValueByColumnAndRow(12, $row, $data['camera'] ?? '');
+    $sheet->setCellValueByColumnAndRow(13, $row, $data['foodPreferences'] ?? '');
+    $sheet->setCellValueByColumnAndRow(14, $row, $timestamp);
+    
+    $row++;
 }
 
-$conn = null; // Закрываем соединение
+// Автоматическая ширина столбцов
+foreach (range('A', 'N') as $column) {
+    $sheet->getColumnDimension($column)->setAutoSize(true);
+}
+
+// Создаем writer для записи файла
+$writer = new Xlsx($spreadsheet);
+
+// Устанавливаем заголовки для скачивания
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Disposition: attachment;filename="registrations.xlsx"');
+header('Cache-Control: max-age=0');
+
+// Сохраняем файл
+$writer->save('php://output');
 ?>
 

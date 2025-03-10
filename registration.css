@@ -120,6 +120,14 @@ h2::after {
     grid-column: 1 / -1;
 }
 
+/* Стили для селекта статуса */
+#relationship {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    display: block;
+}
+
 .form-group {
     margin-bottom: 20px;
     position: relative;
