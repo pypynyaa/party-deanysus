@@ -1069,22 +1069,25 @@ input[type="file"] {
 }
 
 .add-music-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+    width: auto;
+    height: 40px;
+    border-radius: 20px;
     border: none;
-    background: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     color: #fff;
-    font-size: 20px;
+    font-size: 16px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    padding: 0 20px;
+    margin-top: 10px;
 }
 
 .add-music-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
 }
 
 .remove-music-btn {

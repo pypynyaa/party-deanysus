@@ -289,7 +289,12 @@ function addMusicLink() {
     
     container.appendChild(input);
     container.appendChild(removeBtn);
+    
+    const musicLinks = document.getElementById('musicLinks');
     musicLinks.appendChild(container);
+    
+    // Фокусируемся на новом поле ввода
+    input.focus();
 }
 
 // Обновляем обработчик отправки формы
@@ -544,4 +549,21 @@ async function copyCardNumber() {
         console.error('Ошибка при копировании:', err);
         alert('Не удалось скопировать номер карты. Пожалуйста, скопируйте вручную.');
     }
-} 
+}
+
+// Обновляем обработчик для кнопки добавления музыкальных ссылок
+document.addEventListener('DOMContentLoaded', function() {
+    const musicLinks = document.getElementById('musicLinks');
+    if (musicLinks) {
+        // Добавляем обработчик для первой кнопки удаления
+        const firstRemoveBtn = musicLinks.querySelector('.remove-music-btn');
+        if (firstRemoveBtn) {
+            firstRemoveBtn.onclick = function() {
+                const container = this.parentElement;
+                if (musicLinks.querySelectorAll('.music-link-container').length > 1) {
+                    container.remove();
+                }
+            };
+        }
+    }
+}); 
