@@ -1,0 +1,6 @@
+{
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.29",
+        "google/cloud-firestore": "^1.37"
+    }
+} 
