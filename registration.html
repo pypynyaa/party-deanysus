@@ -21,31 +21,38 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      z-index: 1000;
+      z-index: 9999;
       background: rgba(0, 0, 0, 0.7);
       color: white;
       border: none;
-      padding: 8px 15px;
-      border-radius: 15px;
+      padding: 12px 25px;
+      border-radius: 20px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 18px;
       transition: all 0.3s ease;
       width: auto;
       height: auto;
       min-width: 0;
       min-height: 0;
-      max-width: 200px;
+      max-width: 250px;
       display: inline-block;
       white-space: nowrap;
       pointer-events: auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
     .music-control:hover {
       background: rgba(0, 0, 0, 0.9);
       transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
   </style>
 </head>
 <body>
+  <audio id="background-music" preload="auto" loop>
+    <source src="chill.mp3" type="audio/mpeg">
+  </audio>
+  <button class="music-control" onclick="toggleMusic()">🎵 Включить музыку</button>
+
   <div class="video-background">
     <video autoplay muted loop playsinline id="bgVideo">
       <source src="фонтоп.mp4" type="video/mp4">
@@ -231,11 +238,6 @@
       <button onclick="sendMessage()">Отправить</button>
     </div>
   </div>
-
-  <audio id="background-music" preload="auto" loop>
-    <source src="chill.mp3" type="audio/mpeg">
-  </audio>
-  <button class="music-control" onclick="toggleMusic()">🎵 Включить музыку</button>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
