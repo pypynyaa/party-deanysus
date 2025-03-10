@@ -499,7 +499,7 @@ if (paymentToggle && paymentInfo) {
         paymentToggle.classList.toggle('active');
         
         // Обновляем текст кнопки
-        const buttonText = paymentToggle.childNodes[0];
+        const buttonText = paymentToggle.querySelector('.button-text');
         buttonText.textContent = isExpanded ? 'Показать реквизиты для оплаты' : 'Скрыть реквизиты';
     });
 
