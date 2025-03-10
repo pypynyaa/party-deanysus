@@ -26,8 +26,7 @@ html, body {
 
 /* Контейнер для фона */
 .background-container {
-    width: 1700px;
-    margin: 0 auto;
+    width: 100%;
     position: relative;
 }
 
@@ -60,27 +59,22 @@ html, body {
 .nikitos-position {
     top: 1970px;
     left: 974px;
-    position: fixed;
 }
 
 .german-position {
     top: 390px;
     left: 195px;
-    position: fixed;
 }
 
 .also-position {
     top: 495px;
     left: 248px;
-    position: fixed;
 }
 
 .party-position {
     top: 3070px;
     left: 50%;
     transform: translateX(-50%);
-    position: fixed;
-    margin-bottom: 100px;
 }
 
 /* Общие стили для кнопок */
