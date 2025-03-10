@@ -16,6 +16,34 @@
   <link rel="preload" as="image" href="chat.jpg">
   
   <link rel="stylesheet" href="registration.css?v=3">
+  <style>
+    .music-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      width: auto;
+      height: auto;
+      min-width: 0;
+      min-height: 0;
+      max-width: 200px;
+      display: inline-block;
+      white-space: nowrap;
+      pointer-events: auto;
+    }
+    .music-control:hover {
+      background: rgba(0, 0, 0, 0.9);
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
   <div class="video-background">
@@ -204,6 +232,11 @@
     </div>
   </div>
 
+  <audio id="background-music" preload="auto" loop>
+    <source src="chill.mp3" type="audio/mpeg">
+  </audio>
+  <button class="music-control" onclick="toggleMusic()">🎵 Включить музыку</button>
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -262,5 +295,6 @@
     };
     document.body.appendChild(script);
   </script>
+  <script src="music.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1700, initial-scale=0.15, maximum-scale=1.0">
   <title>Party Dionysus</title>
-  <link rel="stylesheet" href="styles2.css?v=29">
+  <link rel="stylesheet" href="styles2.css?v=30">
   <style>
     .music-control {
       position: fixed;
@@ -36,8 +36,8 @@
 </head>
 <body>
   <!-- Добавляем аудио элемент -->
-  <audio id="background-music" preload="auto">
-    <source src="Араб.mp3" type="audio/mpeg">
+  <audio id="background-music" preload="auto" loop>
+    <source src="chill.mp3" type="audio/mpeg">
   </audio>
   <button class="music-control" onclick="toggleMusic()">🎵 Включить музыку</button>
   <div class="main-container">
@@ -99,23 +99,6 @@
     </div>
   </div>
   <script src="photos.js"></script>
-  <script>
-    let isPlaying = false;
-    const audio = document.getElementById('background-music');
-    const musicBtn = document.querySelector('.music-control');
-
-    function toggleMusic() {
-      if (isPlaying) {
-        audio.pause();
-        musicBtn.textContent = '🎵 Включить музыку';
-      } else {
-        audio.play().catch(e => console.log('Ошибка воспроизведения:', e));
-        musicBtn.textContent = '🎵 Выключить музыку';
-      }
-      isPlaying = !isPlaying;
-    }
-
-    audio.volume = 0.7; // Устанавливаем громкость на 70%
-  </script>
+  <script src="music.js"></script>
 </body>
 </html>
