@@ -46,16 +46,16 @@
 
         <h2>Оплата</h2>
         <div class="form-group payment-section">
-            <button type="button" class="payment-toggle">
+            <button type="button" class="payment-toggle" aria-expanded="false" aria-controls="paymentInfo">
                 Показать реквизиты для оплаты
                 <span class="icon">▼</span>
             </button>
-            <div class="payment-info">
+            <div id="paymentInfo" class="payment-info">
                 <p class="payment-details">Реквизиты для оплаты:</p>
-                <p class="payment-card" onclick="copyCardNumber()">
-                    5469 4500 1062 9285
-                    <span class="copy-icon">📋</span>
-                </p>
+                <div class="payment-card" onclick="copyCardNumber()" role="button" tabindex="0" aria-label="Нажмите, чтобы скопировать номер карты">
+                    <span class="card-number">5469 4500 1062 9285</span>
+                    <span class="copy-icon" aria-hidden="true">📋</span>
+                </div>
                 <p class="payment-name">Никита Н.</p>
                 <p class="payment-bank">Сбербанк</p>
             </div>

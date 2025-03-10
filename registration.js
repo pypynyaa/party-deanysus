@@ -492,51 +492,56 @@ const paymentInfo = document.querySelector('.payment-info');
 
 if (paymentToggle && paymentInfo) {
     paymentToggle.addEventListener('click', () => {
+        const isExpanded = paymentToggle.getAttribute('aria-expanded') === 'true';
+        paymentToggle.setAttribute('aria-expanded', !isExpanded);
+        
         paymentInfo.classList.toggle('visible');
         paymentToggle.classList.toggle('active');
         
         // Обновляем текст кнопки
         const buttonText = paymentToggle.childNodes[0];
-        if (paymentInfo.classList.contains('visible')) {
-            buttonText.textContent = 'Скрыть реквизиты';
-        } else {
-            buttonText.textContent = 'Показать реквизиты для оплаты';
-        }
+        buttonText.textContent = isExpanded ? 'Показать реквизиты для оплаты' : 'Скрыть реквизиты';
     });
+
+    // Добавляем обработку клавиатуры для карты
+    const paymentCard = document.querySelector('.payment-card');
+    if (paymentCard) {
+        paymentCard.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                copyCardNumber();
+            }
+        });
+    }
 }
 
 // Функция для копирования номера карты
-function copyCardNumber() {
+async function copyCardNumber() {
     const cardNumber = '5469 4500 1062 9285';
     
-    // Создаем временный элемент input
-    const tempInput = document.createElement('input');
-    tempInput.value = cardNumber;
-    document.body.appendChild(tempInput);
-    
-    // Выделяем и копируем текст
-    tempInput.select();
-    document.execCommand('copy');
-    
-    // Удаляем временный элемент
-    document.body.removeChild(tempInput);
-    
-    // Показываем уведомление
-    const notification = document.createElement('div');
-    notification.className = 'copy-notification';
-    notification.textContent = 'Номер карты скопирован!';
-    document.body.appendChild(notification);
-    
-    // Анимируем появление уведомления
-    requestAnimationFrame(() => {
-        notification.classList.add('visible');
-    });
-    
-    // Удаляем уведомление через 2 секунды
-    setTimeout(() => {
-        notification.classList.remove('visible');
+    try {
+        await navigator.clipboard.writeText(cardNumber);
+        
+        // Показываем уведомление
+        const notification = document.createElement('div');
+        notification.className = 'copy-notification';
+        notification.textContent = 'Номер карты скопирован!';
+        document.body.appendChild(notification);
+        
+        // Анимируем появление уведомления
+        requestAnimationFrame(() => {
+            notification.classList.add('visible');
+        });
+        
+        // Удаляем уведомление через 2 секунды
         setTimeout(() => {
-            notification.remove();
-        }, 300);
-    }, 2000);
+            notification.classList.remove('visible');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 2000);
+    } catch (err) {
+        console.error('Ошибка при копировании:', err);
+        alert('Не удалось скопировать номер карты. Пожалуйста, скопируйте вручную.');
+    }
 } 
