@@ -1,90 +1,107 @@
-/* Общие стили */
+/* Сброс стилей и общие настройки */
+:root {
+    --button-height: 80px;
+    --button-width: 250px;
+    --button-border-radius: 30px;
+    --button-font-size: 28px;
+}
+
 html, body {
     margin: 0;
     padding: 0;
-    background-color: black;
-    width: 100vw;
+    width: 100%;
     height: 100%;
-    position: relative;
+    background-color: black;
+    font-family: "Arial", sans-serif;
     overflow-x: hidden;
-    -webkit-text-size-adjust: 100%;
-    -webkit-overflow-scrolling: touch;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
-
-.container {
+/* Основной контейнер */
+.main-container {
+    width: 100%;
+    min-height: 100vh;
     position: relative;
-    width: 1700px;
-    margin: 0 auto;
     overflow: hidden;
-    padding-bottom: 150px;
 }
 
-/* Медиа-запросы для мобильных устройств */
-@media screen and (max-width: 1700px) {
-    html {
-        zoom: 0.85;
-        -webkit-text-size-adjust: none;
-    }
-}
-
-/* Специальный масштаб для широких экранов мобильных устройств */
-@media screen and (min-width: 414px) and (max-width: 428px) {
-    html {
-        zoom: 0.8;
-        -webkit-text-size-adjust: none;
-    }
-}
-
-.background-wrapper {
+/* Контейнер для фона */
+.background-container {
+    width: 100%;
     position: relative;
-    width: 1700px;
 }
 
+/* Фоновое изображение */
 .background-image {
-    width: 1700px;
+    width: 100%;
     height: auto;
     display: block;
 }
 
-.buttons-wrapper {
+/* Оверлей для кнопок */
+.buttons-overlay {
     position: absolute;
     top: 0;
     left: 0;
-    width: 1700px;
+    width: 100%;
     height: 100%;
+    pointer-events: none;
 }
 
-.button-container {
+/* Обертка для кнопок */
+.button-wrapper {
     position: absolute;
-    width: 250px;
+    width: var(--button-width);
+    height: var(--button-height);
+    pointer-events: auto;
 }
 
-/* Стили кнопок */
-.button-nikitos {
-    background-color: #0088cc;
-    color: white;
+/* Позиции кнопок (в процентах от размера контейнера) */
+.nikitos-position {
+    top: 57.35%;
+    left: 57.29%;
+}
+
+.german-position {
+    top: 11.47%;
+    left: 11.47%;
+}
+
+.also-position {
+    top: 14.59%;
+    left: 14.59%;
+}
+
+.party-position {
+    top: 90.47%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Общие стили для кнопок */
+button {
+    width: 100%;
+    height: 100%;
     border: none;
-    padding: 5px 15px;
-    font-size: 28px;
-    font-family: "Arial", sans-serif;
+    border-radius: var(--button-border-radius);
+    font-size: var(--button-font-size);
     font-weight: bold;
-    border-radius: 30px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    width: 250px;
-    height: 80px;
-    line-height: 1;
+    transition: transform 0.3s ease, background-color 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding: 5px 15px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+/* Стили для кнопки Telegram */
+.button-nikitos {
+    background-color: #0088cc;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .button-nikitos:hover {
@@ -92,25 +109,11 @@ body {
     transform: scale(1.05);
 }
 
+/* Стили для кнопки Instagram */
 .button-german {
     background: linear-gradient(45deg, #833AB4, #E1306C, #F56040, #FFDC80);
     color: white;
-    border: none;
-    padding: 5px 15px;
-    font-size: 28px;
-    font-family: "Arial", sans-serif;
-    font-weight: bold;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    width: 250px;
-    height: 80px;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
 }
 
 .button-german:hover {
@@ -118,24 +121,11 @@ body {
     transform: scale(1.05);
 }
 
+/* Стили для кнопки "Еще" */
 .button-also {
     background-color: transparent;
     color: white;
     border: 2px solid white;
-    padding: 5px 15px;
-    font-size: 32px;
-    font-family: "Arial", sans-serif;
-    font-weight: bold;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-    width: 250px;
-    height: 80px;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
 }
 
 .button-also:hover {
@@ -144,60 +134,61 @@ body {
     transform: scale(1.05);
 }
 
+/* Стили для кнопки регистрации */
 .button-party {
     background: linear-gradient(45deg, #FF0000, #000000);
     color: white;
-    border: none;
-    padding: 5px 15px;
-    font-size: 32px;
-    font-family: "Arial", sans-serif;
-    font-weight: bold;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    width: 250px;
-    height: 80px;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
 }
 
 .button-party:hover {
     transform: scale(1.05);
 }
 
-/* Позиционирование кнопок */
-.button-container.nikitos {
-    position: absolute;
-    top: 1970px;
-    left: 974px;
+/* Медиа-запросы для адаптивности */
+@media screen and (max-width: 1700px) {
+    :root {
+        --button-height: 70px;
+        --button-width: 220px;
+        --button-font-size: 24px;
+    }
 }
 
-.button-container.german {
-    position: absolute;
-    top: 2910px;
-    left: 195px;
+@media screen and (max-width: 1200px) {
+    :root {
+        --button-height: 60px;
+        --button-width: 200px;
+        --button-font-size: 22px;
+    }
 }
 
-.button-container.also {
-    position: absolute;
-    top: 5900px;
-    left: 248px;
+@media screen and (max-width: 768px) {
+    :root {
+        --button-height: 50px;
+        --button-width: 180px;
+        --button-font-size: 20px;
+        --button-border-radius: 25px;
+    }
 }
 
-.button-container.party {
-    position: absolute;
-    top: 7690px;
-    left: 50%;
-    transform: translateX(-50%);
+@media screen and (max-width: 480px) {
+    :root {
+        --button-height: 40px;
+        --button-width: 150px;
+        --button-font-size: 16px;
+        --button-border-radius: 20px;
+    }
+    
+    button {
+        padding: 3px 10px;
+    }
 }
 
-img {
-    display: block;
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
+/* Поддержка ориентации экрана */
+@media screen and (orientation: landscape) and (max-height: 600px) {
+    :root {
+        --button-height: 40px;
+        --button-width: 160px;
+        --button-font-size: 18px;
+    }
 }
