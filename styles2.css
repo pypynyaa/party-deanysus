@@ -18,16 +18,16 @@ html, body {
 
 /* Основной контейнер */
 .main-container {
-    width: 100%;
+    width: 1700px;
     min-height: 100vh;
     position: relative;
+    margin: 0 auto;
     overflow: visible;
 }
 
 /* Контейнер для фона */
 .background-container {
-    width: 1700px;
-    margin: 0 auto;
+    width: 100%;
     position: relative;
 }
 
@@ -40,11 +40,10 @@ html, body {
 
 /* Оверлей для кнопок */
 .buttons-overlay {
-    position: fixed;
+    position: absolute;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 1700px;
+    left: 0;
+    width: 100%;
     height: 100%;
     pointer-events: none;
 }
@@ -59,24 +58,32 @@ html, body {
 
 /* Позиции кнопок */
 .nikitos-position {
+    position: absolute;
     top: 1970px;
     left: 974px;
+    z-index: 10;
 }
 
 .german-position {
+    position: absolute;
     top: 390px;
     left: 195px;
+    z-index: 10;
 }
 
 .also-position {
+    position: absolute;
     top: 495px;
     left: 248px;
+    z-index: 10;
 }
 
 .party-position {
+    position: absolute;
     top: 3070px;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 10;
 }
 
 /* Общие стили для кнопок */
@@ -149,10 +156,18 @@ button {
 
 /* Медиа-запросы для адаптивности */
 @media screen and (max-width: 1700px) {
-    :root {
-        --button-height: 70px;
-        --button-width: 220px;
-        --button-font-size: 24px;
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-width: 320px;
+    }
+    
+    .main-container {
+        width: 1700px;
+        transform-origin: top center;
+        transform: scale(calc(100vw / 1700));
+        height: calc(100vh * (1700 / 100vw));
     }
 }
 
