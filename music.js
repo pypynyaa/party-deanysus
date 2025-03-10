@@ -2,33 +2,21 @@
 document.addEventListener('DOMContentLoaded', function() {
     const audio = document.getElementById('background-music');
     const musicBtn = document.querySelector('.music-control');
-    let isPlaying = localStorage.getItem('musicPlaying') === 'true';
+    
+    // Автоматически запускаем музыку
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(error => {
+            console.log('Автовоспроизведение заблокировано:', error);
+        });
+    }
 
-    // Устанавливаем начальное состояние кнопки
+    let isPlaying = true;
     updateButtonState();
-
-    // Восстанавливаем время воспроизведения при загрузке
-    const savedTime = localStorage.getItem('musicTime');
-    if (savedTime) {
-        audio.currentTime = parseFloat(savedTime);
-    }
-
-    // Если музыка должна играть, пытаемся воспроизвести
-    if (isPlaying) {
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.log('Автовоспроизведение заблокировано:', error);
-                isPlaying = false;
-                updateButtonState();
-            });
-        }
-    }
 
     // Обновляем состояние кнопки
     function updateButtonState() {
         musicBtn.textContent = isPlaying ? '🎵 Выключить музыку' : '🎵 Включить музыку';
-        localStorage.setItem('musicPlaying', isPlaying);
     }
 
     // Функция переключения музыки
@@ -46,13 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
         isPlaying = !isPlaying;
         updateButtonState();
     };
-
-    // Сохраняем текущее время воспроизведения каждую секунду
-    setInterval(() => {
-        if (isPlaying) {
-            localStorage.setItem('musicTime', audio.currentTime);
-        }
-    }, 1000);
 
     // Обработка события окончания трека
     audio.addEventListener('ended', function() {
