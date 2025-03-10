@@ -179,40 +179,47 @@
   
   <!-- Инициализация Firebase -->
   <script>
-    // Проверяем, что все необходимые компоненты Firebase загружены
-    if (typeof firebase === 'undefined') {
-      console.error('Firebase SDK не загружен');
-    } else {
-      console.log('Firebase SDK успешно загружен');
-    }
+    // Глобальная функция для инициализации базы данных
+    window.initializeFirebase = function() {
+      return new Promise((resolve, reject) => {
+        try {
+          // Проверяем, что все необходимые компоненты Firebase загружены
+          if (typeof firebase === 'undefined') {
+            reject(new Error('Firebase SDK не загружен'));
+            return;
+          }
+          console.log('Firebase SDK успешно загружен');
 
-    // Конфигурация Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
-      authDomain: "party-registration-web.firebaseapp.com",
-      projectId: "party-registration-web",
-      storageBucket: "party-registration-web.firebasestorage.app",
-      messagingSenderId: "437696239321",
-      appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8",
-      measurementId: "G-FBKQXVRD0D"
+          // Конфигурация Firebase
+          const firebaseConfig = {
+            apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
+            authDomain: "party-registration-web.firebaseapp.com",
+            projectId: "party-registration-web",
+            storageBucket: "party-registration-web.firebasestorage.app",
+            messagingSenderId: "437696239321",
+            appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8",
+            measurementId: "G-FBKQXVRD0D"
+          };
+
+          // Инициализация Firebase
+          firebase.initializeApp(firebaseConfig);
+          console.log('Firebase успешно инициализирован');
+
+          // Проверяем доступность Firestore
+          if (firebase.firestore) {
+            console.log('Firestore доступен');
+            resolve(firebase.firestore());
+          } else {
+            reject(new Error('Firestore не доступен'));
+          }
+        } catch (error) {
+          console.error('Ошибка при инициализации Firebase:', error);
+          reject(error);
+        }
+      });
     };
-
-    try {
-      // Инициализация Firebase
-      firebase.initializeApp(firebaseConfig);
-      console.log('Firebase успешно инициализирован');
-
-      // Проверяем доступность Firestore
-      if (firebase.firestore) {
-        console.log('Firestore доступен');
-      } else {
-        console.error('Firestore не доступен');
-      }
-    } catch (error) {
-      console.error('Ошибка при инициализации Firebase:', error);
-    }
     
-    // Загружаем основной скрипт только после инициализации Firebase
+    // Загружаем основной скрипт
     const script = document.createElement('script');
     script.src = 'registration.js';
     script.onerror = function() {
