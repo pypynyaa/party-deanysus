@@ -1,15 +1,4 @@
 // Инициализация Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
-    authDomain: "party-registration-web.firebaseapp.com",
-    projectId: "party-registration-web",
-    storageBucket: "party-registration-web.firebasestorage.app",
-    messagingSenderId: "437696239321",
-    appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8",
-    measurementId: "G-FBKQXVRD0D"
-};
-
-// Инициализация Firebase
 let db;
 try {
     firebase.initializeApp(firebaseConfig);
@@ -35,6 +24,9 @@ const licenseGroup = document.querySelector('.license-group');
 
 // Обработка показа/скрытия поля для загрузки скриншота
 if (paymentCheckbox && paymentProofDiv) {
+    // Проверяем начальное состояние
+    paymentProofDiv.classList.toggle('hidden', !paymentCheckbox.checked);
+    
     paymentCheckbox.addEventListener('change', () => {
         paymentProofDiv.classList.toggle('hidden', !paymentCheckbox.checked);
         if (!paymentCheckbox.checked) {
