@@ -4,9 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1700, initial-scale=0.15, maximum-scale=1.0">
   <title>Party Dionysus</title>
-  <link rel="stylesheet" href="styles2.css?v=26">
+  <link rel="stylesheet" href="styles2.css?v=27">
 </head>
 <body>
+  <!-- Добавляем аудио элемент -->
+  <audio id="background-music" autoplay loop>
+    <source src="Араб.mp3" type="audio/mpeg">
+  </audio>
   <div class="main-container">
     <div class="background-container">
       <img src="Desktop - 17.png" alt="Party Dionysus" class="background-image">
@@ -66,5 +70,13 @@
     </div>
   </div>
   <script src="photos.js"></script>
+  <script>
+    document.addEventListener('click', function() {
+      const audio = document.getElementById('background-music');
+      if (audio.paused) {
+        audio.play();
+      }
+    }, { once: true });
+  </script>
 </body>
 </html>
