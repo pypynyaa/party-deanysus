@@ -290,9 +290,14 @@ function addMusicLink() {
     container.style.transform = 'translateY(20px)';
     
     container.appendChild(input);
-    container.appendChild(removeBtn);
     
+    // Добавляем кнопку удаления только если это не первый трек
     const musicLinks = document.getElementById('musicLinks');
+    const isFirstTrack = musicLinks.children.length === 0;
+    if (!isFirstTrack) {
+        container.appendChild(removeBtn);
+    }
+    
     musicLinks.appendChild(container);
     
     // Запускаем анимацию появления
@@ -304,11 +309,9 @@ function addMusicLink() {
     
     // Добавляем обработчик для удаления
     removeBtn.onclick = function() {
-        if (musicLinks.querySelectorAll('.music-link-container').length > 1) {
-            container.style.opacity = '0';
-            container.style.transform = 'translateY(20px)';
-            setTimeout(() => container.remove(), 300);
-        }
+        container.style.opacity = '0';
+        container.style.transform = 'translateY(20px)';
+        setTimeout(() => container.remove(), 300);
     };
     
     // Фокусируемся на новом поле ввода
@@ -573,15 +576,13 @@ async function copyCardNumber() {
 document.addEventListener('DOMContentLoaded', function() {
     const musicLinks = document.getElementById('musicLinks');
     if (musicLinks) {
-        // Добавляем обработчик для первой кнопки удаления
-        const firstRemoveBtn = musicLinks.querySelector('.remove-music-btn');
-        if (firstRemoveBtn) {
-            firstRemoveBtn.onclick = function() {
-                const container = this.parentElement;
-                if (musicLinks.querySelectorAll('.music-link-container').length > 1) {
-                    container.remove();
-                }
-            };
+        // Удаляем кнопку удаления с первого трека
+        const firstContainer = musicLinks.querySelector('.music-link-container');
+        if (firstContainer) {
+            const removeBtn = firstContainer.querySelector('.remove-music-btn');
+            if (removeBtn) {
+                removeBtn.remove();
+            }
         }
     }
 }); 
