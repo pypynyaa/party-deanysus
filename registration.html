@@ -46,6 +46,12 @@
 
         <h2>Оплата</h2>
         <div class="form-group payment-section">
+          <div class="payment-info">
+            <p class="payment-details">Реквизиты для оплаты:</p>
+            <p class="payment-card">5469 4500 1062 9285</p>
+            <p class="payment-name">Никита Н.</p>
+            <p class="payment-bank">Сбербанк</p>
+          </div>
           <label class="checkbox-label">
             <input type="checkbox" id="paymentDone" name="paymentDone">
             <span>Я оплатил участие</span>
@@ -141,8 +147,23 @@
               <option value="relationship">Есть вторая половинка</option>
             </select>
           </div>
-          <div class="form-group">
-            <input type="text" id="music" name="music" placeholder="Ссылка на трек в Яндекс.Музыке">
+          <div class="form-group full-width">
+            <div id="musicLinks" class="music-links">
+              <div class="music-link-container">
+                <input type="text" class="music-input" name="music[]" placeholder="Ссылка на трек в Яндекс.Музыке">
+                <button type="button" class="add-music-btn">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group full-width">
+            <select id="camera" name="camera" required>
+              <option value="">Есть ли у вас фото/видео оборудование?</option>
+              <option value="none">Нет оборудования</option>
+              <option value="phone">Телефон с хорошей камерой</option>
+              <option value="photo">Фотоаппарат</option>
+              <option value="video">Видеокамера</option>
+              <option value="both">И фото, и видео оборудование</option>
+            </select>
           </div>
           <div class="form-group full-width">
             <textarea id="foodPreferences" name="foodPreferences" placeholder="Предпочтения по еде (аллергии, вегетарианство и т.д.)"></textarea>

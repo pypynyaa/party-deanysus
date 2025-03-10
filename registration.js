@@ -47,6 +47,7 @@ const previewImage = document.getElementById('previewImage');
 const fileUploadLabel = document.querySelector('.file-upload-label');
 const transportOptions = document.querySelectorAll('input[name="transport"]');
 const licenseGroup = document.querySelector('.license-group');
+const musicLinks = document.getElementById('musicLinks');
 
 // Обработка показа/скрытия поля для загрузки скриншота
 if (paymentCheckbox && paymentProofDiv) {
@@ -262,6 +263,35 @@ function animateSubmitButton(button, isLoading) {
     }
 }
 
+// Добавляем обработчик для добавления новых полей для музыкальных ссылок
+if (musicLinks) {
+    document.querySelector('.add-music-btn').addEventListener('click', addMusicLink);
+}
+
+// Функция для добавления нового поля для музыкальной ссылки
+function addMusicLink() {
+    const container = document.createElement('div');
+    container.className = 'music-link-container';
+    
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'music-input';
+    input.name = 'music[]';
+    input.placeholder = 'Ссылка на трек в Яндекс.Музыке';
+    
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'remove-music-btn';
+    removeBtn.textContent = '×';
+    removeBtn.onclick = function() {
+        container.remove();
+    };
+    
+    container.appendChild(input);
+    container.appendChild(removeBtn);
+    musicLinks.appendChild(container);
+}
+
 // Обновляем обработчик отправки формы
 if (form) {
     form.addEventListener('submit', async (e) => {
@@ -303,7 +333,8 @@ if (form) {
                 hideAndSeek: formData.get('hideAndSeek') === 'on',
                 relationship: formData.get('relationship'),
                 foodPreferences: formData.get('foodPreferences'),
-                music: formData.get('music'),
+                camera: formData.get('camera'),
+                musicLinks: Array.from(document.querySelectorAll('.music-input')).map(input => input.value).filter(Boolean),
                 lastUpdated: new Date().toISOString()
             };
 
@@ -375,7 +406,7 @@ async function loadExistingRegistration() {
             form.elements['hasLicense'].checked = data.hasLicense || false;
             form.elements['relationship'].value = data.relationship || '';
             form.elements['foodPreferences'].value = data.foodPreferences || '';
-            form.elements['music'].value = data.music || '';
+            form.elements['camera'].value = data.camera || '';
             
             // Отмечаем выбранные активности
             if (data.activities) {
@@ -393,6 +424,48 @@ async function loadExistingRegistration() {
                 fileNameSpan.textContent = data.paymentProofFilename || 'Фото оплаты загружено';
                 deleteFileBtn.classList.remove('hidden');
                 fileUploadLabel.classList.add('file-selected');
+            }
+
+            // Загружаем музыкальные ссылки
+            if (data.musicLinks && data.musicLinks.length > 0) {
+                // Удаляем пустое поле по умолчанию
+                musicLinks.innerHTML = '';
+                
+                data.musicLinks.forEach(link => {
+                    const container = document.createElement('div');
+                    container.className = 'music-link-container';
+                    
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'music-input';
+                    input.name = 'music[]';
+                    input.value = link;
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.className = 'remove-music-btn';
+                    removeBtn.textContent = '×';
+                    removeBtn.onclick = function() {
+                        container.remove();
+                    };
+                    
+                    container.appendChild(input);
+                    container.appendChild(removeBtn);
+                    musicLinks.appendChild(container);
+                });
+                
+                // Добавляем кнопку для добавления новых ссылок
+                const addContainer = document.createElement('div');
+                addContainer.className = 'music-link-container';
+                
+                const addBtn = document.createElement('button');
+                addBtn.type = 'button';
+                addBtn.className = 'add-music-btn';
+                addBtn.textContent = '+';
+                addBtn.onclick = addMusicLink;
+                
+                addContainer.appendChild(addBtn);
+                musicLinks.appendChild(addContainer);
             }
         }
     } catch (error) {

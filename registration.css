@@ -900,4 +900,97 @@ input[type="file"] {
 .file-upload-label.file-selected {
     background: var(--secondary-color);
     box-shadow: 0 2px 8px rgba(78, 205, 196, 0.3);
+}
+
+.payment-info {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.payment-details {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.payment-card {
+    font-size: 24px;
+    color: #fff;
+    font-weight: bold;
+    margin: 5px 0;
+    letter-spacing: 2px;
+}
+
+.payment-name, .payment-bank {
+    color: #fff;
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.music-links {
+    width: 100%;
+}
+
+.music-link-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.music-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.music-input:focus {
+    border-color: #fff;
+    outline: none;
+}
+
+.add-music-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.add-music-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.remove-music-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 0, 0, 0.2);
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.remove-music-btn:hover {
+    background: rgba(255, 0, 0, 0.3);
 } 
