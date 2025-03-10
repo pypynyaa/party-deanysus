@@ -217,7 +217,7 @@ button {
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
     position: relative;
     z-index: 2;
-    margin-top: -960px;
+    margin-top: -1460px;
 }
 
 .photo-grid {
