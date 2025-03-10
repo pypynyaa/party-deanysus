@@ -315,24 +315,42 @@ button {
 
 @media screen and (max-width: 768px) {
     .photos-section {
-        padding: 30px 15px;
+        padding: 20px 10px;
+        margin-top: -1960px;
     }
     
     .photo-grid {
-        gap: 12px;
-        padding: 8px;
-        max-width: 600px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    .photo-item {
+        border-radius: 10px;
+    }
+
+    .photo-image {
+        filter: blur(3px) brightness(0.85);
     }
 }
 
 @media screen and (max-width: 480px) {
     .photo-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        max-width: 480px;
+        gap: 8px;
+        padding: 5px;
     }
     
     .photos-section {
-        padding: 20px 10px;
+        padding: 15px 5px;
+    }
+
+    .photo-item {
+        border-radius: 8px;
+    }
+
+    .photo-image {
+        filter: blur(2px) brightness(0.9);
     }
 }
