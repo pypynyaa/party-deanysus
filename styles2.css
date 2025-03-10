@@ -18,10 +18,11 @@ html, body {
 
 /* Основной контейнер */
 .main-container {
-    width: 100%;
+    width: 1700px;
     min-height: 100vh;
     position: relative;
-    overflow: hidden;
+    margin: 0 auto;
+    overflow: visible;
 }
 
 /* Контейнер для фона */
@@ -57,24 +58,32 @@ html, body {
 
 /* Позиции кнопок */
 .nikitos-position {
+    position: absolute;
     top: 1970px;
     left: 974px;
+    z-index: 10;
 }
 
 .german-position {
+    position: absolute;
     top: 390px;
     left: 195px;
+    z-index: 10;
 }
 
 .also-position {
+    position: absolute;
     top: 495px;
     left: 248px;
+    z-index: 10;
 }
 
 .party-position {
+    position: absolute;
     top: 3070px;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 10;
 }
 
 /* Общие стили для кнопок */
@@ -195,6 +204,7 @@ button {
 
 /* Стили для секции с фотографиями */
 .photos-section {
+    width: 100%;
     padding: 40px 20px;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
     position: relative;
