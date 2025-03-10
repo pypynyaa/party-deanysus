@@ -2,37 +2,24 @@
 document.addEventListener('DOMContentLoaded', function() {
     const audio = document.getElementById('background-music');
     const musicBtn = document.querySelector('.music-control');
-    
-    // Автоматически запускаем музыку
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-        playPromise.catch(error => {
-            console.log('Автовоспроизведение заблокировано:', error);
-        });
-    }
-
-    let isPlaying = true;
-    updateButtonState();
-
-    // Обновляем состояние кнопки
-    function updateButtonState() {
-        musicBtn.textContent = isPlaying ? '🎵 Выключить музыку' : '🎵 Включить музыку';
-    }
+    let isPlaying = false;
 
     // Функция переключения музыки
     window.toggleMusic = function() {
         if (isPlaying) {
             audio.pause();
+            musicBtn.classList.remove('playing');
         } else {
             const playPromise = audio.play();
             if (playPromise !== undefined) {
-                playPromise.catch(error => {
+                playPromise.then(() => {
+                    musicBtn.classList.add('playing');
+                }).catch(error => {
                     console.log('Ошибка воспроизведения:', error);
                 });
             }
         }
         isPlaying = !isPlaying;
-        updateButtonState();
     };
 
     // Обработка события окончания трека
