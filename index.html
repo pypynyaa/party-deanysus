@@ -4,13 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=1700, initial-scale=0.15, maximum-scale=1.0">
   <title>Party Dionysus</title>
-  <link rel="stylesheet" href="styles2.css?v=27">
+  <link rel="stylesheet" href="styles2.css?v=28">
+  <style>
+    .music-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    .music-control:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+  </style>
 </head>
 <body>
   <!-- Добавляем аудио элемент -->
-  <audio id="background-music" autoplay loop>
+  <audio id="background-music" preload="auto">
     <source src="Араб.mp3" type="audio/mpeg">
   </audio>
+  <button class="music-control" onclick="toggleMusic()">🎵 Включить музыку</button>
   <div class="main-container">
     <div class="background-container">
       <img src="Desktop - 17.png" alt="Party Dionysus" class="background-image">
@@ -71,12 +91,22 @@
   </div>
   <script src="photos.js"></script>
   <script>
-    document.addEventListener('click', function() {
-      const audio = document.getElementById('background-music');
-      if (audio.paused) {
-        audio.play();
+    let isPlaying = false;
+    const audio = document.getElementById('background-music');
+    const musicBtn = document.querySelector('.music-control');
+
+    function toggleMusic() {
+      if (isPlaying) {
+        audio.pause();
+        musicBtn.textContent = '🎵 Включить музыку';
+      } else {
+        audio.play().catch(e => console.log('Ошибка воспроизведения:', e));
+        musicBtn.textContent = '🎵 Выключить музыку';
       }
-    }, { once: true });
+      isPlaying = !isPlaying;
+    }
+
+    audio.volume = 0.7; // Устанавливаем громкость на 70%
   </script>
 </body>
 </html>
