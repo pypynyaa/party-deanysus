@@ -1,18 +1,24 @@
 // Инициализация Firebase
 const firebaseConfig = {
-    // Здесь нужно будет вставить ваши данные конфигурации Firebase
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
+    authDomain: "party-registration-web.firebaseapp.com",
+    projectId: "party-registration-web",
+    storageBucket: "party-registration-web.firebasestorage.app",
+    messagingSenderId: "437696239321",
+    appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8",
+    measurementId: "G-FBKQXVRD0D"
 };
 
 // Инициализация Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const storage = firebase.storage();
+let db;
+try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    console.log('Firebase успешно инициализирован');
+} catch (error) {
+    console.error('Ошибка инициализации Firebase:', error);
+    alert('Ошибка подключения к базе данных. Пожалуйста, обратитесь к администратору.');
+}
 
 // Получение элементов формы
 const form = document.getElementById('registrationForm');
@@ -28,120 +34,101 @@ const transportOptions = document.querySelectorAll('input[name="transport"]');
 const licenseGroup = document.querySelector('.license-group');
 
 // Обработка показа/скрытия поля для загрузки скриншота
-paymentCheckbox.addEventListener('change', () => {
-    paymentProofDiv.classList.toggle('hidden', !paymentCheckbox.checked);
-    if (!paymentCheckbox.checked) {
-        removeFile();
-    }
-});
+if (paymentCheckbox && paymentProofDiv) {
+    paymentCheckbox.addEventListener('change', () => {
+        paymentProofDiv.classList.toggle('hidden', !paymentCheckbox.checked);
+        if (!paymentCheckbox.checked) {
+            removeFile();
+        }
+    });
+}
 
 // Обработка выбора транспорта
-transportOptions.forEach(option => {
-    option.addEventListener('change', () => {
-        licenseGroup.classList.toggle('hidden', option.value !== 'self');
+if (transportOptions && licenseGroup) {
+    transportOptions.forEach(option => {
+        option.addEventListener('change', () => {
+            licenseGroup.classList.toggle('hidden', option.value !== 'self');
+        });
     });
-});
-
-// Обработка чата
-const chatButton = document.getElementById('chatButton');
-const chatPopup = document.getElementById('chatPopup');
-const chatMessages = document.getElementById('chatMessages');
-const messageInput = document.getElementById('messageInput');
-
-function toggleChat() {
-    chatPopup.classList.toggle('hidden');
 }
-
-function sendMessage() {
-    const message = messageInput.value.trim();
-    if (!message) return;
-
-    // Добавляем сообщение пользователя
-    const userMessageDiv = document.createElement('div');
-    userMessageDiv.className = 'message user';
-    userMessageDiv.textContent = message;
-    chatMessages.appendChild(userMessageDiv);
-
-    // Добавляем ответ системы
-    const systemMessageDiv = document.createElement('div');
-    systemMessageDiv.className = 'message system';
-    systemMessageDiv.textContent = 'пока';
-    chatMessages.appendChild(systemMessageDiv);
-
-    // Очищаем поле ввода
-    messageInput.value = '';
-
-    // Прокручиваем чат вниз
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-    // Перенаправляем на видео после небольшой задержки
-    setTimeout(() => {
-        window.open('https://vk.com/video-28878216_166290347', '_blank');
-    }, 500);
-}
-
-chatButton.addEventListener('click', toggleChat);
-messageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        sendMessage();
-    }
-});
 
 // Обработка загрузки файла
-paymentProofInput.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        // Проверяем, что файл является изображением
-        if (!file.type.startsWith('image/')) {
-            alert('Пожалуйста, выберите изображение');
-            removeFile();
-            return;
-        }
-        
-        // Проверяем размер файла (не более 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-            alert('Размер файла не должен превышать 5MB');
-            removeFile();
-            return;
-        }
+if (paymentProofInput) {
+    paymentProofInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Проверяем тип файла
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Пожалуйста, выберите изображение в формате JPG, JPEG или PNG');
+                removeFile();
+                return;
+            }
+            
+            // Проверяем размер файла (не более 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Размер файла не должен превышать 5MB');
+                removeFile();
+                return;
+            }
 
-        // Показываем имя файла и кнопку удаления
-        fileNameSpan.textContent = file.name;
-        deleteFileBtn.classList.remove('hidden');
-        fileUploadLabel.classList.add('file-selected');
+            console.log('Загружаемый файл:', file.name, 'Тип:', file.type, 'Размер:', file.size);
 
-        // Создаем превью изображения
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            previewImage.src = e.target.result;
-            imagePreview.classList.remove('hidden');
-            // Добавляем класс visible после небольшой задержки для анимации
-            requestAnimationFrame(() => {
-                imagePreview.classList.add('visible');
-            });
-            // Показываем уведомление
-            showNotification('Файл успешно загружен!');
-        };
-        reader.readAsDataURL(file);
-    } else {
-        resetFileInput();
-    }
-});
+            // Показываем имя файла и кнопку удаления
+            fileNameSpan.textContent = file.name;
+            deleteFileBtn.classList.remove('hidden');
+            fileUploadLabel.classList.add('file-selected');
+
+            // Создаем превью изображения
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    previewImage.src = e.target.result;
+                    imagePreview.classList.remove('hidden');
+                    // Добавляем класс visible после небольшой задержки для анимации
+                    requestAnimationFrame(() => {
+                        imagePreview.classList.add('visible');
+                    });
+                    // Показываем уведомление
+                    showNotification('Файл успешно загружен!');
+                } catch (error) {
+                    console.error('Ошибка при создании превью:', error);
+                    alert('Произошла ошибка при загрузке изображения. Пожалуйста, попробуйте другой файл.');
+                    removeFile();
+                }
+            };
+
+            reader.onerror = function(error) {
+                console.error('Ошибка чтения файла:', error);
+                alert('Произошла ошибка при чтении файла. Пожалуйста, попробуйте другой файл.');
+                removeFile();
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            resetFileInput();
+        }
+    });
+}
 
 function removeFile() {
-    paymentProofInput.value = '';
-    resetFileInput();
+    if (paymentProofInput) {
+        paymentProofInput.value = '';
+        resetFileInput();
+    }
 }
 
 function resetFileInput() {
-    fileNameSpan.textContent = 'Прикрепить скриншот оплаты';
-    deleteFileBtn.classList.add('hidden');
-    fileUploadLabel.classList.remove('file-selected');
-    imagePreview.classList.remove('visible');
-    setTimeout(() => {
-        imagePreview.classList.add('hidden');
-        previewImage.src = '#';
-    }, 300);
+    if (fileNameSpan) fileNameSpan.textContent = 'Прикрепить скриншот оплаты';
+    if (deleteFileBtn) deleteFileBtn.classList.add('hidden');
+    if (fileUploadLabel) fileUploadLabel.classList.remove('file-selected');
+    if (imagePreview) {
+        imagePreview.classList.remove('visible');
+        setTimeout(() => {
+            imagePreview.classList.add('hidden');
+            if (previewImage) previewImage.src = '#';
+        }, 300);
+    }
 }
 
 // Функция для показа уведомления
@@ -151,12 +138,10 @@ function showNotification(message) {
     notification.textContent = message;
     document.body.appendChild(notification);
 
-    // Добавляем класс для анимации появления
     requestAnimationFrame(() => {
         notification.classList.add('visible');
     });
 
-    // Удаляем уведомление через 3 секунды
     setTimeout(() => {
         notification.classList.remove('visible');
         setTimeout(() => {
@@ -166,34 +151,68 @@ function showNotification(message) {
 }
 
 // Обработка клика по кнопке удаления файла
-deleteFileBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    removeFile();
-});
+if (deleteFileBtn) {
+    deleteFileBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        removeFile();
+    });
+}
 
 // Генерация уникального ID для пользователя
 function generateUserId() {
     return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 }
 
-// Загрузка изображения в Storage
-async function uploadImage(file, userId) {
-    if (!file) return null;
-    const fileRef = storage.ref().child(`payment_proofs/${userId}_${file.name}`);
-    await fileRef.put(file);
-    return await fileRef.getDownloadURL();
+// Функции для работы с регистрациями
+async function findRegistrationByPhone(phone) {
+    try {
+        const snapshot = await db.collection('registrations')
+            .where('phone', '==', phone)
+            .get();
+        
+        if (snapshot.empty) {
+            return null;
+        }
+        
+        return {
+            id: snapshot.docs[0].id,
+            ...snapshot.docs[0].data()
+        };
+    } catch (error) {
+        console.error('Ошибка поиска регистрации:', error);
+        return null;
+    }
 }
 
-// Сохранение данных в Firestore
-async function saveToFirestore(formData, userId) {
+async function findRegistrationByTelegram(telegram) {
     try {
-        await db.collection('registrations').doc(userId).set(formData);
-        return true;
+        const snapshot = await db.collection('registrations')
+            .where('telegram', '==', telegram)
+            .get();
+        
+        if (snapshot.empty) {
+            return null;
+        }
+        
+        return {
+            id: snapshot.docs[0].id,
+            ...snapshot.docs[0].data()
+        };
     } catch (error) {
-        console.error('Error saving to Firestore:', error);
-        return false;
+        console.error('Ошибка поиска регистрации:', error);
+        return null;
     }
+}
+
+// Функция для конвертации файла в base64
+function getBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
 }
 
 // Анимация отправки формы
@@ -207,64 +226,138 @@ function animateSubmitButton(button, isLoading) {
     }
 }
 
-// Валидация формы перед отправкой
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+// Обновляем обработчик отправки формы
+if (form) {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    // Проверяем, что если отмечена оплата, то должен быть прикреплен файл
-    if (paymentCheckbox.checked && !paymentProofInput.files[0]) {
-        alert('Пожалуйста, прикрепите скриншот оплаты');
-        return;
-    }
-
-    const submitButton = form.querySelector('.submit-btn');
-    animateSubmitButton(submitButton, true);
-
-    try {
-        const userId = generateUserId();
-        const formData = new FormData(form);
-        const data = {
-            userId,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            fullName: formData.get('fullName'),
-            phone: formData.get('phone'),
-            telegram: formData.get('telegram'),
-            paymentDone: formData.get('paymentDone') === 'on',
-            hasLicense: formData.get('hasLicense') === 'on',
-            transport: formData.get('transport'),
-            activities: Array.from(formData.getAll('activities')),
-            sauna: formData.get('sauna') === 'on',
-            hideAndSeek: formData.get('hideAndSeek') === 'on',
-            relationship: formData.get('relationship'),
-            foodPreferences: formData.get('foodPreferences'),
-            music: formData.get('music')
-        };
-
-        // Загрузка скриншота, если он есть
-        const paymentProof = formData.get('paymentProof');
-        if (paymentProof && paymentProof.size > 0) {
-            data.paymentProofUrl = await uploadImage(paymentProof, userId);
+        if (paymentCheckbox && paymentCheckbox.checked && (!paymentProofInput || !paymentProofInput.files[0])) {
+            alert('Пожалуйста, прикрепите скриншот оплаты');
+            return;
         }
 
-        // Сохранение в Firestore
-        const saved = await saveToFirestore(data, userId);
+        const submitButton = form.querySelector('.submit-btn');
+        animateSubmitButton(submitButton, true);
 
-        if (saved) {
-            alert('Регистрация успешно завершена! Мы свяжемся с вами в ближайшее время.');
+        try {
+            const formData = new FormData(form);
+            const phone = formData.get('phone');
+            const telegram = formData.get('telegram');
+
+            // Проверяем, существует ли уже регистрация
+            let existingRegistration = await findRegistrationByPhone(phone) || 
+                                     await findRegistrationByTelegram(telegram);
+
+            const userId = existingRegistration ? existingRegistration.id : generateUserId();
+            
+            const data = {
+                userId,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                fullName: formData.get('fullName'),
+                phone: formData.get('phone'),
+                telegram: formData.get('telegram'),
+                paymentDone: formData.get('paymentDone') === 'on',
+                hasLicense: formData.get('hasLicense') === 'on',
+                transport: formData.get('transport'),
+                activities: Array.from(formData.getAll('activities')),
+                sauna: formData.get('sauna') === 'on',
+                hideAndSeek: formData.get('hideAndSeek') === 'on',
+                relationship: formData.get('relationship'),
+                foodPreferences: formData.get('foodPreferences'),
+                music: formData.get('music'),
+                lastUpdated: new Date().toISOString()
+            };
+
+            // Конвертируем фото в base64, если оно есть
+            if (paymentProofInput && paymentProofInput.files[0]) {
+                const paymentProof = paymentProofInput.files[0];
+                try {
+                    // Проверяем размер файла (не более 1MB для base64)
+                    if (paymentProof.size > 1024 * 1024) {
+                        throw new Error('Размер файла не должен превышать 1MB');
+                    }
+                    data.paymentProofBase64 = await getBase64(paymentProof);
+                    data.paymentProofFilename = paymentProof.name;
+                } catch (error) {
+                    console.error('Ошибка обработки файла:', error);
+                    alert('Произошла ошибка при обработке файла. Убедитесь, что размер файла не превышает 1MB.');
+                    animateSubmitButton(submitButton, false);
+                    return;
+                }
+            }
+
+            // Сохраняем или обновляем данные
+            if (existingRegistration) {
+                await db.collection('registrations').doc(userId).update(data);
+                alert('Ваша регистрация успешно обновлена!');
+            } else {
+                await db.collection('registrations').doc(userId).set(data);
+                alert('Регистрация успешно завершена! Мы свяжемся с вами в ближайшее время.');
+            }
+
+            // Сохраняем ID регистрации в localStorage для возможности редактирования
+            localStorage.setItem('registrationId', userId);
+            
             form.reset();
             resetFileInput();
-        } else {
-            throw new Error('Ошибка при сохранении данных');
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
+        } finally {
+            animateSubmitButton(submitButton, false);
+        }
+    });
+
+    // Добавляем обработчик события reset для формы
+    form.addEventListener('reset', () => {
+        resetFileInput();
+    });
+}
+
+// Функция для загрузки существующей регистрации
+async function loadExistingRegistration() {
+    if (!form) return;
+    
+    const registrationId = localStorage.getItem('registrationId');
+    if (!registrationId) return;
+
+    try {
+        const doc = await db.collection('registrations').doc(registrationId).get();
+        if (doc.exists) {
+            const data = doc.data();
+            // Заполняем форму данными
+            form.elements['fullName'].value = data.fullName || '';
+            form.elements['phone'].value = data.phone || '';
+            form.elements['telegram'].value = data.telegram || '';
+            form.elements['paymentDone'].checked = data.paymentDone || false;
+            form.elements['transport'].value = data.transport || '';
+            form.elements['hasLicense'].checked = data.hasLicense || false;
+            form.elements['relationship'].value = data.relationship || '';
+            form.elements['foodPreferences'].value = data.foodPreferences || '';
+            form.elements['music'].value = data.music || '';
+            
+            // Отмечаем выбранные активности
+            if (data.activities) {
+                data.activities.forEach(activity => {
+                    const checkbox = form.querySelector(`input[name="activities"][value="${activity}"]`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+
+            // Показываем сохраненное фото оплаты
+            if (data.paymentProofBase64 && previewImage && imagePreview && fileNameSpan && deleteFileBtn && fileUploadLabel) {
+                previewImage.src = data.paymentProofBase64;
+                imagePreview.classList.remove('hidden');
+                imagePreview.classList.add('visible');
+                fileNameSpan.textContent = data.paymentProofFilename || 'Фото оплаты загружено';
+                deleteFileBtn.classList.remove('hidden');
+                fileUploadLabel.classList.add('file-selected');
+            }
         }
     } catch (error) {
-        console.error('Error:', error);
-        alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
-    } finally {
-        animateSubmitButton(submitButton, false);
+        console.error('Ошибка загрузки данных:', error);
     }
-});
+}
 
-// Добавляем обработчик события reset для формы
-form.addEventListener('reset', () => {
-    resetFileInput();
-}); 
+// Загружаем существующую регистрацию при загрузке страницы
+document.addEventListener('DOMContentLoaded', loadExistingRegistration); 

@@ -16,10 +16,6 @@
   <link rel="preload" as="image" href="chat.jpg">
   
   <link rel="stylesheet" href="registration.css?v=3">
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 </head>
 <body>
   <div class="video-background">
@@ -175,6 +171,28 @@
       <button onclick="sendMessage()">Отправить</button>
     </div>
   </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+  
+  <!-- Инициализация Firebase -->
+  <script>
+    // Конфигурация Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
+      authDomain: "party-registration-web.firebaseapp.com",
+      projectId: "party-registration-web",
+      storageBucket: "party-registration-web.firebasestorage.app",
+      messagingSenderId: "437696239321",
+      appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8",
+      measurementId: "G-FBKQXVRD0D"
+    };
+
+    // Инициализация Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
 
   <script src="registration.js"></script>
 </body>
