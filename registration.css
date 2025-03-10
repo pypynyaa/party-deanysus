@@ -124,6 +124,10 @@ h2::after {
     margin-bottom: 20px;
     position: relative;
     text-align: center;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 input[type="text"],
@@ -1047,7 +1051,7 @@ input[type="file"] {
     gap: 15px;
     margin-bottom: 20px;
     width: 100%;
-    max-width: 400px; /* Уменьшаем максимальную ширину */
+    max-width: 400px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -1060,10 +1064,12 @@ input[type="file"] {
     background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
-    padding: 8px 15px;
+    padding: 12px 15px;
     transition: all 0.3s ease;
     position: relative;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    height: 45px;
+    box-sizing: border-box;
 }
 
 .music-link-container:hover {
@@ -1079,12 +1085,13 @@ input[type="file"] {
     background: transparent;
     border: none;
     color: white;
-    padding: 8px 8px 8px 25px;
+    padding: 8px 8px 8px 30px;
     font-size: 16px;
     transition: all 0.3s ease;
     width: 100%;
     box-sizing: border-box;
     text-align: center;
+    height: 100%;
 }
 
 .music-input:focus {
@@ -1095,43 +1102,18 @@ input[type="file"] {
     content: '♪';
     position: absolute;
     left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
     opacity: 0.5;
     font-size: 18px;
     color: var(--primary-color);
 }
 
-/* Скрываем крестик для первого поля ввода */
-.music-link-container:first-child .remove-music-btn {
-    display: none;
-}
-
-.remove-music-btn {
-    width: 25px;
-    height: 25px;
-    min-width: 25px;
-    border-radius: 50%;
-    background: rgba(255, 0, 0, 0.2);
-    border: none;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    padding: 0;
-    font-size: 16px;
-}
-
-.remove-music-btn:hover {
-    background: rgba(255, 0, 0, 0.4);
-    transform: rotate(90deg);
-}
-
 .add-music-btn {
     width: 100%;
-    max-width: 400px; /* Уменьшаем максимальную ширину */
+    max-width: 400px;
     margin: 10px auto;
-    padding: 12px;
+    height: 45px;
     background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
     border: 2px dashed rgba(255, 255, 255, 0.2);
     border-radius: 12px;
@@ -1145,6 +1127,8 @@ input[type="file"] {
     font-size: 16px;
     font-weight: 500;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    padding: 0 15px;
+    box-sizing: border-box;
 }
 
 .add-music-btn::before {
@@ -1166,11 +1150,28 @@ input[type="file"] {
 }
 
 /* Стили для селекта статуса отношений */
+.relationship-group {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.relationship-group::before {
+    content: '❤️';
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    z-index: 1;
+    opacity: 0.8;
+}
+
 #relationship {
     width: 100%;
-    max-width: 400px; /* Уменьшаем максимальную ширину */
-    margin: 0 auto;
-    padding: 12px 35px;
+    height: 45px;
+    padding: 0 35px;
     background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
@@ -1187,6 +1188,7 @@ input[type="file"] {
     text-align-last: center;
     font-weight: 500;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
 }
 
 #relationship:hover {
@@ -1206,17 +1208,19 @@ input[type="file"] {
     background-color: #2a2a2a;
     color: white;
     padding: 12px;
+    font-size: 16px;
 }
 
 /* Медиа-запросы для мобильных устройств */
 @media screen and (max-width: 768px) {
     .music-link-container {
-        padding: 6px 12px;
+        padding: 8px 12px;
+        height: 40px;
     }
 
     .music-input {
         font-size: 14px;
-        padding: 6px 6px 6px 22px;
+        padding: 6px 6px 6px 25px;
     }
 
     .music-link-container::before {
@@ -1224,32 +1228,30 @@ input[type="file"] {
         left: 12px;
     }
 
-    .remove-music-btn {
-        width: 22px;
-        height: 22px;
-        min-width: 22px;
-        font-size: 14px;
-    }
-
     .add-music-btn {
-        padding: 10px;
+        height: 40px;
         font-size: 14px;
     }
 
     #relationship {
-        padding: 10px 30px;
+        height: 40px;
         font-size: 14px;
+    }
+
+    .relationship-group::before {
+        font-size: 16px;
     }
 }
 
 @media screen and (max-width: 480px) {
     .music-link-container {
-        padding: 5px 10px;
+        padding: 6px 10px;
+        height: 35px;
     }
 
     .music-input {
         font-size: 13px;
-        padding: 5px 5px 5px 20px;
+        padding: 5px 5px 5px 25px;
     }
 
     .music-link-container::before {
@@ -1257,17 +1259,19 @@ input[type="file"] {
         left: 10px;
     }
 
-    .remove-music-btn {
-        width: 20px;
-        height: 20px;
-        min-width: 20px;
-        font-size: 12px;
+    .add-music-btn {
+        height: 35px;
+        font-size: 13px;
     }
 
     #relationship {
-        padding: 8px 25px;
+        height: 35px;
         font-size: 13px;
-        background-position: right 10px center;
-        background-size: 14px;
+        padding: 0 30px;
+    }
+
+    .relationship-group::before {
+        font-size: 14px;
+        left: 10px;
     }
 } 
