@@ -4,67 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes">
   <title>Party Dionysus</title>
-  <link rel="stylesheet" href="styles2.css?v=19">
+  <link rel="stylesheet" href="styles2.css?v=20">
 </head>
 <body>
   <div class="main-container">
     <div class="background-container">
-      <img src="Desktop - 17.png" alt="Party Dionysus" class="background-image">
-      
-      <!-- Кнопки -->
-      <div class="buttons-overlay">
-        <!-- Telegram кнопка -->
-        <div class="button-wrapper nikitos-position">
-          <button class="button-nikitos" onclick="window.open('https://t.me/two_nn', '_blank')">
-            Узнать больше
-          </button>
-        </div>
-
-        <!-- Instagram кнопка -->
-        <div class="button-wrapper german-position">
-          <button class="button-german" onclick="window.open('https://www.instagram.com/xssantty?igsh=MXIxY3lncHB0Y3Nlaw%3D%3D&utm_source=qr', '_blank')">
-            Узнать больше
-          </button>
-        </div>
-
-        <!-- "Еще" кнопка -->
-        <div class="button-wrapper also-position">
-          <button class="button-also" onclick="window.open('https://vk.com/video807566_169118280', '_blank')">
-            Еще
-          </button>
-        </div>
-
-        <!-- Кнопка регистрации -->
-        <div class="button-wrapper party-position">
-          <button class="button-party" onclick="window.location.href='/party-deanysus/registration.html'">
-            Хочу на тусу!
-          </button>
-        </div>
-      </div>
+      <img src="фон.jpg" alt="Party Dionysus" class="background-image">
     </div>
 
     <!-- Секция с фотографиями -->
     <div class="photos-section">
       <div class="photo-grid">
-        <div class="photo-item">
-          <img src="1.jpg" alt="Фото 1" class="photo-image">
+        <div class="photo-item" onclick="window.open('https://t.me/two_nn', '_blank')">
+          <img src="Nikita.jpg" alt="Никита" class="photo-image">
+          <div class="photo-caption">Узнать больше</div>
         </div>
-        <div class="photo-item">
-          <img src="2.jpg" alt="Фото 2" class="photo-image">
+        <div class="photo-item" onclick="window.open('https://www.instagram.com/xssantty?igsh=MXIxY3lncHB0Y3Nlaw%3D%3D&utm_source=qr', '_blank')">
+          <img src="German.jpg" alt="Герман" class="photo-image">
+          <div class="photo-caption">Узнать больше</div>
         </div>
-        <div class="photo-item">
-          <img src="3_new.jpg" alt="Фото 3" class="photo-image">
-        </div>
-        <div class="photo-item">
-          <img src="4.jpg" alt="Фото 4" class="photo-image">
-        </div>
-        <div class="photo-item">
-          <img src="5.jpg" alt="Фото 5" class="photo-image">
-        </div>
-        <div class="photo-item">
-          <img src="6.jpg" alt="Фото 6" class="photo-image">
+        <div class="photo-item" onclick="window.open('https://vk.com/video807566_169118280', '_blank')">
+          <img src="Ropsha.jpg" alt="Ропша" class="photo-image">
+          <div class="photo-caption">Еще</div>
         </div>
       </div>
+    </div>
+
+    <!-- Кнопка регистрации -->
+    <div class="registration-button">
+      <button class="button-party" onclick="window.location.href='/party-deanysus/registration.html'">
+        Хочу на тусу!
+      </button>
     </div>
   </div>
   <script src="photos.js"></script>
