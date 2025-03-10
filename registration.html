@@ -49,13 +49,19 @@
         </div>
 
         <h2>Оплата</h2>
-        <div class="form-group payment-proof">
-          <input type="file" id="paymentProof" name="paymentProof" accept="image/*" required>
-          <div class="file-upload-container">
-            <label for="paymentProof" class="file-upload-label">
-              <span class="file-name">Прикрепить скриншот оплаты</span>
-            </label>
-            <button type="button" class="delete-file hidden" onclick="removeFile()">×</button>
+        <div class="form-group payment-section">
+          <label class="checkbox-label">
+            <input type="checkbox" id="paymentDone" name="paymentDone">
+            <span>Я оплатил участие</span>
+          </label>
+          <div class="form-group payment-proof hidden">
+            <input type="file" id="paymentProof" name="paymentProof" accept="image/*">
+            <div class="file-upload-container">
+              <label for="paymentProof" class="file-upload-label">
+                <span class="file-name">Прикрепить скриншот оплаты</span>
+              </label>
+              <button type="button" class="delete-file hidden" onclick="removeFile()">×</button>
+            </div>
           </div>
         </div>
 

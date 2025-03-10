@@ -18,12 +18,18 @@ const storage = firebase.storage();
 const form = document.getElementById('registrationForm');
 const paymentCheckbox = document.getElementById('paymentDone');
 const paymentProofDiv = document.querySelector('.payment-proof');
+const paymentProofInput = document.getElementById('paymentProof');
+const fileNameSpan = document.querySelector('.file-name');
+const deleteFileBtn = document.querySelector('.delete-file');
 const transportOptions = document.querySelectorAll('input[name="transport"]');
 const licenseGroup = document.querySelector('.license-group');
 
 // Обработка показа/скрытия поля для загрузки скриншота
 paymentCheckbox.addEventListener('change', () => {
     paymentProofDiv.classList.toggle('hidden', !paymentCheckbox.checked);
+    if (!paymentCheckbox.checked) {
+        removeFile();
+    }
 });
 
 // Обработка выбора транспорта
@@ -78,11 +84,7 @@ messageInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Обновляем обработку загрузки файла
-const paymentProofInput = document.getElementById('paymentProof');
-const fileNameSpan = document.querySelector('.file-name');
-const deleteFileBtn = document.querySelector('.delete-file');
-
+// Обработка загрузки файла
 paymentProofInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -138,9 +140,15 @@ function animateSubmitButton(button, isLoading) {
     }
 }
 
-// Обработка отправки формы
+// Валидация формы перед отправкой
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Проверяем, что если отмечена оплата, то должен быть прикреплен файл
+    if (paymentCheckbox.checked && !paymentProofInput.files[0]) {
+        alert('Пожалуйста, прикрепите скриншот оплаты');
+        return;
+    }
 
     const submitButton = form.querySelector('.submit-btn');
     animateSubmitButton(submitButton, true);

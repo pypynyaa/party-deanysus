@@ -672,4 +672,71 @@ textarea:focus {
         bottom: 20px;
         right: 20px;
     }
+}
+
+.payment-section {
+    margin-bottom: 20px;
+}
+
+.payment-proof {
+    margin-top: 15px;
+}
+
+.payment-proof.hidden {
+    display: none;
+}
+
+.file-upload-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.file-upload-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 15px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-grow: 1;
+}
+
+.file-upload-label:hover {
+    background: var(--secondary-color);
+}
+
+.file-name {
+    margin-left: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.delete-file {
+    margin-left: 10px;
+    padding: 8px 12px;
+    background: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    transition: all 0.3s ease;
+}
+
+.delete-file:hover {
+    background: #cc0000;
+}
+
+.delete-file.hidden {
+    display: none;
+}
+
+input[type="file"] {
+    display: none;
 } 
