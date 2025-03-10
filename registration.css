@@ -1047,7 +1047,7 @@ input[type="file"] {
     gap: 15px;
     margin-bottom: 20px;
     width: 100%;
-    max-width: 600px;
+    max-width: 400px; /* Уменьшаем максимальную ширину */
     margin-left: auto;
     margin-right: auto;
 }
@@ -1057,17 +1057,20 @@ input[type="file"] {
     align-items: center;
     gap: 10px;
     width: 100%;
-    background: var(--input-background);
-    border: 1px solid var(--input-border);
+    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     padding: 8px 15px;
     transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .music-link-container:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
     border-color: var(--primary-color);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .music-input {
@@ -1081,6 +1084,7 @@ input[type="file"] {
     transition: all 0.3s ease;
     width: 100%;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .music-input:focus {
@@ -1094,6 +1098,11 @@ input[type="file"] {
     opacity: 0.5;
     font-size: 18px;
     color: var(--primary-color);
+}
+
+/* Скрываем крестик для первого поля ввода */
+.music-link-container:first-child .remove-music-btn {
+    display: none;
 }
 
 .remove-music-btn {
@@ -1120,11 +1129,11 @@ input[type="file"] {
 
 .add-music-btn {
     width: 100%;
-    max-width: 600px;
+    max-width: 400px; /* Уменьшаем максимальную ширину */
     margin: 10px auto;
     padding: 12px;
-    background: var(--input-background);
-    border: 2px dashed var(--input-border);
+    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
+    border: 2px dashed rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     color: white;
     cursor: pointer;
@@ -1135,6 +1144,7 @@ input[type="file"] {
     transition: all 0.3s ease;
     font-size: 16px;
     font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .add-music-btn::before {
@@ -1145,9 +1155,10 @@ input[type="file"] {
 }
 
 .add-music-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
     border-color: var(--primary-color);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .add-music-btn:hover::before {
@@ -1157,11 +1168,11 @@ input[type="file"] {
 /* Стили для селекта статуса отношений */
 #relationship {
     width: 100%;
-    max-width: 600px;
+    max-width: 400px; /* Уменьшаем максимальную ширину */
     margin: 0 auto;
     padding: 12px 35px;
-    background: var(--input-background);
-    border: 1px solid var(--input-border);
+    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     color: white;
     font-size: 16px;
@@ -1175,18 +1186,20 @@ input[type="file"] {
     text-align: center;
     text-align-last: center;
     font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 #relationship:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
     border-color: var(--primary-color);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 #relationship:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2), 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 #relationship option {
