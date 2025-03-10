@@ -1,12 +1,18 @@
-// Получение объекта базы данных
+// Объявляем переменную db глобально
 let db;
-try {
-    db = firebase.firestore();
-    console.log('Firebase успешно инициализирован');
-} catch (error) {
-    console.error('Ошибка инициализации Firebase:', error);
-    alert('Ошибка подключения к базе данных. Пожалуйста, обратитесь к администратору.');
-}
+
+// Инициализация базы данных после загрузки DOM
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        db = firebase.firestore();
+        console.log('Firebase успешно инициализирован');
+        // Загружаем существующую регистрацию после инициализации базы данных
+        loadExistingRegistration();
+    } catch (error) {
+        console.error('Ошибка инициализации Firebase:', error);
+        alert('Ошибка подключения к базе данных. Пожалуйста, обратитесь к администратору.');
+    }
+});
 
 // Получение элементов формы
 const form = document.getElementById('registrationForm');
@@ -348,7 +354,4 @@ async function loadExistingRegistration() {
     } catch (error) {
         console.error('Ошибка загрузки данных:', error);
     }
-}
-
-// Загружаем существующую регистрацию при загрузке страницы
-document.addEventListener('DOMContentLoaded', loadExistingRegistration); 
+} 
