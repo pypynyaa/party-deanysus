@@ -51,17 +51,17 @@
             <span>Я оплатил участие</span>
           </label>
           <div class="form-group payment-proof hidden">
-            <input type="file" id="paymentProof" name="paymentProof" accept="image/*">
+            <input type="file" id="paymentProof" name="paymentProof" accept="image/*,.pdf,.doc,.docx">
             <div class="file-upload-container">
               <label for="paymentProof" class="file-upload-label">
-                <span class="file-name">Прикрепить скриншот оплаты</span>
+                <span class="file-name">Прикрепить файл оплаты</span>
               </label>
               <button type="button" class="delete-file hidden" onclick="removeFile()">×</button>
             </div>
             <div class="image-preview hidden">
               <img id="previewImage" src="#" alt="Предпросмотр">
               <div class="preview-overlay">
-                <span class="preview-text">Фото добавлено</span>
+                <span class="preview-text">Файл добавлен</span>
               </div>
             </div>
           </div>

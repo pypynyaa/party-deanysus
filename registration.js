@@ -76,16 +76,23 @@ if (paymentProofInput) {
         const file = e.target.files[0];
         if (file) {
             // Проверяем тип файла
-            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+            const allowedTypes = [
+                'image/jpeg', 
+                'image/png', 
+                'image/jpg', 
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            ];
             if (!allowedTypes.includes(file.type)) {
-                alert('Пожалуйста, выберите изображение в формате JPG, JPEG или PNG');
+                alert('Пожалуйста, выберите изображение (JPG, JPEG, PNG) или документ (PDF, DOC, DOCX)');
                 removeFile();
                 return;
             }
             
-            // Проверяем размер файла (не более 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Размер файла не должен превышать 5MB');
+            // Проверяем размер файла (не более 10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Размер файла не должен превышать 10MB');
                 removeFile();
                 return;
             }
@@ -97,32 +104,41 @@ if (paymentProofInput) {
             deleteFileBtn.classList.remove('hidden');
             fileUploadLabel.classList.add('file-selected');
 
-            // Создаем превью изображения
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    previewImage.src = e.target.result;
-                    imagePreview.classList.remove('hidden');
-                    // Добавляем класс visible после небольшой задержки для анимации
-                    requestAnimationFrame(() => {
-                        imagePreview.classList.add('visible');
-                    });
-                    // Показываем уведомление
-                    showNotification('Файл успешно загружен!');
-                } catch (error) {
-                    console.error('Ошибка при создании превью:', error);
-                    alert('Произошла ошибка при загрузке изображения. Пожалуйста, попробуйте другой файл.');
+            // Создаем превью только для изображений
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        previewImage.src = e.target.result;
+                        imagePreview.classList.remove('hidden');
+                        // Добавляем класс visible после небольшой задержки для анимации
+                        requestAnimationFrame(() => {
+                            imagePreview.classList.add('visible');
+                        });
+                    } catch (error) {
+                        console.error('Ошибка при создании превью:', error);
+                        alert('Произошла ошибка при загрузке изображения. Пожалуйста, попробуйте другой файл.');
+                        removeFile();
+                    }
+                };
+
+                reader.onerror = function(error) {
+                    console.error('Ошибка чтения файла:', error);
+                    alert('Произошла ошибка при чтении файла. Пожалуйста, попробуйте другой файл.');
                     removeFile();
-                }
-            };
+                };
 
-            reader.onerror = function(error) {
-                console.error('Ошибка чтения файла:', error);
-                alert('Произошла ошибка при чтении файла. Пожалуйста, попробуйте другой файл.');
-                removeFile();
-            };
-
-            reader.readAsDataURL(file);
+                reader.readAsDataURL(file);
+            } else {
+                // Для не-изображений показываем иконку типа файла
+                imagePreview.classList.remove('hidden');
+                previewImage.src = getFileTypeIcon(file.type);
+                requestAnimationFrame(() => {
+                    imagePreview.classList.add('visible');
+                });
+            }
+            // Показываем уведомление
+            showNotification('Файл успешно загружен!');
         } else {
             resetFileInput();
         }
@@ -137,7 +153,7 @@ function removeFile() {
 }
 
 function resetFileInput() {
-    if (fileNameSpan) fileNameSpan.textContent = 'Прикрепить скриншот оплаты';
+    if (fileNameSpan) fileNameSpan.textContent = 'Прикрепить файл оплаты';
     if (deleteFileBtn) deleteFileBtn.classList.add('hidden');
     if (fileUploadLabel) fileUploadLabel.classList.remove('file-selected');
     if (imagePreview) {
@@ -295,15 +311,16 @@ if (form) {
             if (paymentProofInput && paymentProofInput.files[0]) {
                 const paymentProof = paymentProofInput.files[0];
                 try {
-                    // Проверяем размер файла (не более 1MB для base64)
-                    if (paymentProof.size > 1024 * 1024) {
-                        throw new Error('Размер файла не должен превышать 1MB');
+                    // Проверяем размер файла (не более 10MB для base64)
+                    if (paymentProof.size > 10 * 1024 * 1024) {
+                        throw new Error('Размер файла не должен превышать 10MB');
                     }
                     data.paymentProofBase64 = await getBase64(paymentProof);
                     data.paymentProofFilename = paymentProof.name;
+                    data.paymentProofType = paymentProof.type;
                 } catch (error) {
                     console.error('Ошибка обработки файла:', error);
-                    alert('Произошла ошибка при обработке файла. Убедитесь, что размер файла не превышает 1MB.');
+                    alert('Произошла ошибка при обработке файла. Убедитесь, что размер файла не превышает 10MB.');
                     animateSubmitButton(submitButton, false);
                     return;
                 }
@@ -380,5 +397,18 @@ async function loadExistingRegistration() {
         }
     } catch (error) {
         console.error('Ошибка загрузки данных:', error);
+    }
+}
+
+// Функция для получения иконки типа файла
+function getFileTypeIcon(fileType) {
+    switch(fileType) {
+        case 'application/pdf':
+            return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBkPSJNMzIgMGgzMjB2MTI4aDEyOHYzODRIMzJWMHptMzg0IDEyOEwzMjAgMzJWMTI4aDk2eiIgZmlsbD0iI2U2NTEwMCIvPjwvc3ZnPg==';
+        case 'application/msword':
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBkPSJNMzIgMGgzMjB2MTI4aDEyOHYzODRIMzJWMHptMzg0IDEyOEwzMjAgMzJWMTI4aDk2eiIgZmlsbD0iIzAwNzJjNiIvPjwvc3ZnPg==';
+        default:
+            return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBkPSJNMzIgMGgzMjB2MTI4aDEyOHYzODRIMzJWMHptMzg0IDEyOEwzMjAgMzJWMTI4aDk2eiIgZmlsbD0iIzk5OTk5OSIvPjwvc3ZnPg==';
     }
 } 
