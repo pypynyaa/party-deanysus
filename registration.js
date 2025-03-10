@@ -85,25 +85,51 @@ messageInput.addEventListener('keypress', (e) => {
 });
 
 // Обработка загрузки файла
-paymentProofInput.addEventListener('change', (e) => {
+paymentProofInput.addEventListener('change', function(e) {
+    console.log('File input change event triggered');
     const file = e.target.files[0];
     if (file) {
+        console.log('File selected:', file.name);
         fileNameSpan.textContent = file.name;
         deleteFileBtn.classList.remove('hidden');
+        
+        // Проверяем, что файл является изображением
+        if (!file.type.startsWith('image/')) {
+            alert('Пожалуйста, выберите изображение');
+            removeFile();
+            return;
+        }
+        
+        // Проверяем размер файла (не более 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('Размер файла не должен превышать 5MB');
+            removeFile();
+            return;
+        }
     } else {
+        console.log('No file selected');
         resetFileInput();
     }
 });
 
 function removeFile() {
+    console.log('Removing file');
     paymentProofInput.value = '';
     resetFileInput();
 }
 
 function resetFileInput() {
+    console.log('Resetting file input');
     fileNameSpan.textContent = 'Прикрепить скриншот оплаты';
     deleteFileBtn.classList.add('hidden');
 }
+
+// Обработка клика по кнопке удаления файла
+deleteFileBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    removeFile();
+});
 
 // Генерация уникального ID для пользователя
 function generateUserId() {
