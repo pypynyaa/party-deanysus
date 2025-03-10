@@ -270,52 +270,51 @@ if (musicLinks) {
 
 // Функция для добавления нового поля для музыкальной ссылки
 function addMusicLink() {
-    const container = document.createElement('div');
-    container.className = 'music-link-container';
-    
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.className = 'music-input';
-    input.name = 'music[]';
-    input.placeholder = 'Добавьте любимый трек из Яндекс.Музыки';
-    
-    const removeBtn = document.createElement('button');
-    removeBtn.type = 'button';
-    removeBtn.className = 'remove-music-btn';
-    removeBtn.textContent = '×';
-    removeBtn.setAttribute('aria-label', 'Удалить трек');
-    
-    // Добавляем анимацию появления
-    container.style.opacity = '0';
-    container.style.transform = 'translateY(20px)';
-    
-    container.appendChild(input);
-    
-    // Добавляем кнопку удаления только если это не первый трек
-    const musicLinks = document.getElementById('musicLinks');
-    const isFirstTrack = musicLinks.children.length === 0;
-    if (!isFirstTrack) {
-        container.appendChild(removeBtn);
-    }
-    
-    musicLinks.appendChild(container);
-    
-    // Запускаем анимацию появления
-    requestAnimationFrame(() => {
-        container.style.transition = 'all 0.3s ease';
-        container.style.opacity = '1';
-        container.style.transform = 'translateY(0)';
-    });
-    
-    // Добавляем обработчик для удаления
-    removeBtn.onclick = function() {
+    // Добавляем два трека
+    for (let i = 0; i < 2; i++) {
+        const container = document.createElement('div');
+        container.className = 'music-link-container';
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'music-input';
+        input.name = 'music[]';
+        input.placeholder = 'Добавьте любимый трек из Яндекс.Музыки';
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'remove-music-btn';
+        removeBtn.textContent = '×';
+        removeBtn.setAttribute('aria-label', 'Удалить трек');
+        
+        // Добавляем анимацию появления
         container.style.opacity = '0';
         container.style.transform = 'translateY(20px)';
-        setTimeout(() => container.remove(), 300);
-    };
-    
-    // Фокусируемся на новом поле ввода
-    input.focus();
+        
+        container.appendChild(input);
+        container.appendChild(removeBtn);
+        
+        musicLinks.appendChild(container);
+        
+        // Запускаем анимацию появления
+        requestAnimationFrame(() => {
+            container.style.transition = 'all 0.3s ease';
+            container.style.opacity = '1';
+            container.style.transform = 'translateY(0)';
+        });
+        
+        // Добавляем обработчик для удаления
+        removeBtn.onclick = function() {
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+            setTimeout(() => container.remove(), 300);
+        };
+        
+        // Фокусируемся на первом новом поле ввода
+        if (i === 0) {
+            input.focus();
+        }
+    }
 }
 
 // Обновляем обработчик отправки формы
@@ -572,7 +571,7 @@ async function copyCardNumber() {
     }
 }
 
-// Обновляем обработчик для кнопки добавления музыкальных ссылок
+// Обновляем обработчик для DOM Content Loaded
 document.addEventListener('DOMContentLoaded', function() {
     const musicLinks = document.getElementById('musicLinks');
     if (musicLinks) {
