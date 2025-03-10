@@ -283,8 +283,12 @@ function addMusicLink() {
     removeBtn.type = 'button';
     removeBtn.className = 'remove-music-btn';
     removeBtn.textContent = '×';
+    removeBtn.setAttribute('aria-label', 'Удалить трек');
     removeBtn.onclick = function() {
-        container.remove();
+        const musicLinks = document.getElementById('musicLinks');
+        if (musicLinks.querySelectorAll('.music-link-container').length > 1) {
+            container.remove();
+        }
     };
     
     container.appendChild(input);
