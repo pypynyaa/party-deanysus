@@ -21,6 +21,9 @@ const paymentProofDiv = document.querySelector('.payment-proof');
 const paymentProofInput = document.getElementById('paymentProof');
 const fileNameSpan = document.querySelector('.file-name');
 const deleteFileBtn = document.querySelector('.delete-file');
+const imagePreview = document.querySelector('.image-preview');
+const previewImage = document.getElementById('previewImage');
+const fileUploadLabel = document.querySelector('.file-upload-label');
 const transportOptions = document.querySelectorAll('input[name="transport"]');
 const licenseGroup = document.querySelector('.license-group');
 
@@ -86,13 +89,8 @@ messageInput.addEventListener('keypress', (e) => {
 
 // Обработка загрузки файла
 paymentProofInput.addEventListener('change', function(e) {
-    console.log('File input change event triggered');
     const file = e.target.files[0];
     if (file) {
-        console.log('File selected:', file.name);
-        fileNameSpan.textContent = file.name;
-        deleteFileBtn.classList.remove('hidden');
-        
         // Проверяем, что файл является изображением
         if (!file.type.startsWith('image/')) {
             alert('Пожалуйста, выберите изображение');
@@ -106,22 +104,40 @@ paymentProofInput.addEventListener('change', function(e) {
             removeFile();
             return;
         }
+
+        // Показываем имя файла и кнопку удаления
+        fileNameSpan.textContent = file.name;
+        deleteFileBtn.classList.remove('hidden');
+        fileUploadLabel.classList.add('file-selected');
+
+        // Создаем превью изображения
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            imagePreview.classList.remove('hidden');
+            setTimeout(() => {
+                imagePreview.classList.add('visible');
+            }, 10);
+        };
+        reader.readAsDataURL(file);
     } else {
-        console.log('No file selected');
         resetFileInput();
     }
 });
 
 function removeFile() {
-    console.log('Removing file');
     paymentProofInput.value = '';
     resetFileInput();
 }
 
 function resetFileInput() {
-    console.log('Resetting file input');
     fileNameSpan.textContent = 'Прикрепить скриншот оплаты';
     deleteFileBtn.classList.add('hidden');
+    fileUploadLabel.classList.remove('file-selected');
+    imagePreview.classList.remove('visible');
+    setTimeout(() => {
+        imagePreview.src = '#';
+    }, 300);
 }
 
 // Обработка клика по кнопке удаления файла
