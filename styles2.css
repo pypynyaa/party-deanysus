@@ -60,22 +60,26 @@ html, body {
 .nikitos-position {
     top: 1970px;
     left: 974px;
+    position: fixed;
 }
 
 .german-position {
-    top: 2910px;
+    top: 390px;
     left: 195px;
+    position: fixed;
 }
 
 .also-position {
-    top: 5900px;
+    top: 495px;
     left: 248px;
+    position: fixed;
 }
 
 .party-position {
-    top: 7690px;
+    top: 3070px;
     left: 50%;
     transform: translateX(-50%);
+    position: fixed;
     margin-bottom: 100px;
 }
 
