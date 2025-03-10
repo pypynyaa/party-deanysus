@@ -25,6 +25,7 @@
       right: 0;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 0 30px;
       z-index: 9999;
     }
@@ -45,6 +46,11 @@
       justify-content: center;
     }
 
+    .chat-button {
+      height: 80px;
+      width: 80px;
+    }
+
     .music-control:hover, .chat-button:hover {
       transform: scale(1.05);
       background: rgba(0, 0, 0, 0.9);
@@ -57,6 +63,7 @@
       object-fit: cover;
       border-radius: 15px;
       transition: all 0.3s ease;
+      display: block;
     }
 
     .music-control.playing img {
@@ -73,9 +80,9 @@
     <button class="music-control" onclick="toggleMusic()">
       <img src="chill.jpg" alt="Музыка">
     </button>
-    <div class="chat-button" onclick="window.location.href='chat.html'">
+    <button class="chat-button" onclick="window.location.href='chat.html'">
       <img src="chat.jpg" alt="Чат">
-    </div>
+    </button>
   </div>
 
   <div class="video-background">
