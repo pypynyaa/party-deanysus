@@ -1,7 +1,6 @@
-// Инициализация Firebase
+// Получение объекта базы данных
 let db;
 try {
-    firebase.initializeApp(firebaseConfig);
     db = firebase.firestore();
     console.log('Firebase успешно инициализирован');
 } catch (error) {
