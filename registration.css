@@ -1047,6 +1047,9 @@ input[type="file"] {
     gap: 15px;
     margin-bottom: 20px;
     width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .music-link-container {
@@ -1054,29 +1057,26 @@ input[type="file"] {
     align-items: center;
     gap: 10px;
     width: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    border-radius: 10px;
-    position: relative;
+    background: var(--input-background);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    padding: 8px 15px;
     transition: all 0.3s ease;
 }
 
-.music-link-container::before {
-    content: '♪';
-    position: absolute;
-    left: 10px;
-    opacity: 0.3;
-    font-size: 20px;
+.music-link-container:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
 }
 
 .music-input {
     flex: 1;
-    min-width: 0; /* Важно для предотвращения переполнения */
+    min-width: 0;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
+    border: none;
     color: white;
-    padding: 8px 8px 8px 30px;
+    padding: 8px 8px 8px 25px;
     font-size: 16px;
     transition: all 0.3s ease;
     width: 100%;
@@ -1084,15 +1084,22 @@ input[type="file"] {
 }
 
 .music-input:focus {
-    border-color: #fff;
     outline: none;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.music-link-container::before {
+    content: '♪';
+    position: absolute;
+    left: 15px;
+    opacity: 0.5;
+    font-size: 18px;
+    color: var(--primary-color);
 }
 
 .remove-music-btn {
-    width: 30px;
-    height: 30px;
-    min-width: 30px; /* Предотвращает сжатие кнопки */
+    width: 25px;
+    height: 25px;
+    min-width: 25px;
     border-radius: 50%;
     background: rgba(255, 0, 0, 0.2);
     border: none;
@@ -1103,7 +1110,7 @@ input[type="file"] {
     justify-content: center;
     transition: all 0.3s ease;
     padding: 0;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .remove-music-btn:hover {
@@ -1113,12 +1120,12 @@ input[type="file"] {
 
 .add-music-btn {
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
     margin: 10px auto;
     padding: 12px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px dashed rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
+    background: var(--input-background);
+    border: 2px dashed var(--input-border);
+    border-radius: 12px;
     color: white;
     cursor: pointer;
     display: flex;
@@ -1127,17 +1134,19 @@ input[type="file"] {
     gap: 10px;
     transition: all 0.3s ease;
     font-size: 16px;
+    font-weight: 500;
 }
 
 .add-music-btn::before {
     content: '♪';
     font-size: 20px;
+    color: var(--primary-color);
     transition: transform 0.3s ease;
 }
 
 .add-music-btn:hover {
     background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.4);
+    border-color: var(--primary-color);
     transform: translateY(-2px);
 }
 
@@ -1145,26 +1154,67 @@ input[type="file"] {
     transform: scale(1.2);
 }
 
+/* Стили для селекта статуса отношений */
+#relationship {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 12px 35px;
+    background: var(--input-background);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    text-align: center;
+    text-align-last: center;
+    font-weight: 500;
+}
+
+#relationship:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+#relationship:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+}
+
+#relationship option {
+    background-color: #2a2a2a;
+    color: white;
+    padding: 12px;
+}
+
 /* Медиа-запросы для мобильных устройств */
 @media screen and (max-width: 768px) {
     .music-link-container {
-        padding: 10px;
+        padding: 6px 12px;
     }
 
     .music-input {
         font-size: 14px;
-        padding: 6px 6px 6px 25px;
+        padding: 6px 6px 6px 22px;
     }
 
     .music-link-container::before {
         font-size: 16px;
-        left: 8px;
+        left: 12px;
     }
 
     .remove-music-btn {
-        width: 25px;
-        height: 25px;
-        min-width: 25px;
+        width: 22px;
+        height: 22px;
+        min-width: 22px;
         font-size: 14px;
     }
 
@@ -1172,11 +1222,16 @@ input[type="file"] {
         padding: 10px;
         font-size: 14px;
     }
+
+    #relationship {
+        padding: 10px 30px;
+        font-size: 14px;
+    }
 }
 
 @media screen and (max-width: 480px) {
     .music-link-container {
-        padding: 8px;
+        padding: 5px 10px;
     }
 
     .music-input {
@@ -1184,60 +1239,22 @@ input[type="file"] {
         padding: 5px 5px 5px 20px;
     }
 
+    .music-link-container::before {
+        font-size: 14px;
+        left: 10px;
+    }
+
     .remove-music-btn {
-        width: 22px;
-        height: 22px;
-        min-width: 22px;
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
         font-size: 12px;
     }
-}
 
-select {
-    width: 100%;
-    padding: 12px 35px 12px 15px;
-    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    color: var(--text-color);
-    font-size: 16px;
-    transition: all 0.3s ease;
-    height: 50px;
-    box-sizing: border-box;
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(5px);
-}
-
-select:hover {
-    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2), 0 4px 12px rgba(0, 0, 0, 0.3);
-    transform: translateY(-2px);
-}
-
-select option {
-    background-color: #2a2a2a;
-    color: white;
-    padding: 12px;
-}
-
-.form-group select {
-    text-align: center;
-    text-align-last: center;
-    padding-right: 35px;
-    padding-left: 35px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
+    #relationship {
+        padding: 8px 25px;
+        font-size: 13px;
+        background-position: right 10px center;
+        background-size: 14px;
+    }
 } 
