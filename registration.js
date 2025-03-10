@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Firebase уже инициализирован в HTML
         db = firebase.firestore();
         console.log('База данных успешно подключена');
-        // Загружаем существующую регистрацию после инициализации базы данных
+        // Загружаем существующую регистрацию
         loadExistingRegistration();
     } catch (error) {
         console.error('Ошибка подключения к базе данных:', error);
