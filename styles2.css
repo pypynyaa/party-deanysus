@@ -253,11 +253,11 @@ button {
 /* Стили для профильных фотографий */
 .profile-photo {
     position: absolute;
-    width: 200px;
-    height: 200px;
+    width: 600px;
+    height: 600px;
     cursor: pointer;
     pointer-events: auto;
-    border-radius: 20px;
+    border-radius: 40px;
     overflow: hidden;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
@@ -303,15 +303,17 @@ button {
 /* Медиа-запросы для профильных фотографий */
 @media screen and (max-width: 1200px) {
     .profile-photo {
-        width: 180px;
-        height: 180px;
+        width: 500px;
+        height: 500px;
+        border-radius: 35px;
     }
 }
 
 @media screen and (max-width: 768px) {
     .profile-photo {
-        width: 150px;
-        height: 150px;
+        width: 400px;
+        height: 400px;
+        border-radius: 30px;
     }
     
     .profile-caption {
@@ -322,8 +324,9 @@ button {
 
 @media screen and (max-width: 480px) {
     .profile-photo {
-        width: 120px;
-        height: 120px;
+        width: 300px;
+        height: 300px;
+        border-radius: 25px;
     }
     
     .profile-caption {
