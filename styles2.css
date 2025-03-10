@@ -84,6 +84,7 @@ html, body {
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
+    margin-bottom: 100px;
 }
 
 /* Общие стили для кнопок */
@@ -325,25 +326,96 @@ button {
     transform: scale(1.1);
 }
 
-/* Медиа-запросы для фотографий */
+/* Кнопка регистрации */
+.registration-button {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+}
+
+.button-party {
+    background: linear-gradient(45deg, #FF0000, #000000);
+    color: white;
+    border: none;
+    border-radius: var(--button-border-radius);
+    font-size: var(--button-font-size);
+    font-weight: bold;
+    padding: 15px 40px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.button-party:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Медиа-запросы для адаптивности */
+@media screen and (max-width: 1700px) {
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-width: 320px;
+    }
+    
+    .main-container {
+        width: 1700px;
+        transform-origin: top center;
+        transform: scale(calc(100vw / 1700));
+        height: calc(100vh * (1700 / 100vw));
+    }
+}
+
 @media screen and (max-width: 1200px) {
     .photo-grid {
-        grid-template-columns: repeat(2, 1fr);
         gap: 15px;
         padding: 10px;
-        max-width: 800px;
+        max-width: 600px;
+    }
+    
+    .photo-caption {
+        font-size: 20px;
+        padding: 15px;
     }
 }
 
 @media screen and (max-width: 768px) {
     .photos-section {
-        padding: 20px 10px;
+        padding: 30px 15px;
     }
     
     .photo-grid {
+        grid-template-columns: repeat(2, 1fr);
         gap: 12px;
         padding: 8px;
-        max-width: 600px;
+    }
+
+    .photo-item {
+        border-radius: 15px;
+    }
+
+    .photo-caption {
+        font-size: 18px;
+        padding: 12px;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .photo-image {
+        filter: blur(2px) brightness(0.9);
+    }
+    
+    .registration-button {
+        bottom: 20px;
+    }
+    
+    .button-party {
+        padding: 12px 30px;
+        font-size: 20px;
     }
 }
 
@@ -356,5 +428,19 @@ button {
     
     .photos-section {
         padding: 20px 10px;
+    }
+
+    .photo-item {
+        border-radius: 10px;
+    }
+
+    .photo-caption {
+        font-size: 16px;
+        padding: 10px;
+    }
+    
+    .button-party {
+        padding: 10px 25px;
+        font-size: 18px;
     }
 }
