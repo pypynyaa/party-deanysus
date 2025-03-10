@@ -115,9 +115,12 @@ paymentProofInput.addEventListener('change', function(e) {
         reader.onload = function(e) {
             previewImage.src = e.target.result;
             imagePreview.classList.remove('hidden');
-            setTimeout(() => {
+            // Добавляем класс visible после небольшой задержки для анимации
+            requestAnimationFrame(() => {
                 imagePreview.classList.add('visible');
-            }, 10);
+            });
+            // Показываем уведомление
+            showNotification('Файл успешно загружен!');
         };
         reader.readAsDataURL(file);
     } else {
@@ -136,8 +139,30 @@ function resetFileInput() {
     fileUploadLabel.classList.remove('file-selected');
     imagePreview.classList.remove('visible');
     setTimeout(() => {
-        imagePreview.src = '#';
+        imagePreview.classList.add('hidden');
+        previewImage.src = '#';
     }, 300);
+}
+
+// Функция для показа уведомления
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'upload-notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    // Добавляем класс для анимации появления
+    requestAnimationFrame(() => {
+        notification.classList.add('visible');
+    });
+
+    // Удаляем уведомление через 3 секунды
+    setTimeout(() => {
+        notification.classList.remove('visible');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
 }
 
 // Обработка клика по кнопке удаления файла
