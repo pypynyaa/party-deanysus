@@ -26,7 +26,8 @@ html, body {
 
 /* Контейнер для фона */
 .background-container {
-    width: 100%;
+    width: 1700px;
+    margin: 0 auto;
     position: relative;
 }
 
@@ -39,10 +40,11 @@ html, body {
 
 /* Оверлей для кнопок */
 .buttons-overlay {
-    position: absolute;
+    position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1700px;
     height: 100%;
     pointer-events: none;
 }
@@ -251,6 +253,7 @@ button {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: blur(5px) brightness(0.8);
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -262,29 +265,27 @@ button {
     right: 0;
     bottom: 0;
     background: linear-gradient(135deg, 
-        rgba(255, 0, 0, 0.2) 0%,
-        rgba(255, 0, 0, 0) 50%,
+        rgba(255, 0, 0, 0.3) 0%,
         rgba(0, 0, 0, 0.3) 100%
     );
-    opacity: 0;
+    opacity: 1;
     transition: all 0.3s ease;
     z-index: 1;
     border-radius: 15px;
-    backdrop-filter: blur(3px);
 }
 
 .photo-item:hover {
-    transform: perspective(1000px) rotateY(10deg) rotateX(5deg) scale(1.05);
-    box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
 }
 
 .photo-item:hover::after {
-    opacity: 1;
+    opacity: 0;
 }
 
 .photo-item:hover .photo-image {
+    filter: blur(0) brightness(1);
     transform: scale(1.1);
-    filter: brightness(1.1) contrast(1.1);
 }
 
 /* Медиа-запросы для фотографий */
