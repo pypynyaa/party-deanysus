@@ -3,12 +3,34 @@ let db;
 
 // Получение объекта базы данных после загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM загружен, пытаемся подключиться к базе данных...');
+    
     try {
-        // Firebase уже инициализирован в HTML
+        // Проверяем доступность Firebase
+        if (typeof firebase === 'undefined') {
+            throw new Error('Firebase не определен');
+        }
+        
+        // Проверяем доступность Firestore
+        if (typeof firebase.firestore === 'undefined') {
+            throw new Error('Firestore не определен');
+        }
+        
+        // Получаем объект базы данных
         db = firebase.firestore();
         console.log('База данных успешно подключена');
-        // Загружаем существующую регистрацию
-        loadExistingRegistration();
+        
+        // Пробуем сделать тестовый запрос
+        db.collection('registrations').limit(1).get()
+            .then(() => {
+                console.log('Тестовый запрос к базе данных выполнен успешно');
+                // Загружаем существующую регистрацию
+                loadExistingRegistration();
+            })
+            .catch(error => {
+                console.error('Ошибка при тестовом запросе к базе данных:', error);
+                alert('Ошибка подключения к базе данных. Пожалуйста, обратитесь к администратору.');
+            });
     } catch (error) {
         console.error('Ошибка подключения к базе данных:', error);
         alert('Ошибка подключения к базе данных. Пожалуйста, обратитесь к администратору.');

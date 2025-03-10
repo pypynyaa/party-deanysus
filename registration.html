@@ -179,6 +179,13 @@
   
   <!-- Инициализация Firebase -->
   <script>
+    // Проверяем, что все необходимые компоненты Firebase загружены
+    if (typeof firebase === 'undefined') {
+      console.error('Firebase SDK не загружен');
+    } else {
+      console.log('Firebase SDK успешно загружен');
+    }
+
     // Конфигурация Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
@@ -190,12 +197,30 @@
       measurementId: "G-FBKQXVRD0D"
     };
 
-    // Инициализация Firebase
-    firebase.initializeApp(firebaseConfig);
+    try {
+      // Инициализация Firebase
+      firebase.initializeApp(firebaseConfig);
+      console.log('Firebase успешно инициализирован');
+
+      // Проверяем доступность Firestore
+      if (firebase.firestore) {
+        console.log('Firestore доступен');
+      } else {
+        console.error('Firestore не доступен');
+      }
+    } catch (error) {
+      console.error('Ошибка при инициализации Firebase:', error);
+    }
     
     // Загружаем основной скрипт только после инициализации Firebase
     const script = document.createElement('script');
     script.src = 'registration.js';
+    script.onerror = function() {
+      console.error('Ошибка загрузки registration.js');
+    };
+    script.onload = function() {
+      console.log('registration.js успешно загружен');
+    };
     document.body.appendChild(script);
   </script>
 </body>
