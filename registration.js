@@ -1,14 +1,27 @@
 // Объявляем переменную db глобально
 let db;
 
+// Функция для получения подключения к базе данных
+async function getDatabase() {
+    if (!db) {
+        try {
+            db = await window.initializeFirebase();
+            console.log('База данных успешно подключена');
+        } catch (error) {
+            console.error('Ошибка подключения к базе данных:', error);
+            throw error;
+        }
+    }
+    return db;
+}
+
 // Инициализация базы данных после загрузки DOM
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('DOM загружен, пытаемся подключиться к базе данных...');
     
     try {
         // Инициализируем Firebase и получаем объект базы данных
-        db = await window.initializeFirebase();
-        console.log('База данных успешно подключена');
+        db = await getDatabase();
         
         // Пробуем сделать тестовый запрос
         const testQuery = await db.collection('registrations').limit(1).get();
@@ -172,7 +185,8 @@ function generateUserId() {
 // Функции для работы с регистрациями
 async function findRegistrationByPhone(phone) {
     try {
-        const snapshot = await db.collection('registrations')
+        const database = await getDatabase();
+        const snapshot = await database.collection('registrations')
             .where('phone', '==', phone)
             .get();
         
@@ -192,7 +206,8 @@ async function findRegistrationByPhone(phone) {
 
 async function findRegistrationByTelegram(telegram) {
     try {
-        const snapshot = await db.collection('registrations')
+        const database = await getDatabase();
+        const snapshot = await database.collection('registrations')
             .where('telegram', '==', telegram)
             .get();
         
@@ -245,6 +260,9 @@ if (form) {
         animateSubmitButton(submitButton, true);
 
         try {
+            // Получаем подключение к базе данных
+            const database = await getDatabase();
+            
             const formData = new FormData(form);
             const phone = formData.get('phone');
             const telegram = formData.get('telegram');
@@ -293,10 +311,10 @@ if (form) {
 
             // Сохраняем или обновляем данные
             if (existingRegistration) {
-                await db.collection('registrations').doc(userId).update(data);
+                await database.collection('registrations').doc(userId).update(data);
                 alert('Ваша регистрация успешно обновлена!');
             } else {
-                await db.collection('registrations').doc(userId).set(data);
+                await database.collection('registrations').doc(userId).set(data);
                 alert('Регистрация успешно завершена! Мы свяжемся с вами в ближайшее время.');
             }
 
@@ -327,7 +345,8 @@ async function loadExistingRegistration() {
     if (!registrationId) return;
 
     try {
-        const doc = await db.collection('registrations').doc(registrationId).get();
+        const database = await getDatabase();
+        const doc = await database.collection('registrations').doc(registrationId).get();
         if (doc.exists) {
             const data = doc.data();
             // Заполняем форму данными
