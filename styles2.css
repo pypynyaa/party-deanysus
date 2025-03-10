@@ -27,9 +27,7 @@ html, body {
 /* Контейнер для фона */
 .background-container {
     width: 100%;
-    max-width: 1700px;
     position: relative;
-    margin: 0 auto;
 }
 
 /* Фоновое изображение */
@@ -57,27 +55,26 @@ html, body {
     pointer-events: auto;
 }
 
-/* Позиции кнопок с процентами для адаптивности */
+/* Позиции кнопок (в процентах от размера контейнера) */
 .nikitos-position {
-    top: calc(1970 * 100% / 8000);
-    left: calc(974 * 100% / 1700);
+    top: 57.35%;
+    left: 57.29%;
 }
 
 .german-position {
-    top: calc(2910 * 100% / 8000);
-    left: calc(195 * 100% / 1700);
+    top: 11.47%;
+    left: 11.47%;
 }
 
 .also-position {
-    top: calc(5900 * 100% / 8000);
-    left: calc(248 * 100% / 1700);
+    top: 14.59%;
+    left: 14.59%;
 }
 
 .party-position {
-    top: calc(7690 * 100% / 8000);
+    top: 90.47%;
     left: 50%;
     transform: translateX(-50%);
-    margin-bottom: 100px;
 }
 
 /* Общие стили для кнопок */
@@ -171,10 +168,6 @@ button {
         --button-width: 180px;
         --button-font-size: 20px;
         --button-border-radius: 25px;
-    }
-    
-    .background-container {
-        width: 100%;
     }
 }
 

@@ -124,10 +124,6 @@ h2::after {
     margin-bottom: 20px;
     position: relative;
     text-align: center;
-    width: 100%;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 input[type="text"],
@@ -1051,7 +1047,7 @@ input[type="file"] {
     gap: 15px;
     margin-bottom: 20px;
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -1061,23 +1057,17 @@ input[type="file"] {
     align-items: center;
     gap: 10px;
     width: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    padding: 0 15px;
+    background: var(--input-background);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    padding: 8px 15px;
     transition: all 0.3s ease;
-    position: relative;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    height: 50px;
-    box-sizing: border-box;
-    backdrop-filter: blur(10px);
 }
 
 .music-link-container:hover {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.15);
     border-color: var(--primary-color);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .music-input {
@@ -1086,47 +1076,56 @@ input[type="file"] {
     background: transparent;
     border: none;
     color: white;
-    padding: 8px 8px 8px 35px;
+    padding: 8px 8px 8px 25px;
     font-size: 16px;
     transition: all 0.3s ease;
     width: 100%;
     box-sizing: border-box;
-    text-align: center;
-    height: 100%;
-}
-
-.music-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
 }
 
 .music-input:focus {
     outline: none;
 }
 
-.music-input:focus::placeholder {
-    color: rgba(255, 255, 255, 0.8);
-}
-
 .music-link-container::before {
     content: '♪';
     position: absolute;
     left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.8;
-    font-size: 20px;
+    opacity: 0.5;
+    font-size: 18px;
     color: var(--primary-color);
-    text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+}
+
+.remove-music-btn {
+    width: 25px;
+    height: 25px;
+    min-width: 25px;
+    border-radius: 50%;
+    background: rgba(255, 0, 0, 0.2);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+    font-size: 16px;
+}
+
+.remove-music-btn:hover {
+    background: rgba(255, 0, 0, 0.4);
+    transform: rotate(90deg);
 }
 
 .add-music-btn {
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
     margin: 10px auto;
-    height: 50px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 2px dashed rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
+    padding: 12px;
+    background: var(--input-background);
+    border: 2px dashed var(--input-border);
+    border-radius: 12px;
     color: white;
     cursor: pointer;
     display: flex;
@@ -1136,99 +1135,199 @@ input[type="file"] {
     transition: all 0.3s ease;
     font-size: 16px;
     font-weight: 500;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    padding: 0 15px;
-    box-sizing: border-box;
-    backdrop-filter: blur(10px);
 }
 
 .add-music-btn::before {
     content: '♪';
-    font-size: 22px;
+    font-size: 20px;
     color: var(--primary-color);
     transition: transform 0.3s ease;
-    text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
 }
 
 .add-music-btn:hover {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.15);
     border-color: var(--primary-color);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .add-music-btn:hover::before {
-    transform: scale(1.2) rotate(15deg);
+    transform: scale(1.2);
 }
 
 /* Стили для селекта статуса отношений */
-.relationship-group {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.relationship-group::before {
-    content: '❤️';
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 24px;
-    z-index: 1;
-    opacity: 0.9;
-    filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.7));
-}
-
 #relationship {
     width: 100%;
-    height: 60px;
-    padding: 0 50px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 12px 35px;
+    background: var(--input-background);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
     color: white;
-    font-size: 18px;
+    font-size: 16px;
     transition: all 0.3s ease;
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ff6b6b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 20px center;
-    background-size: 20px;
+    background-position: right 15px center;
+    background-size: 16px;
     text-align: center;
     text-align-last: center;
-    font-weight: 600;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    box-sizing: border-box;
-    backdrop-filter: blur(10px);
-    letter-spacing: 0.5px;
+    font-weight: 500;
 }
 
 #relationship:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-color: var(--secondary-color);
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: var(--primary-color);
     transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
 }
 
 #relationship:focus {
     outline: none;
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2), 0 6px 25px rgba(0, 0, 0, 0.4);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
 }
 
 #relationship option {
-    background-color: rgba(0, 0, 0, 0.95);
+    background-color: #2a2a2a;
     color: white;
-    padding: 20px;
-    font-size: 18px;
-    font-weight: 500;
+    padding: 12px;
 }
 
-/* Стили для селекта оборудования */
-select[name="equipment"] {
+/* Медиа-запросы для мобильных устройств */
+@media screen and (max-width: 768px) {
+    .music-link-container {
+        padding: 6px 12px;
+    }
+
+    .music-input {
+        font-size: 14px;
+        padding: 6px 6px 6px 22px;
+    }
+
+    .music-link-container::before {
+        font-size: 16px;
+        left: 12px;
+    }
+
+    .remove-music-btn {
+        width: 22px;
+        height: 22px;
+        min-width: 22px;
+        font-size: 14px;
+    }
+
+    .add-music-btn {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    #relationship {
+        padding: 10px 30px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .music-link-container {
+        padding: 5px 10px;
+    }
+
+    .music-input {
+        font-size: 13px;
+        padding: 5px 5px 5px 20px;
+    }
+
+    .music-link-container::before {
+        font-size: 14px;
+        left: 10px;
+    }
+
+    .remove-music-btn {
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        font-size: 12px;
+    }
+
+    #relationship {
+        padding: 8px 25px;
+        font-size: 13px;
+        background-position: right 10px center;
+        background-size: 14px;
+    }
+}
+
+.additional-info-section {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 25px;
+    padding: 40px;
+    margin: 40px 0;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.info-group {
+    margin-bottom: 40px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.info-group:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.info-group:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.info-group:last-child {
+    margin-bottom: 0;
+}
+
+.info-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-left: 10px;
+}
+
+.info-title::before {
+    font-size: 28px;
+    opacity: 0.9;
+}
+
+.info-title.relationship::before {
+    content: '❤️';
+    filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.5));
+}
+
+.info-title.equipment::before {
+    content: '📸';
+    filter: drop-shadow(0 0 10px rgba(78, 205, 196, 0.5));
+}
+
+.info-title.music::before {
+    content: '🎵';
+    filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.5));
+}
+
+.equipment-select {
     width: 100%;
     height: 60px;
     padding: 0 50px;
@@ -1251,64 +1350,135 @@ select[name="equipment"] {
     backdrop-filter: blur(10px);
 }
 
-select[name="equipment"]::before {
-    content: '📸';
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 24px;
-    z-index: 1;
-    opacity: 0.9;
-}
-
-select[name="equipment"]:hover,
-#relationship:hover {
+.equipment-select:hover {
     background-color: rgba(0, 0, 0, 0.5);
     border-color: var(--secondary-color);
     transform: translateY(-2px);
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
 }
 
-select[name="equipment"]:focus,
-#relationship:focus {
+.equipment-select:focus {
     outline: none;
     border-color: var(--secondary-color);
     box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2), 0 6px 25px rgba(0, 0, 0, 0.4);
 }
 
-select[name="equipment"] option {
+.equipment-select option {
     background-color: rgba(0, 0, 0, 0.95);
     color: white;
     padding: 20px;
     font-size: 18px;
 }
 
-/* Медиа-запросы для мобильных устройств */
+/* Обновляем стили для музыкальных треков */
+.music-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.music-link-container {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+}
+
+.music-link-container:hover {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+.music-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 0 15px;
+    height: 100%;
+    text-align: center;
+}
+
+.music-input:focus {
+    outline: none;
+}
+
+.add-music-btn {
+    width: 100%;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+}
+
+.add-music-btn:hover {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+.add-music-btn::before {
+    content: '🎵';
+    font-size: 20px;
+}
+
 @media screen and (max-width: 768px) {
-    #relationship,
-    select[name="equipment"] {
-        height: 50px;
-        font-size: 16px;
-        padding: 0 40px;
+    .additional-info-section {
+        padding: 30px;
+        margin: 30px 0;
     }
 
-    .relationship-group::before {
+    .info-title {
         font-size: 20px;
-        left: 15px;
+    }
+
+    .equipment-select,
+    .music-link-container,
+    .add-music-btn {
+        height: 50px;
+    }
+
+    .music-input {
+        font-size: 14px;
     }
 }
 
 @media screen and (max-width: 480px) {
-    #relationship,
-    select[name="equipment"] {
-        height: 45px;
-        font-size: 14px;
-        padding: 0 35px;
+    .additional-info-section {
+        padding: 20px;
+        margin: 20px 0;
     }
 
-    .relationship-group::before {
+    .info-title {
         font-size: 18px;
-        left: 12px;
+    }
+
+    .info-title::before {
+        font-size: 24px;
+    }
+
+    .equipment-select,
+    .music-link-container,
+    .add-music-btn {
+        height: 45px;
+        font-size: 14px;
     }
 } 

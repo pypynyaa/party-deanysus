@@ -145,41 +145,40 @@
           </label>
         </div>
 
-        <h2>Дополнительная информация</h2>
-        <div class="form-grid">
-          <div class="form-group">
-            <div class="relationship-group">
-                <select id="relationship" name="relationship" required>
-                    <option value="">Выберите статус отношений</option>
-                    <option value="single">Свободен/Свободна</option>
-                    <option value="relationship">Есть вторая половинка</option>
+        <div class="additional-info-section">
+            <h2>Дополнительная информация</h2>
+            
+            <div class="info-group">
+                <div class="info-title relationship">Статус отношений</div>
+                <div class="relationship-group">
+                    <select id="relationship" name="relationship" required>
+                        <option value="" disabled selected>Выберите статус отношений</option>
+                        <option value="single">Свободен</option>
+                        <option value="in_relationship">В отношениях</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="info-group">
+                <div class="info-title equipment">Фото/видео аппаратура</div>
+                <select class="equipment-select" name="equipment" required>
+                    <option value="" disabled selected>Есть ли у вас фото/видео аппаратура?</option>
+                    <option value="photo">Есть фотоаппарат</option>
+                    <option value="video">Есть видеокамера</option>
+                    <option value="both">Есть и то, и другое</option>
+                    <option value="none">Ничего нет</option>
                 </select>
             </div>
-          </div>
-          <div class="form-group full-width">
-            <div id="musicLinks" class="music-links">
-              <div class="music-link-container">
-                <input type="text" class="music-input" name="music[]" placeholder="Добавьте любимый трек из Яндекс.Музыки">
-                <button type="button" class="remove-music-btn" aria-label="Удалить трек">×</button>
-              </div>
+
+            <div class="info-group">
+                <div class="info-title music">Любимые треки</div>
+                <div class="music-links" id="musicLinks">
+                    <!-- Поля для треков будут добавляться через JavaScript -->
+                </div>
+                <button type="button" class="add-music-btn">
+                    Добавить ещё один трек
+                </button>
             </div>
-            <button type="button" class="add-music-btn" onclick="addMusicLink()">
-              Добавить ещё пару треков
-            </button>
-          </div>
-          <div class="form-group full-width">
-            <select id="camera" name="camera" required>
-              <option value="">Есть ли у вас фото/видео оборудование?</option>
-              <option value="none">Нет оборудования</option>
-              <option value="phone">Телефон с хорошей камерой</option>
-              <option value="photo">Фотоаппарат</option>
-              <option value="video">Видеокамера</option>
-              <option value="both">И фото, и видео оборудование</option>
-            </select>
-          </div>
-          <div class="form-group full-width">
-            <textarea id="foodPreferences" name="foodPreferences" placeholder="Предпочтения по еде (аллергии, вегетарианство и т.д.)"></textarea>
-          </div>
         </div>
         
         <button type="submit" class="submit-btn">Отправить</button>
