@@ -903,31 +903,113 @@ input[type="file"] {
 }
 
 .payment-info {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    padding: 20px;
     margin-bottom: 20px;
     backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
+}
+
+.payment-info.visible {
+    max-height: 200px;
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
 .payment-details {
-    color: #fff;
-    font-size: 16px;
-    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
 .payment-card {
-    font-size: 24px;
+    font-size: 28px;
     color: #fff;
     font-weight: bold;
-    margin: 5px 0;
+    margin: 10px 0;
+    text-align: center;
     letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    user-select: all;
+}
+
+.payment-card .copy-icon {
+    font-size: 20px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.payment-card:hover .copy-icon {
+    opacity: 1;
+}
+
+.copy-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    background: var(--primary-color);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.copy-notification.visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
 }
 
 .payment-name, .payment-bank {
-    color: #fff;
+    color: rgba(255, 255, 255, 0.9);
     font-size: 16px;
     margin: 5px 0;
+    text-align: center;
+}
+
+.payment-toggle {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.payment-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+.payment-toggle .icon {
+    transition: transform 0.3s ease;
+}
+
+.payment-toggle.active .icon {
+    transform: rotate(180deg);
 }
 
 .music-links {

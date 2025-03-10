@@ -46,12 +46,19 @@
 
         <h2>Оплата</h2>
         <div class="form-group payment-section">
-          <div class="payment-info">
-            <p class="payment-details">Реквизиты для оплаты:</p>
-            <p class="payment-card">5469 4500 1062 9285</p>
-            <p class="payment-name">Никита Н.</p>
-            <p class="payment-bank">Сбербанк</p>
-          </div>
+            <button type="button" class="payment-toggle">
+                Показать реквизиты для оплаты
+                <span class="icon">▼</span>
+            </button>
+            <div class="payment-info">
+                <p class="payment-details">Реквизиты для оплаты:</p>
+                <p class="payment-card" onclick="copyCardNumber()">
+                    5469 4500 1062 9285
+                    <span class="copy-icon">📋</span>
+                </p>
+                <p class="payment-name">Никита Н.</p>
+                <p class="payment-bank">Сбербанк</p>
+            </div>
           <label class="checkbox-label">
             <input type="checkbox" id="paymentDone" name="paymentDone">
             <span>Я оплатил участие</span>

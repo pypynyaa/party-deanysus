@@ -484,4 +484,59 @@ function getFileTypeIcon(fileType) {
         default:
             return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBkPSJNMzIgMGgzMjB2MTI4aDEyOHYzODRIMzJWMHptMzg0IDEyOEwzMjAgMzJWMTI4aDk2eiIgZmlsbD0iIzk5OTk5OSIvPjwvc3ZnPg==';
     }
+}
+
+// Обработка открытия/закрытия реквизитов
+const paymentToggle = document.querySelector('.payment-toggle');
+const paymentInfo = document.querySelector('.payment-info');
+
+if (paymentToggle && paymentInfo) {
+    paymentToggle.addEventListener('click', () => {
+        paymentInfo.classList.toggle('visible');
+        paymentToggle.classList.toggle('active');
+        
+        // Обновляем текст кнопки
+        const buttonText = paymentToggle.childNodes[0];
+        if (paymentInfo.classList.contains('visible')) {
+            buttonText.textContent = 'Скрыть реквизиты';
+        } else {
+            buttonText.textContent = 'Показать реквизиты для оплаты';
+        }
+    });
+}
+
+// Функция для копирования номера карты
+function copyCardNumber() {
+    const cardNumber = '5469 4500 1062 9285';
+    
+    // Создаем временный элемент input
+    const tempInput = document.createElement('input');
+    tempInput.value = cardNumber;
+    document.body.appendChild(tempInput);
+    
+    // Выделяем и копируем текст
+    tempInput.select();
+    document.execCommand('copy');
+    
+    // Удаляем временный элемент
+    document.body.removeChild(tempInput);
+    
+    // Показываем уведомление
+    const notification = document.createElement('div');
+    notification.className = 'copy-notification';
+    notification.textContent = 'Номер карты скопирован!';
+    document.body.appendChild(notification);
+    
+    // Анимируем появление уведомления
+    requestAnimationFrame(() => {
+        notification.classList.add('visible');
+    });
+    
+    // Удаляем уведомление через 2 секунды
+    setTimeout(() => {
+        notification.classList.remove('visible');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 2000);
 } 
