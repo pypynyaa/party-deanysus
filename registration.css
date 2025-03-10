@@ -1172,82 +1172,136 @@ input[type="file"] {
 .relationship-group::before {
     content: '❤️';
     position: absolute;
-    left: 15px;
+    left: 20px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 20px;
+    font-size: 24px;
     z-index: 1;
     opacity: 0.9;
-    filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.5));
+    filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.7));
 }
 
 #relationship {
     width: 100%;
-    height: 50px;
-    padding: 0 40px;
+    height: 60px;
+    padding: 0 50px;
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
+    border-radius: 20px;
     color: white;
-    font-size: 16px;
+    font-size: 18px;
     transition: all 0.3s ease;
     cursor: pointer;
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ff6b6b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 15px center;
-    background-size: 16px;
+    background-position: right 20px center;
+    background-size: 20px;
     text-align: center;
     text-align-last: center;
-    font-weight: 500;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
     backdrop-filter: blur(10px);
+    letter-spacing: 0.5px;
 }
 
 #relationship:hover {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: var(--primary-color);
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: var(--secondary-color);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
 }
 
 #relationship:focus {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2), 0 6px 20px rgba(0, 0, 0, 0.3);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2), 0 6px 25px rgba(0, 0, 0, 0.4);
 }
 
 #relationship option {
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.95);
     color: white;
-    padding: 15px;
-    font-size: 16px;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* Стили для селекта оборудования */
+select[name="equipment"] {
+    width: 100%;
+    height: 60px;
+    padding: 0 50px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: white;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234ecdc4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    background-size: 20px;
+    text-align: center;
+    text-align-last: center;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+select[name="equipment"]::before {
+    content: '📸';
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    z-index: 1;
+    opacity: 0.9;
+}
+
+select[name="equipment"]:hover,
+#relationship:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+select[name="equipment"]:focus,
+#relationship:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2), 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+select[name="equipment"] option {
+    background-color: rgba(0, 0, 0, 0.95);
+    color: white;
+    padding: 20px;
+    font-size: 18px;
 }
 
 /* Медиа-запросы для мобильных устройств */
 @media screen and (max-width: 768px) {
-    .music-link-container {
-        height: 45px;
-        padding: 0 12px;
+    #relationship,
+    select[name="equipment"] {
+        height: 50px;
+        font-size: 16px;
+        padding: 0 40px;
     }
 
-    .music-input {
-        font-size: 14px;
-        padding: 6px 6px 6px 30px;
+    .relationship-group::before {
+        font-size: 20px;
+        left: 15px;
     }
+}
 
-    .music-link-container::before {
-        font-size: 18px;
-        left: 12px;
-    }
-
-    .add-music-btn {
-        height: 45px;
-        font-size: 14px;
-    }
-
-    #relationship {
+@media screen and (max-width: 480px) {
+    #relationship,
+    select[name="equipment"] {
         height: 45px;
         font-size: 14px;
         padding: 0 35px;
@@ -1255,38 +1309,6 @@ input[type="file"] {
 
     .relationship-group::before {
         font-size: 18px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .music-link-container {
-        height: 40px;
-        padding: 0 10px;
-    }
-
-    .music-input {
-        font-size: 13px;
-        padding: 5px 5px 5px 25px;
-    }
-
-    .music-link-container::before {
-        font-size: 16px;
-        left: 10px;
-    }
-
-    .add-music-btn {
-        height: 40px;
-        font-size: 13px;
-    }
-
-    #relationship {
-        height: 40px;
-        font-size: 13px;
-        padding: 0 30px;
-    }
-
-    .relationship-group::before {
-        font-size: 16px;
-        left: 10px;
+        left: 12px;
     }
 } 

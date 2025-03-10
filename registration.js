@@ -269,53 +269,50 @@ if (musicLinks) {
 }
 
 // Функция для добавления нового поля для музыкальной ссылки
-function addMusicLink() {
-    // Добавляем два трека
-    for (let i = 0; i < 2; i++) {
-        const container = document.createElement('div');
-        container.className = 'music-link-container';
-        
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'music-input';
-        input.name = 'music[]';
-        input.placeholder = 'Добавьте любимый трек из Яндекс.Музыки';
-        
+function addMusicLink(isFirstTrack = false) {
+    const container = document.createElement('div');
+    container.className = 'music-link-container';
+    container.style.opacity = '0';
+    container.style.transform = 'translateY(20px)';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'music-input';
+    input.name = 'music_links[]';
+    input.placeholder = 'Добавьте любимый трек из Яндекс.Музыки';
+    input.required = true;
+
+    container.appendChild(input);
+
+    if (!isFirstTrack) {
         const removeBtn = document.createElement('button');
         removeBtn.type = 'button';
         removeBtn.className = 'remove-music-btn';
-        removeBtn.textContent = '×';
-        removeBtn.setAttribute('aria-label', 'Удалить трек');
-        
-        // Добавляем анимацию появления
-        container.style.opacity = '0';
-        container.style.transform = 'translateY(20px)';
-        
-        container.appendChild(input);
-        container.appendChild(removeBtn);
-        
-        musicLinks.appendChild(container);
-        
-        // Запускаем анимацию появления
-        requestAnimationFrame(() => {
-            container.style.transition = 'all 0.3s ease';
-            container.style.opacity = '1';
-            container.style.transform = 'translateY(0)';
-        });
-        
-        // Добавляем обработчик для удаления
+        removeBtn.innerHTML = '×';
         removeBtn.onclick = function() {
             container.style.opacity = '0';
             container.style.transform = 'translateY(20px)';
             setTimeout(() => container.remove(), 300);
         };
-        
-        // Фокусируемся на первом новом поле ввода
-        if (i === 0) {
-            input.focus();
-        }
+        container.appendChild(removeBtn);
     }
+
+    document.querySelector('.music-links').appendChild(container);
+    
+    // Анимация появления
+    requestAnimationFrame(() => {
+        container.style.transition = 'all 0.3s ease';
+        container.style.opacity = '1';
+        container.style.transform = 'translateY(0)';
+    });
+
+    input.focus();
 }
+
+// Инициализация первого поля при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    addMusicLink(true); // true указывает, что это первое поле
+});
 
 // Обновляем обработчик отправки формы
 if (form) {
