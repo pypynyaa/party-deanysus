@@ -114,11 +114,6 @@
         gap: 8px;
     }
 
-    .music-input-container {
-        width: 100%;
-        margin-bottom: 12px;
-    }
-
     .music-input {
         width: 100%;
         padding: 12px;
@@ -128,11 +123,35 @@
         background-color: rgba(0, 0, 0, 0.7);
         color: white;
         box-sizing: border-box;
-        margin-bottom: 12px;
     }
 
     .music-input::placeholder {
         color: rgba(255, 255, 255, 0.5);
+    }
+
+    .music-input-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .delete-track-btn {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        padding: 8px;
+        margin-left: 8px;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .delete-track-btn:hover {
+        color: rgba(255, 255, 255, 0.8);
     }
 
     .add-music-btn {
@@ -149,6 +168,7 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
+        margin-top: 8px;
     }
 
     .add-music-btn:hover {
@@ -371,11 +391,12 @@
                 <div class="info-title">🎵 Любимые треки</div>
                 <div class="music-links" id="musicLinks">
                     <div class="music-input-container">
-                        <input type="text" class="music-input" placeholder="Вставьте ссылку на трек">
+                        <input type="text" class="music-input" placeholder="Вставьте ссылку на трек из Яндекс.Музыки">
                     </div>
                 </div>
                 <button type="button" class="add-music-btn" onclick="addMusicInput()">
-                    Добавить трек
+                    <span>🎵</span>
+                    <span>Добавить ещё один трек</span>
                 </button>
             </div>
         </div>
@@ -466,10 +487,19 @@
         const input = document.createElement('input');
         input.type = 'text';
         input.className = 'music-input';
-        input.placeholder = 'Вставьте ссылку на трек';
+        input.placeholder = 'Вставьте ссылку на трек из Яндекс.Музыки';
         input.required = true;
         
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.className = 'delete-track-btn';
+        deleteBtn.innerHTML = '×';
+        deleteBtn.onclick = function() {
+            container.removeChild(inputContainer);
+        };
+        
         inputContainer.appendChild(input);
+        inputContainer.appendChild(deleteBtn);
         container.appendChild(inputContainer);
     }
   </script>
