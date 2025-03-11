@@ -228,81 +228,19 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   
   <script>
-    // Глобальная функция для инициализации базы данных
-    window.initializeFirebase = function() {
-      return new Promise((resolve, reject) => {
-        try {
-          // Проверяем, что все необходимые компоненты Firebase загружены
-          if (typeof firebase === 'undefined') {
-            reject(new Error('Firebase SDK не загружен'));
-            return;
-          }
-          console.log('Firebase SDK успешно загружен');
-
-          // Конфигурация Firebase
-          const firebaseConfig = {
-            apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
-            authDomain: "party-registration-web.firebaseapp.com",
-            projectId: "party-registration-web",
-            storageBucket: "party-registration-web.firebasestorage.app",
-            messagingSenderId: "437696239321",
-            appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8",
-            measurementId: "G-FBKQXVRD0D"
-          };
-
-          // Инициализация Firebase
-          firebase.initializeApp(firebaseConfig);
-          console.log('Firebase успешно инициализирован');
-
-          // Проверяем доступность Firestore
-          if (firebase.firestore) {
-            console.log('Firestore доступен');
-            resolve(firebase.firestore());
-          } else {
-            reject(new Error('Firestore не доступен'));
-          }
-        } catch (error) {
-          console.error('Ошибка при инициализации Firebase:', error);
-          reject(error);
-        }
-      });
+    // Конфигурация Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
+      authDomain: "party-registration-web.firebaseapp.com",
+      projectId: "party-registration-web",
+      storageBucket: "party-registration-web.firebasestorage.app",
+      messagingSenderId: "437696239321",
+      appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8",
+      measurementId: "G-FBKQXVRD0D"
     };
-    
-    // Загружаем основной скрипт
-    const script = document.createElement('script');
-    script.src = 'registration.js';
-    script.onerror = function() {
-      console.error('Ошибка загрузки registration.js');
-    };
-    script.onload = function() {
-      console.log('registration.js успешно загружен');
-    };
-    document.body.appendChild(script);
 
-    // Функция для добавления нового поля ввода музыки
-    function addMusicInput() {
-        const container = document.getElementById('musicLinks');
-        const inputContainer = document.createElement('div');
-        inputContainer.className = 'music-input-container';
-        
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'music-input';
-        input.placeholder = 'Вставьте ссылку на трек';
-        input.required = true;
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.type = 'button';
-        deleteBtn.className = 'delete-track-btn';
-        deleteBtn.innerHTML = '×';
-        deleteBtn.onclick = function() {
-            container.removeChild(inputContainer);
-        };
-        
-        inputContainer.appendChild(input);
-        inputContainer.appendChild(deleteBtn);
-        container.appendChild(inputContainer);
-    }
+    // Инициализация Firebase
+    firebase.initializeApp(firebaseConfig);
   </script>
 </head>
 <body>
@@ -476,7 +414,7 @@
                         <input type="text" class="music-input" placeholder="Вставьте ссылку на трек" required>
                     </div>
                 </div>
-                <button type="button" class="add-music-btn" onclick="addMusicInput()">
+                <button type="button" class="add-music-btn" onclick="addMusicLink()">
                     Добавить ещё трек
                 </button>
             </div>
