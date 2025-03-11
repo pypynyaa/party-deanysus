@@ -369,10 +369,13 @@
 
             <div class="info-group">
                 <div class="info-title">🎵 Любимые треки</div>
-                <input type="text" class="music-input" placeholder="Вставьте ссылку на трек">
-                <button type="button" class="add-music-btn">
-                    <span>🎵</span>
-                    <span>Добавить трек</span>
+                <div class="music-links" id="musicLinks">
+                    <div class="music-input-container">
+                        <input type="text" class="music-input" placeholder="Вставьте ссылку на трек">
+                    </div>
+                </div>
+                <button type="button" class="add-music-btn" onclick="addMusicInput()">
+                    Добавить трек
                 </button>
             </div>
         </div>
@@ -453,6 +456,22 @@
       console.log('registration.js успешно загружен');
     };
     document.body.appendChild(script);
+
+    // Функция для добавления нового поля ввода музыки
+    function addMusicInput() {
+        const container = document.getElementById('musicLinks');
+        const inputContainer = document.createElement('div');
+        inputContainer.className = 'music-input-container';
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'music-input';
+        input.placeholder = 'Вставьте ссылку на трек';
+        input.required = true;
+        
+        inputContainer.appendChild(input);
+        container.appendChild(inputContainer);
+    }
   </script>
   <script src="registration.js"></script>
   <script src="music.js"></script>
