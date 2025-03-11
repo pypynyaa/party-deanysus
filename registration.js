@@ -5,7 +5,7 @@ let db;
 async function getDatabase() {
     if (!db) {
         try {
-            db = await window.initializeFirebase();
+            db = firebase.firestore();
             console.log('База данных успешно подключена');
         } catch (error) {
             console.error('Ошибка подключения к базе данных:', error);
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log('DOM загружен, пытаемся подключиться к базе данных...');
     
     try {
-        // Инициализируем Firebase и получаем объект базы данных
+        // Получаем объект базы данных
         db = await getDatabase();
         
         // Пробуем сделать тестовый запрос
