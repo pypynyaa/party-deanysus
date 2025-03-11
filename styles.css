@@ -6,10 +6,15 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Raleway', sans-serif;
     color: white;
     overflow-x: hidden;
     background: #000;
+}
+
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
 }
 
 /* Видео фон */
@@ -22,7 +27,8 @@ body {
     width: auto;
     height: auto;
     z-index: -1;
-    opacity: 0.3;
+    opacity: 0.4;
+    object-fit: cover;
 }
 
 /* Секции */
@@ -32,12 +38,28 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: -1;
 }
 
 .section-title {
-    font-size: 4rem;
+    font-size: 4.5rem;
     margin-bottom: 2rem;
     text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* Главная секция */
@@ -50,11 +72,30 @@ section {
     max-width: 60%;
     border-radius: 20px;
     margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: transform 0.5s ease;
+}
+
+.hero-image:hover {
+    transform: scale(1.02);
 }
 
 .hero-title {
-    font-size: 5rem;
+    font-size: 5.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 3px;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    to {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+                     0 0 20px rgba(255, 255, 255, 0.3),
+                     0 0 30px rgba(255, 255, 255, 0.2);
+    }
 }
 
 /* Секция организаторов */
@@ -73,6 +114,16 @@ section {
     align-items: center;
     margin-bottom: 4rem;
     gap: 2rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.organizer-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .organizer-card.right {
@@ -84,6 +135,12 @@ section {
     height: 300px;
     object-fit: cover;
     border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease;
+}
+
+.organizer-image:hover {
+    transform: scale(1.05) rotate(2deg);
 }
 
 .organizer-info {
@@ -93,11 +150,13 @@ section {
 .organizer-info h3 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
+    letter-spacing: 1px;
 }
 
 .organizer-info p {
     font-size: 1.2rem;
-    line-height: 1.6;
+    line-height: 1.8;
+    font-weight: 300;
 }
 
 /* Секция даты */
@@ -106,7 +165,20 @@ section {
 }
 
 .date .section-title {
-    font-size: 6rem;
+    font-size: 7rem;
+    background: linear-gradient(45deg, #fff, #f0f0f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -100% 0;
+    }
+    100% {
+        background-position: 100% 0;
+    }
 }
 
 /* Секция места проведения */
@@ -159,6 +231,7 @@ section {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
+    perspective: 1000px;
 }
 
 .photo {
@@ -166,11 +239,34 @@ section {
     height: 300px;
     object-fit: cover;
     border-radius: 20px;
-    transition: transform 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s ease;
+    transform-style: preserve-3d;
+    animation: fadeInPhoto 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.photo:nth-child(1) { animation-delay: 0.1s; }
+.photo:nth-child(2) { animation-delay: 0.2s; }
+.photo:nth-child(3) { animation-delay: 0.3s; }
+.photo:nth-child(4) { animation-delay: 0.4s; }
+.photo:nth-child(5) { animation-delay: 0.5s; }
+.photo:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInPhoto {
+    from {
+        opacity: 0;
+        transform: translateY(30px) rotateX(10deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
 }
 
 .photo:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* Секция цены */
