@@ -2,33 +2,52 @@
 let db;
 
 // Функция для получения подключения к базе данных
-async function getDatabase() {
-    if (!db) {
-        try {
+function getDatabase() {
+    try {
+        if (!db) {
+            // Проверяем, что Firebase уже инициализирован
+            if (!firebase.apps.length) {
+                // Конфигурация Firebase
+                const firebaseConfig = {
+                    apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
+                    authDomain: "party-registration-web.firebaseapp.com",
+                    projectId: "party-registration-web",
+                    storageBucket: "party-registration-web.firebasestorage.app",
+                    messagingSenderId: "437696239321",
+                    appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8",
+                    measurementId: "G-FBKQXVRD0D"
+                };
+                firebase.initializeApp(firebaseConfig);
+            }
             db = firebase.firestore();
             console.log('База данных успешно подключена');
-        } catch (error) {
-            console.error('Ошибка подключения к базе данных:', error);
-            throw error;
         }
+        return db;
+    } catch (error) {
+        console.error('Ошибка подключения к базе данных:', error);
+        throw error;
     }
-    return db;
 }
 
 // Инициализация базы данных после загрузки DOM
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM загружен, пытаемся подключиться к базе данных...');
     
     try {
         // Получаем объект базы данных
-        db = await getDatabase();
+        db = getDatabase();
         
         // Пробуем сделать тестовый запрос
-        const testQuery = await db.collection('registrations').limit(1).get();
-        console.log('Тестовый запрос к базе данных выполнен успешно');
-        
-        // Загружаем существующую регистрацию
-        await loadExistingRegistration();
+        db.collection('registrations').limit(1).get()
+            .then(() => {
+                console.log('Тестовый запрос к базе данных выполнен успешно');
+                // Загружаем существующую регистрацию
+                return loadExistingRegistration();
+            })
+            .catch((error) => {
+                console.error('Ошибка при выполнении тестового запроса:', error);
+                alert('Ошибка подключения к базе данных. Пожалуйста, обратитесь к администратору.');
+            });
     } catch (error) {
         console.error('Ошибка подключения к базе данных:', error);
         alert('Ошибка подключения к базе данных. Пожалуйста, обратитесь к администратору.');
@@ -202,7 +221,7 @@ function generateUserId() {
 // Функции для работы с регистрациями
 async function findRegistrationByPhone(phone) {
     try {
-        const database = await getDatabase();
+        const database = getDatabase();
         const snapshot = await database.collection('registrations')
             .where('phone', '==', phone)
             .get();
@@ -223,7 +242,7 @@ async function findRegistrationByPhone(phone) {
 
 async function findRegistrationByTelegram(telegram) {
     try {
-        const database = await getDatabase();
+        const database = getDatabase();
         const snapshot = await database.collection('registrations')
             .where('telegram', '==', telegram)
             .get();
@@ -271,7 +290,7 @@ if (musicLinks) {
 // Функция для добавления нового поля для музыкальной ссылки
 function addMusicLink(isFirstTrack = false) {
     const container = document.createElement('div');
-    container.className = 'music-link-container';
+    container.className = 'music-input-container';
     container.style.opacity = '0';
     container.style.transform = 'translateY(20px)';
 
@@ -279,22 +298,22 @@ function addMusicLink(isFirstTrack = false) {
     input.type = 'text';
     input.className = 'music-input';
     input.name = 'music_links[]';
-    input.placeholder = 'Добавьте любимый трек из Яндекс.Музыки';
+    input.placeholder = 'Вставьте ссылку на трек';
     input.required = true;
 
     container.appendChild(input);
 
     if (!isFirstTrack) {
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className = 'remove-music-btn';
-        removeBtn.innerHTML = '×';
-        removeBtn.onclick = function() {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.className = 'delete-track-btn';
+        deleteBtn.innerHTML = '×';
+        deleteBtn.onclick = function() {
             container.style.opacity = '0';
             container.style.transform = 'translateY(20px)';
             setTimeout(() => container.remove(), 300);
         };
-        container.appendChild(removeBtn);
+        container.appendChild(deleteBtn);
     }
 
     document.querySelector('.music-links').appendChild(container);
@@ -329,7 +348,7 @@ if (form) {
 
         try {
             // Получаем подключение к базе данных
-            const database = await getDatabase();
+            const database = getDatabase();
             
             const formData = new FormData(form);
             const phone = formData.get('phone');
@@ -415,7 +434,7 @@ async function loadExistingRegistration() {
     if (!registrationId) return;
 
     try {
-        const database = await getDatabase();
+        const database = getDatabase();
         const doc = await database.collection('registrations').doc(registrationId).get();
         if (doc.exists) {
             const data = doc.data();
