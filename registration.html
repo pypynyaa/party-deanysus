@@ -240,7 +240,34 @@
     };
 
     // Инициализация Firebase
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    // Функция для добавления нового поля ввода музыки
+    function addMusicLink() {
+      const container = document.getElementById('musicLinks');
+      const inputContainer = document.createElement('div');
+      inputContainer.className = 'music-input-container';
+      
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'music-input';
+      input.placeholder = 'Вставьте ссылку на трек';
+      input.required = true;
+      
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'delete-track-btn';
+      deleteBtn.innerHTML = '×';
+      deleteBtn.onclick = function() {
+        container.removeChild(inputContainer);
+      };
+      
+      inputContainer.appendChild(input);
+      inputContainer.appendChild(deleteBtn);
+      container.appendChild(inputContainer);
+    }
   </script>
 </head>
 <body>
