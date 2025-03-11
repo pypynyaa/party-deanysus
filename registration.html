@@ -82,45 +82,86 @@
     .full-width-select {
         width: 100%;
         padding: 12px;
-        border: 1px solid #ddd;
+        border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 8px;
-        background-color: white;
+        background-color: rgba(0, 0, 0, 0.7);
         font-size: 16px;
         margin-top: 8px;
+        color: white;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        cursor: pointer;
+    }
+
+    .full-width-select option {
+        background-color: #1a1a1a;
+        color: white;
+    }
+
+    .info-title {
+        color: white;
+        font-size: 18px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .music-input-container {
         margin-bottom: 12px;
+        width: 100%;
     }
 
     .music-input {
         width: 100%;
         padding: 12px;
-        border: 1px solid #ddd;
+        border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 8px;
         font-size: 16px;
-        background-color: white;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+    }
+
+    .music-input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
     }
 
     .add-music-btn {
-        background-color: transparent;
-        border: 1px dashed #666;
-        color: #666;
-        padding: 8px 16px;
-        border-radius: 6px;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px dashed rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 12px;
+        border-radius: 8px;
         cursor: pointer;
-        font-size: 14px;
+        font-size: 16px;
         transition: all 0.3s ease;
+        margin-top: 8px;
     }
 
     .add-music-btn:hover {
-        background-color: #f5f5f5;
-        border-color: #333;
-        color: #333;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
     }
 
     .music-links {
         margin-bottom: 16px;
+        width: 100%;
+    }
+
+    .additional-info-section {
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .info-group {
+        margin-bottom: 20px;
+        width: 100%;
     }
   </style>
 </head>
@@ -268,8 +309,8 @@
         <div class="additional-info-section">
             <h2>Дополнительная информация</h2>
             
-            <div class="info-group full-width">
-                <div class="info-title relationship">Статус отношений</div>
+            <div class="info-group">
+                <div class="info-title">❤️ Статус отношений</div>
                 <select id="relationship" name="relationship" required class="full-width-select">
                     <option value="" disabled selected>Выберите статус отношений</option>
                     <option value="single">Свободен</option>
@@ -278,8 +319,8 @@
             </div>
 
             <div class="info-group">
-                <div class="info-title equipment">Фото/видео аппаратура</div>
-                <select class="equipment-select" name="equipment" required>
+                <div class="info-title">📸 Фото/видео аппаратура</div>
+                <select class="full-width-select" name="equipment" required>
                     <option value="" disabled selected>Есть ли у вас фото/видео аппаратура?</option>
                     <option value="photo">Есть фотоаппарат</option>
                     <option value="video">Есть видеокамера</option>
@@ -289,7 +330,7 @@
             </div>
 
             <div class="info-group">
-                <div class="info-title music">Любимые треки</div>
+                <div class="info-title">🎵 Любимые треки</div>
                 <div class="music-links" id="musicLinks">
                     <div class="music-input-container">
                         <input type="text" class="music-input" placeholder="Вставьте ссылку на трек">
