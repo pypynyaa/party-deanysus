@@ -246,27 +246,39 @@
 
     // Функция для добавления нового поля ввода музыки
     function addMusicLink() {
-      const container = document.getElementById('musicLinks');
-      const inputContainer = document.createElement('div');
-      inputContainer.className = 'music-input-container';
-      
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.className = 'music-input';
-      input.placeholder = 'Вставьте ссылку на трек';
-      input.required = true;
-      
-      const deleteBtn = document.createElement('button');
-      deleteBtn.type = 'button';
-      deleteBtn.className = 'delete-track-btn';
-      deleteBtn.innerHTML = '×';
-      deleteBtn.onclick = function() {
-        container.removeChild(inputContainer);
-      };
-      
-      inputContainer.appendChild(input);
-      inputContainer.appendChild(deleteBtn);
-      container.appendChild(inputContainer);
+        const container = document.getElementById('musicLinks');
+
+        // Создаем новый контейнер для поля ввода
+        const inputContainer = document.createElement('div');
+        inputContainer.className = 'music-input-container';
+
+        // Создаем поле ввода
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'music-input';
+        input.placeholder = 'Вставьте ссылку на трек';
+        input.required = true;
+
+        // Создаем кнопку удаления
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.className = 'delete-track-btn';
+        deleteBtn.innerHTML = '×';
+        deleteBtn.onclick = function() {
+            deleteMusicLink(this); // Удаляем контейнер при нажатии
+        };
+
+        // Добавляем поле ввода и кнопку в контейнер
+        inputContainer.appendChild(input);
+        inputContainer.appendChild(deleteBtn);
+
+        // Добавляем контейнер в основной блок
+        container.appendChild(inputContainer);
+    }
+
+    function deleteMusicLink(button) {
+        const inputContainer = button.parentElement; // Находим контейнер
+        inputContainer.remove(); // Удаляем контейнер
     }
   </script>
 </head>
@@ -437,10 +449,13 @@
             <div class="info-group">
                 <div class="info-title">🎵 Любимые треки</div>
                 <div class="music-links" id="musicLinks">
+                    <!-- Изначально только одно поле ввода -->
                     <div class="music-input-container">
                         <input type="text" class="music-input" placeholder="Вставьте ссылку на трек" required>
+                        <!-- У первого поля кнопка удаления не нужна -->
                     </div>
                 </div>
+                <!-- Кнопка для добавления нового поля -->
                 <button type="button" class="add-music-btn" onclick="addMusicLink()">
                     Добавить ещё трек
                 </button>

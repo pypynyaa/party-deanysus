@@ -287,45 +287,46 @@ if (musicLinks) {
     document.querySelector('.add-music-btn').addEventListener('click', addMusicLink);
 }
 
-// Функция для добавления нового поля для музыкальной ссылки
-function addMusicLink(isFirstTrack = false) {
-    const container = document.createElement('div');
-    container.className = 'music-input-container';
-    container.style.opacity = '0';
-    container.style.transform = 'translateY(20px)';
 
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.className = 'music-input';
-    input.name = 'music_links[]';
-    input.placeholder = 'Вставьте ссылку на трек';
-    input.required = true;
+const container = document.getElementById('musicLinks');
 
-    container.appendChild(input);
+// Создаем новый контейнер для поля ввода
+const inputContainer = document.createElement('div');
+inputContainer.className = 'music-input-container';
 
-    if (!isFirstTrack) {
-        const deleteBtn = document.createElement('button');
-        deleteBtn.type = 'button';
-        deleteBtn.className = 'delete-track-btn';
-        deleteBtn.innerHTML = '×';
-        deleteBtn.onclick = function() {
-            container.style.opacity = '0';
-            container.style.transform = 'translateY(20px)';
-            setTimeout(() => container.remove(), 300);
-        };
-        container.appendChild(deleteBtn);
-    }
+// Создаем поле ввода
+const input = document.createElement('input');
+input.type = 'text';
+input.className = 'music-input';
+input.placeholder = 'Вставьте ссылку на трек';
+input.required = true;
 
-    document.querySelector('.music-links').appendChild(container);
-    
-    // Анимация появления
-    requestAnimationFrame(() => {
-        container.style.transition = 'all 0.3s ease';
-        container.style.opacity = '1';
-        container.style.transform = 'translateY(0)';
-    });
+// Создаем кнопку удаления
+const deleteBtn = document.createElement('button');
+deleteBtn.type = 'button';
+deleteBtn.className = 'delete-track-btn';
+deleteBtn.innerHTML = '×';
+deleteBtn.onclick = function() {
+    container.removeChild(inputContainer); // Удаляем контейнер при нажатии
+};
 
-    input.focus();
+// Добавляем поле ввода и кнопку в контейнер
+inputContainer.appendChild(input);
+inputContainer.appendChild(deleteBtn);
+
+// Добавляем контейнер в основной блок
+container.appendChild(inputContainer);
+
+document.querySelector('.music-links').appendChild(container);
+
+// Анимация появления
+requestAnimationFrame(() => {
+    container.style.transition = 'all 0.3s ease';
+    container.style.opacity = '1';
+    container.style.transform = 'translateY(0)';
+});
+
+input.focus();
 }
 
 // Инициализация первого поля при загрузке страницы
