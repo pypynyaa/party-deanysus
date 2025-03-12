@@ -334,7 +334,6 @@ line-height: 1.8;
     opacity: 0;
     position: relative;
     overflow: hidden;
-    cursor: pointer;
 }
 
 .photo::before {
@@ -354,14 +353,19 @@ line-height: 1.8;
 }
 
 .photo::after {
-    content: '❤️';
+    content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    font-size: 3rem;
-    opacity: 0;
-    transition: all 0.6s ease;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: 0.6s;
 }
 
 .photo:hover::before {
@@ -370,8 +374,7 @@ line-height: 1.8;
 }
 
 .photo:hover::after {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    left: 150%;
 }
 
 .photo:nth-child(1) { animation-delay: 0.1s; }
@@ -393,26 +396,44 @@ line-height: 1.8;
 }
 
 .photo:hover {
-    transform: scale(1.1) translateY(-10px) rotateY(10deg);
+    transform: scale(1.05) translateY(-10px) rotateY(5deg);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
-                0 0 50px rgba(255, 107, 107, 0.3);
+                0 0 40px rgba(255, 107, 107, 0.3);
     z-index: 2;
 }
 
-/* Стили для фото Ропши */
+/* Стили для фото локации */
 .location-image {
     width: 100%;
     border-radius: 20px;
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.location-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        rgba(255,107,107,0.3), 
+        rgba(255,142,142,0.2));
+    opacity: 0;
+    transition: all 0.6s ease;
 }
 
 .location-image:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
-                0 0 50px rgba(255, 107, 107, 0.3);
+                0 0 30px rgba(255, 107, 107, 0.2);
+}
+
+.location-image:hover::before {
+    opacity: 1;
 }
 
 /* Секция цены */
@@ -447,11 +468,10 @@ section {
 @media (max-width: 1024px) {
     .section-title {
         font-size: 3rem;
-        word-wrap: break-word;
     }
 
     .hero-title {
-        font-size: 3.5rem;
+        font-size: 4rem;
     }
 
     .organizer-card {
@@ -468,38 +488,23 @@ section {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .photo {
-        height: 300px; /* Сохраняем исходную высоту */
+    .location-content {
+        flex-direction: column;
     }
 
-    .organizer-image {
-        width: 250px;
-        height: 250px;
-    }
-
-    .organizer-info h3 {
-        font-size: 2rem;
-    }
-
-    .organizer-info p {
-        font-size: 1.1rem;
+    .location-content a {
+        width: 100%;
     }
 }
 
 @media (max-width: 768px) {
     section {
-        padding: 50px 5%;
-    }
-
-    .hero-image {
-        max-width: 100%;
+        padding: 40px 5%;
     }
 
     .section-title {
         font-size: 2.2rem;
-        padding: 0 10px;
-        word-wrap: break-word;
-        hyphens: auto;
+        margin-bottom: 1.5rem;
     }
 
     .photo-grid {
@@ -508,7 +513,7 @@ section {
     }
 
     .photo {
-        height: 300px; /* Сохраняем исходную высоту */
+        height: 300px;
     }
 
     .party-btn, .social-btn {
@@ -521,47 +526,26 @@ section {
     }
 
     .location-content {
-        flex-direction: column;
-    }
-
-    .location-content a {
-        width: 100%;
-    }
-
-    .location-image {
-        width: 100%;
-        margin-bottom: 2rem;
-    }
-
-    .transfer-info {
-        font-size: 2rem;
-        text-align: center;
+        gap: 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
     .section-title {
         font-size: 1.8rem;
-        padding: 0 5px;
-        word-wrap: break-word;
-        hyphens: auto;
     }
 
     .organizer-card {
         padding: 1.5rem;
     }
 
-    .organizer-image {
-        width: 200px;
-        height: 200px;
-    }
-
     .photo-grid {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 
     .photo {
-        height: 300px; /* Сохраняем исходную высоту */
+        height: 300px;
     }
 
     .party-btn, .social-btn {
@@ -575,8 +559,7 @@ section {
     }
 
     .info-content p {
-        font-size: 1.4rem;
-        padding: 0 10px;
+        font-size: 1.2rem;
     }
 }
 
