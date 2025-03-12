@@ -120,6 +120,9 @@ section::before {
     backdrop-filter: blur(10px);
     transition: all 0.4s ease-out;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
 }
 
 .organizer-card.left {
@@ -388,5 +391,88 @@ section {
 
     .photo-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+.organizer-card.right:hover {
+    transform: scale(1.03);
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
+.organizer-card.right:hover .learn-more-btn {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.organizer-card.right:hover .organizer-image {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.organizer-card.right:hover .organizer-info h3 {
+    opacity: 1;
+}
+
+/* Кнопка регистрации */
+.registration-section {
+    text-align: center;
+    padding: 50px 10%;
+    position: relative;
+}
+
+.party-btn {
+    display: inline-block;
+    padding: 20px 50px;
+    font-size: 1.8rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e8e, #ff6b6b);
+    background-size: 200% 200%;
+    border-radius: 50px;
+    border: none;
+    box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+    transition: all 0.4s ease-out;
+    animation: gradientMove 3s ease infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+.party-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(45deg);
+    transition: all 0.6s ease-out;
+    opacity: 0;
+}
+
+.party-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
+}
+
+.party-btn:hover::before {
+    opacity: 1;
+    transform: rotate(45deg) translateY(50%);
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
     }
 }
