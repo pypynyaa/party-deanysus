@@ -1,4 +1,3 @@
-
 /* Общие стили */
 * {
     margin: 0;
@@ -329,10 +328,28 @@ line-height: 1.8;
     object-fit: cover;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    transition: all 0.5s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
     animation: fadeInPhoto 0.8s ease-out forwards;
     opacity: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.photo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(255,107,107,0.3), rgba(255,142,142,0.3));
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.photo:hover::before {
+    opacity: 1;
 }
 
 .photo:nth-child(1) { animation-delay: 0.1s; }
@@ -354,8 +371,10 @@ line-height: 1.8;
 }
 
 .photo:hover {
-    transform: scale(1.05) translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05) translateY(-10px) rotateY(5deg);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(255, 107, 107, 0.2);
+    z-index: 1;
 }
 
 /* Секция цены */
@@ -399,6 +418,7 @@ section {
     .organizer-card {
         flex-direction: column;
         text-align: center;
+        padding: 2rem;
     }
 
     .organizer-card.right {
@@ -408,6 +428,19 @@ section {
     .photo-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .organizer-image {
+        width: 250px;
+        height: 250px;
+    }
+
+    .organizer-info h3 {
+        font-size: 2rem;
+    }
+
+    .organizer-info p {
+        font-size: 1.1rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -416,21 +449,74 @@ section {
     }
 
     .hero-image {
-        max-width: 80%;
+        max-width: 90%;
     }
 
-    .location-content {
-        gap: 4rem;
+    .section-title {
+        font-size: 2.5rem;
     }
 
-    .location-image {
-        width: 100%;
+    .photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .photo {
+        height: 200px;
+    }
+
+    .party-btn, .social-btn {
+        padding: 20px 40px;
+        font-size: 1.5rem;
+    }
+
+    .bottom-buttons {
+        padding: 30px 5%;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .organizer-card {
+        padding: 1.5rem;
+    }
+
+    .organizer-image {
+        width: 200px;
+        height: 200px;
     }
 
     .photo-grid {
         grid-template-columns: 1fr;
     }
+
+    .photo {
+        height: 250px;
+    }
+
+    .party-btn, .social-btn {
+        padding: 15px 30px;
+        font-size: 1.2rem;
+    }
+
+    .learn-more-btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
 }
+
+/* Добавляем поддержку для устройств с высоким DPI */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .hero-image,
+    .organizer-image,
+    .photo {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}
+
 .bottom-buttons {
     text-align: center;
     padding: 50px 10%;
@@ -483,85 +569,8 @@ section {
         background-position: 0% 50%;
         transform: scale(1);
     }
-    
-}
-body {
-    font-family: 'Raleway', sans-serif;
-    color: white;
-    overflow-x: hidden;
-    background: #000;  /* Эта строчка задает черный фон всему сайту */
 }
 
-.bottom-buttons {
-    text-align: center;
-    padding: 50px 10%;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    align-items: center;
-    position: relative; /* Добавлено */
-    z-index: 1; /* Добавлено */
-}
-
-/* Добавляем темный фон для секции с кнопками */
-/*.bottom-buttons::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: -1;
-}*/
-
-.party-btn {
-    display: inline-block;
-    padding: 25px 60px;
-    font-size: 2rem;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    text-decoration: none;
-    color: white;
-    background: linear-gradient(-45deg, #ff6b6b, #ff8e8e, #ff6b6b);
-    background-size: 200% 200%;
-    border-radius: 50px;
-    border: none;
-    box-shadow: 0 15px 30px rgba(255, 107, 107, 0.3);
-    transition: all 0.5s ease;
-    animation: gradientParty 3s ease infinite;
-    transform-origin: center;
-    letter-spacing: 1px;
-    position: relative; /* Добавлено */
-    z-index: 2; /* Добавлено */
-}
-
-/* Остальные стили остаются без изменений */
-.party-btn:hover {
-    transform: translateY(-5px) scale(1.02);
-    letter-spacing: 2px;
-}
-
-.party-btn:hover {
-    box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4),
-                0 0 20px rgba(255, 107, 107, 0.2),
-                0 0 40px rgba(255, 107, 107, 0.1);
-}
-
-@keyframes gradientParty {
-    0% {
-        background-position: 0% 50%;
-        transform: scale(1);
-    }
-    50% {
-        background-position: 100% 50%;
-        transform: scale(1.02);
-    }
-    100% {
-        background-position: 0% 50%;
-        transform: scale(1);
-    }
-}
 /* Добавьте эти стили в ваш CSS файл */
 .location-content a {
     display: block;  /* Важно! Меняем inline поведение ссылки на block */
