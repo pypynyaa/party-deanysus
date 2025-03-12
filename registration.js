@@ -327,7 +327,7 @@ requestAnimationFrame(() => {
 });
 
 input.focus();
-}
+
 
 // Инициализация первого поля при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {

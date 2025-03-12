@@ -80,11 +80,19 @@ section::before {
     transform: scale(1.02);
 }
 
-.hero-title {
-    font-size: 5.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    letter-spacing: 3px;
-    animation: glow 2s ease-in-out infinite alternate;
+.hero {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* Убираем padding чтобы изображение занимало всю высоту */
+}
+
+.hero-image {
+    max-width: 78%;  /* Изменено с 60% на 100% для полного размера */
+    margin-bottom: 0;  /* Убран отступ снизу */
+    border-radius: 0;  /* Убрано скругление углов */
+    box-shadow: none;  /* Убрана тень */
 }
 
 @keyframes glow {
@@ -120,12 +128,13 @@ section::before {
     backdrop-filter: blur(10px);
     transition: all 0.4s ease-out;
     border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.organizer-card.left, .organizer-card.right {
-    cursor: pointer;
     text-decoration: none;
     color: white;
+    cursor: pointer;
+}
+
+.organizer-card.right {
+    flex-direction: row-reverse;
 }
 
 .organizer-image-container {
@@ -143,18 +152,12 @@ section::before {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
-.image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.4s ease-out;
+.organizer-card:hover {
+    transform: scale(1.03);
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 0 30px rgba(255, 255, 255, 0.05);
 }
 
 .learn-more-btn {
@@ -173,14 +176,6 @@ section::before {
     transition: all 0.4s ease-out;
 }
 
-.organizer-card:hover {
-    transform: scale(1.03);
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
-                inset 0 0 30px rgba(255, 255, 255, 0.05);
-}
-
 .organizer-card:hover .learn-more-btn {
     transform: translateY(0);
     opacity: 1;
@@ -189,10 +184,6 @@ section::before {
 .organizer-card:hover .organizer-image {
     transform: scale(1.05);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-}
-
-.organizer-card:hover .organizer-info h3 {
-    opacity: 1;
 }
 
 .organizer-info {
@@ -208,6 +199,10 @@ section::before {
     -webkit-text-fill-color: transparent;
     opacity: 0.9;
     transition: opacity 0.4s ease-out;
+}
+
+.organizer-card:hover .organizer-info h3 {
+    opacity: 1;
 }
 
 .organizer-info p {
@@ -243,16 +238,16 @@ section::before {
 .location-content {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 4rem;
 }
 
 .location-image {
-    width: 50%;
+    width: 70%;
     border-radius: 20px;
 }
 
 .transfer-info {
-    font-size: 1.2rem;
+    font-size: 3rem;
     flex: 1;
 }
 
@@ -263,13 +258,13 @@ section::before {
 }
 
 .info-content p {
-    font-size: 1.2rem;
+    font-size: 1.7rem;
     margin-bottom: 1rem;
-    line-height: 1.6;
+    line-height: 1.3;
 }
 
 .more-btn {
-    margin-top: 2rem;
+    margin-top: 4rem; /* Увеличиваем отступ с 2rem до 4rem */
     padding: 1rem 3rem;
     font-size: 1.2rem;
     background: rgba(255, 255, 255, 0.1);
@@ -278,6 +273,12 @@ section::before {
     border-radius: 30px;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+.more-btn {
+    position: relative;  /* или absolute */
+    bottom: -2rem;     /* Отрицательное значение сдвинет кнопку вниз */
+    /* остальные стили */
 }
 
 .more-btn:hover {
@@ -389,7 +390,7 @@ section {
     }
 
     .location-content {
-        flex-direction: column;
+        gap: 4rem;
     }
 
     .location-image {
@@ -401,7 +402,6 @@ section {
     }
 }
 
-/* Кнопки регистрации и соцсетей */
 .bottom-buttons {
     text-align: center;
     padding: 50px 10%;
@@ -409,6 +409,8 @@ section {
     flex-direction: column;
     gap: 30px;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 .party-btn, .social-btn {
@@ -428,10 +430,13 @@ section {
     animation: gradientParty 3s ease infinite;
     transform-origin: center;
     letter-spacing: 1px;
+    position: relative;
+    z-index: 2;
 }
 
 .social-btn {
     background: linear-gradient(-45deg, #833AB4, #C13584, #E1306C);
+    background-size: 200% 200%;
     box-shadow: 0 15px 30px rgba(131, 58, 180, 0.3);
     animation: gradientInsta 3s ease infinite;
 }
@@ -481,4 +486,24 @@ section {
         background-position: 0% 50%;
         transform: scale(1);
     }
+}
+
+/* Добавьте эти стили в ваш CSS файл */
+.location-content a {
+    display: block;  /* Важно! Меняем inline поведение ссылки на block */
+    width: 50%;     /* Сохраняем ширину как у изображения */
+    text-decoration: none;  /* Убираем подчеркивание */
+    margin: 0;      /* Убираем отступы */
+    padding: 0;     /* Убираем внутренние отступы */
+}
+
+.location-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.location-image {
+    width: 100%;    /* Меняем на 100%, так как теперь ширина контролируется родительской ссылкой */
+    display: block; /* Убираем возможные отступы у изображения */
 }
