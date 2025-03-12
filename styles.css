@@ -1,3 +1,4 @@
+
 /* Общие стили */
 * {
     margin: 0;
@@ -5,12 +6,7 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Raleway', sans-serif;
-    color: white;
-    overflow-x: hidden;
-    background: #000;
-}
+
 
 h1, h2, h3 {
     font-family: 'Montserrat', sans-serif;
@@ -88,12 +84,15 @@ section::before {
     padding: 0; /* Убираем padding чтобы изображение занимало всю высоту */
 }
 
+
 .hero-image {
     max-width: 78%;  /* Изменено с 60% на 100% для полного размера */
     margin-bottom: 0;  /* Убран отступ снизу */
     border-radius: 0;  /* Убрано скругление углов */
     box-shadow: none;  /* Убрана тень */
 }
+
+
 
 @keyframes glow {
     from {
@@ -128,37 +127,49 @@ section::before {
     backdrop-filter: blur(10px);
     transition: all 0.4s ease-out;
     border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.organizer-card.left {
+    cursor: pointer;
     text-decoration: none;
     color: white;
-    cursor: pointer;
 }
 
-.organizer-card.right {
-    flex-direction: row-reverse;
-}
 
-.organizer-image-container {
-    position: relative;
-    overflow: hidden;
-    border-radius: 20px;
-}
-
-.organizer-image {
-    width: 300px;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 20px;
-    transition: transform 0.4s ease-out;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-}
-
-.organizer-card:hover {
+.organizer-card.left:hover {
     transform: scale(1.03);
     background: rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
                 inset 0 0 30px rgba(255, 255, 255, 0.05);
 }
+
+.organizer-card.left:hover .learn-more-btn {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+
+
+.organizer-card.right {
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+}
+
+.organizer-card.right:hover .learn-more-btn {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.organizer-card.right:hover {
+    transform: scale(1.03);
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
 
 .learn-more-btn {
     display: inline-block;
@@ -176,12 +187,31 @@ section::before {
     transition: all 0.4s ease-out;
 }
 
-.organizer-card:hover .learn-more-btn {
+/* Эффект при наведении на кнопку */
+.learn-more-btn:hover {
+    background: linear-gradient(45deg, #ff8e8e, #ff6b6b);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+/* Появление кнопки при наведении на карточку (для обеих карточек) */
+.organizer-card.left:hover .learn-more-btn,
+.organizer-card.right:hover .learn-more-btn {
     transform: translateY(0);
     opacity: 1;
 }
 
-.organizer-card:hover .organizer-image {
+
+.organizer-image {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 20px;
+    transition: transform 0.4s ease-out;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.organizer-card.left:hover .organizer-image {
     transform: scale(1.05);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
@@ -201,13 +231,13 @@ section::before {
     transition: opacity 0.4s ease-out;
 }
 
-.organizer-card:hover .organizer-info h3 {
+.organizer-card.left:hover .organizer-info h3 {
     opacity: 1;
 }
 
 .organizer-info p {
     font-size: 1.2rem;
-    line-height: 1.8;
+line-height: 1.8;
     font-weight: 300;
     color: rgba(255, 255, 255, 0.9);
 }
@@ -401,7 +431,6 @@ section {
         grid-template-columns: 1fr;
     }
 }
-
 .bottom-buttons {
     text-align: center;
     padding: 50px 10%;
@@ -409,11 +438,9 @@ section {
     flex-direction: column;
     gap: 30px;
     align-items: center;
-    position: relative;
-    z-index: 1;
 }
 
-.party-btn, .social-btn {
+.party-btn {
     display: inline-block;
     padding: 25px 60px;
     font-size: 2rem;
@@ -430,18 +457,9 @@ section {
     animation: gradientParty 3s ease infinite;
     transform-origin: center;
     letter-spacing: 1px;
-    position: relative;
-    z-index: 2;
 }
 
-.social-btn {
-    background: linear-gradient(-45deg, #833AB4, #C13584, #E1306C);
-    background-size: 200% 200%;
-    box-shadow: 0 15px 30px rgba(131, 58, 180, 0.3);
-    animation: gradientInsta 3s ease infinite;
-}
-
-.party-btn:hover, .social-btn:hover {
+.party-btn:hover {
     transform: translateY(-5px) scale(1.02);
     letter-spacing: 2px;
 }
@@ -452,10 +470,82 @@ section {
                 0 0 40px rgba(255, 107, 107, 0.1);
 }
 
-.social-btn:hover {
-    box-shadow: 0 20px 40px rgba(131, 58, 180, 0.4),
-                0 0 20px rgba(131, 58, 180, 0.2),
-                0 0 40px rgba(131, 58, 180, 0.1);
+@keyframes gradientParty {
+    0% {
+        background-position: 0% 50%;
+        transform: scale(1);
+    }
+    50% {
+        background-position: 100% 50%;
+        transform: scale(1.02);
+    }
+    100% {
+        background-position: 0% 50%;
+        transform: scale(1);
+    }
+    
+}
+body {
+    font-family: 'Raleway', sans-serif;
+    color: white;
+    overflow-x: hidden;
+    background: #000;  /* Эта строчка задает черный фон всему сайту */
+}
+
+.bottom-buttons {
+    text-align: center;
+    padding: 50px 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    position: relative; /* Добавлено */
+    z-index: 1; /* Добавлено */
+}
+
+/* Добавляем темный фон для секции с кнопками */
+/*.bottom-buttons::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+}*/
+
+.party-btn {
+    display: inline-block;
+    padding: 25px 60px;
+    font-size: 2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(-45deg, #ff6b6b, #ff8e8e, #ff6b6b);
+    background-size: 200% 200%;
+    border-radius: 50px;
+    border: none;
+    box-shadow: 0 15px 30px rgba(255, 107, 107, 0.3);
+    transition: all 0.5s ease;
+    animation: gradientParty 3s ease infinite;
+    transform-origin: center;
+    letter-spacing: 1px;
+    position: relative; /* Добавлено */
+    z-index: 2; /* Добавлено */
+}
+
+/* Остальные стили остаются без изменений */
+.party-btn:hover {
+    transform: translateY(-5px) scale(1.02);
+    letter-spacing: 2px;
+}
+
+.party-btn:hover {
+    box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4),
+                0 0 20px rgba(255, 107, 107, 0.2),
+                0 0 40px rgba(255, 107, 107, 0.1);
 }
 
 @keyframes gradientParty {
@@ -472,22 +562,6 @@ section {
         transform: scale(1);
     }
 }
-
-@keyframes gradientInsta {
-    0% {
-        background-position: 0% 50%;
-        transform: scale(1);
-    }
-    50% {
-        background-position: 100% 50%;
-        transform: scale(1.02);
-    }
-    100% {
-        background-position: 0% 50%;
-        transform: scale(1);
-    }
-}
-
 /* Добавьте эти стили в ваш CSS файл */
 .location-content a {
     display: block;  /* Важно! Меняем inline поведение ссылки на block */
