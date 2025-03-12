@@ -283,10 +283,6 @@ function animateSubmitButton(button, isLoading) {
 }
 
 // Добавляем обработчик для добавления новых полей для музыкальных ссылок
-if (musicLinks) {
-    document.querySelector('.add-music-btn').addEventListener('click', addMusicLink);
-}
-
 
 const container = document.getElementById('musicLinks');
 
@@ -587,6 +583,18 @@ async function copyCardNumber() {
         alert('Не удалось скопировать номер карты. Пожалуйста, скопируйте вручную.');
     }
 }
+
+document.querySelector('.payment-toggle').addEventListener('click', function() {
+    const paymentInfo = document.getElementById('paymentInfo');
+    this.classList.toggle('active');
+    paymentInfo.classList.toggle('visible');
+
+    // Обновляем иконку
+    const icon = this.querySelector('.icon');
+    icon.style.transform = paymentInfo.classList.contains('visible')
+        ? 'rotate(180deg)'
+        : 'rotate(0deg)';
+});
 
 // Обновляем обработчик для DOM Content Loaded
 document.addEventListener('DOMContentLoaded', function() {
