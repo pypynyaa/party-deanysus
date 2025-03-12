@@ -317,8 +317,9 @@
             <label for="phone">Номерок</label>
           </div>
           <div class="form-group">
-            <input type="text" id="telegram" name="telegram" required>
-            <label for="telegram">Ссылка на Telegram</label>
+            <div class="telegram-input-container">
+              <input type="text" class="telegram-input" placeholder="Ваш телеграм" required>
+            </div>
           </div>
         </div>
 
@@ -330,7 +331,7 @@
             </button>
             <div id="paymentInfo" class="payment-info">
                 <p class="payment-details">Реквизиты для оплаты:</p>
-                <div class="payment-card" onclick="copyCardNumber()" role="button" tabindex="0" aria-label="Нажмите, чтобы скопировать номер карты">
+                <div class="payment-card" onclick="showPaymentModal()" role="button" tabindex="0" aria-label="Нажмите, чтобы скопировать номер карты">
                     <span class="card-number">5469 4500 1062 9285</span>
                     <span class="copy-icon" aria-hidden="true">📋</span>
                 </div>
@@ -481,7 +482,61 @@
     </div>
   </div>
 
+  <!-- Модальное окно с реквизитами -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="payment-modal" id="paymentModal">
+      <button class="close-modal" onclick="closePaymentModal()">×</button>
+      <div class="payment-modal-content">
+        <h2>Реквизиты для оплаты</h2>
+        <div class="payment-details">
+          <p>
+            Сбербанк: 2202 2036 5341 5108
+            <button class="copy-button" onclick="copyToClipboard('2202203653415108')">Копировать</button>
+          </p>
+          <p>
+            Тинькофф: 2200 7007 8256 0534
+            <button class="copy-button" onclick="copyToClipboard('2200700782560534')">Копировать</button>
+          </p>
+        </div>
+        <p>После оплаты отправьте скриншот чека в телеграм</p>
+      </div>
+    </div>
+  </div>
+
   <script src="registration.js"></script>
   <script src="music.js"></script>
+  <script>
+    function showPaymentModal() {
+      document.getElementById('modalOverlay').classList.add('show');
+      document.getElementById('paymentModal').classList.add('show');
+    }
+
+    function closePaymentModal() {
+      document.getElementById('modalOverlay').classList.remove('show');
+      document.getElementById('paymentModal').classList.remove('show');
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Номер карты скопирован!');
+      }).catch(err => {
+        console.error('Ошибка при копировании: ', err);
+      });
+    }
+
+    // Закрытие модального окна при клике вне его
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closePaymentModal();
+      }
+    });
+
+    // Показ модального окна после успешной регистрации
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Ваша логика валидации и отправки формы
+      showPaymentModal();
+    });
+  </script>
 </body>
 </html>
