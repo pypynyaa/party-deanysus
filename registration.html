@@ -507,18 +507,42 @@
   <script src="music.js"></script>
   <script>
     function showPaymentModal() {
-      document.getElementById('modalOverlay').classList.add('show');
-      document.getElementById('paymentModal').classList.add('show');
+      const overlay = document.getElementById('modalOverlay');
+      const modal = document.getElementById('paymentModal');
+      
+      overlay.classList.add('show');
+      modal.classList.add('show');
+      
+      // Предотвращаем прокрутку страницы
+      document.body.style.overflow = 'hidden';
     }
 
     function closePaymentModal() {
-      document.getElementById('modalOverlay').classList.remove('show');
-      document.getElementById('paymentModal').classList.remove('show');
+      const overlay = document.getElementById('modalOverlay');
+      const modal = document.getElementById('paymentModal');
+      
+      overlay.classList.remove('show');
+      modal.classList.remove('show');
+      
+      // Возвращаем прокрутку страницы
+      document.body.style.overflow = '';
     }
 
     function copyToClipboard(text) {
       navigator.clipboard.writeText(text).then(() => {
-        alert('Номер карты скопирован!');
+        const notification = document.createElement('div');
+        notification.className = 'copy-notification';
+        notification.textContent = 'Номер карты скопирован!';
+        document.body.appendChild(notification);
+        
+        // Показываем уведомление
+        setTimeout(() => notification.classList.add('visible'), 100);
+        
+        // Удаляем уведомление через 2 секунды
+        setTimeout(() => {
+          notification.classList.remove('visible');
+          setTimeout(() => notification.remove(), 300);
+        }, 2000);
       }).catch(err => {
         console.error('Ошибка при копировании: ', err);
       });
@@ -531,10 +555,15 @@
       }
     });
 
-    // Показ модального окна после успешной регистрации
-    document.querySelector('form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      // Ваша логика валидации и отправки формы
+    // Закрытие по клавише Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closePaymentModal();
+      }
+    });
+
+    // Показ модального окна при клике на кнопку реквизитов
+    document.querySelector('.payment-toggle').addEventListener('click', function() {
       showPaymentModal();
     });
   </script>

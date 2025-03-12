@@ -1562,12 +1562,12 @@ input[type="file"] {
     left: 50%;
     transform: translate(-50%, -50%);
     background: rgba(0, 0, 0, 0.95);
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.7);
     z-index: 1000;
     width: 90%;
-    max-width: 500px;
+    max-width: 600px;
     display: none;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1584,41 +1584,47 @@ input[type="file"] {
 }
 
 .payment-modal h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
+    margin-bottom: 30px;
+    font-size: 28px;
     color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 .payment-details {
     background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 10px;
+    padding: 30px;
+    border-radius: 15px;
     margin: 20px 0;
     text-align: left;
 }
 
 .payment-details p {
-    margin: 10px 0;
-    font-size: 16px;
+    margin: 15px 0;
+    font-size: 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
 }
 
 .copy-button {
-    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border-radius: 8px;
     color: white;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     transition: all 0.3s ease;
+    min-width: 120px;
 }
 
 .copy-button:hover {
-    background: linear-gradient(45deg, #ff8e8e, #ff6b6b);
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
 }
 
 .modal-overlay {
@@ -1627,30 +1633,41 @@ input[type="file"] {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(5px);
     z-index: 999;
     display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .modal-overlay.show {
     display: block;
+    opacity: 1;
 }
 
 .close-modal {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 20px;
+    right: 20px;
     background: none;
     border: none;
     color: white;
-    font-size: 24px;
+    font-size: 28px;
     cursor: pointer;
     transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .close-modal:hover {
     transform: rotate(90deg);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 @keyframes modalFadeIn {
@@ -1661,5 +1678,26 @@ input[type="file"] {
     to {
         opacity: 1;
         transform: translate(-50%, -50%);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .payment-modal {
+        width: 95%;
+        padding: 30px;
+    }
+    
+    .payment-modal h2 {
+        font-size: 24px;
+    }
+    
+    .payment-details p {
+        font-size: 16px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .copy-button {
+        width: 100%;
     }
 }
