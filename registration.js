@@ -153,48 +153,45 @@ if (deleteFileBtn) {
     });
 }
 
-// Обработка музыкальных ссылок
-document.addEventListener('DOMContentLoaded', function() {
-    const musicLinksContainer = document.getElementById('musicLinksContainer');
-    const addMusicLinkBtn = document.getElementById('addMusicLink');
-    
-    function createMusicLinkInput(isFirst = false) {
-        const container = document.createElement('div');
-        container.className = 'music-link-input';
-        
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'form-control music-link';
-        input.placeholder = 'Ссылка на музыку';
-        container.appendChild(input);
-        
-        if (!isFirst) {
-            const deleteBtn = document.createElement('button');
-            deleteBtn.type = 'button';
-            deleteBtn.className = 'remove-link';
-            deleteBtn.textContent = '×';
-            deleteBtn.onclick = () => container.remove();
-            container.appendChild(deleteBtn);
-        }
-        
-        return container;
+// Глобальные функции для работы с музыкальными ссылками
+window.addMusicLink = function() {
+    const container = document.getElementById('musicLinks');
+    if (!container) return;
+
+    // Создаем новый контейнер для поля ввода
+    const inputContainer = document.createElement('div');
+    inputContainer.className = 'music-input-container';
+
+    // Создаем поле ввода
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'music-input';
+    input.placeholder = 'Вставьте ссылку на трек';
+    input.required = true;
+
+    // Создаем кнопку удаления
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.className = 'delete-track-btn';
+    deleteBtn.innerHTML = '×';
+    deleteBtn.onclick = function() {
+        deleteMusicLink(this);
+    };
+
+    // Добавляем поле ввода и кнопку в контейнер
+    inputContainer.appendChild(input);
+    inputContainer.appendChild(deleteBtn);
+
+    // Добавляем контейнер в основной блок
+    container.appendChild(inputContainer);
+};
+
+window.deleteMusicLink = function(button) {
+    const inputContainer = button.parentElement;
+    if (inputContainer) {
+        inputContainer.remove();
     }
-    
-    // Добавляем первую ссылку при загрузке
-    if (musicLinksContainer) {
-        musicLinksContainer.innerHTML = '';
-        musicLinksContainer.appendChild(createMusicLinkInput(true));
-    }
-    
-    // Обработчик добавления новых ссылок
-    if (addMusicLinkBtn) {
-        addMusicLinkBtn.addEventListener('click', () => {
-            if (musicLinksContainer) {
-                musicLinksContainer.appendChild(createMusicLinkInput(false));
-            }
-        });
-    }
-});
+};
 
 // Обновляем обработчик отправки формы для работы с Firebase
 if (form) {
