@@ -13,17 +13,14 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
 
-// Your web app's Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyA-14teCRf0g25whWzxuVGvboO_8a8hCmM",
-    authDomain: "party31-19af4.firebaseapp.com",
-    projectId: "party31-19af4",
-    storageBucket: "party31-19af4.firebasestorage.app",
-    messagingSenderId: "692315230973",
-    appId: "1:692315230973:web:10871adfa544f501706494",
-    measurementId: "G-06K7VD5GD6",
-    experimentalForceLongPolling: true,
-    useFetchStreams: false
+    apiKey: "AIzaSyDxGxGxGxGxGxGxGxGxGxGxGxGxGxGxGxGx",
+    authDomain: "party-deanysus.firebaseapp.com",
+    projectId: "party-deanysus",
+    storageBucket: "party-deanysus.appspot.com",
+    messagingSenderId: "123456789012",
+    appId: "1:123456789012:web:abcdef1234567890"
 };
 
 let app;
@@ -151,56 +148,48 @@ async function deleteExistingRegistration(fullName) {
 // Функция для экспорта данных в CSV
 async function exportToCSV() {
     try {
-        const registrationsRef = collection(db, 'registrations');
-        const querySnapshot = await getDocs(registrationsRef);
+        const snapshot = await db.collection('registrations').orderBy('timestamp', 'desc').get();
+        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
         
-        // Подготовка данных
-        const data = [];
-        querySnapshot.forEach(doc => {
+        // Add headers
+        const headers = [
+            'ФИО', 'Телефон', 'Telegram', 'Транспорт', 'Водительские права',
+            'Активности', 'Сауна', 'Прятки', 'Статус отношений', 'Снаряжение',
+            'Музыка', 'Оплата', 'Дата регистрации'
+        ];
+        csvContent += headers.join(',') + '\n';
+        
+        // Add data
+        snapshot.forEach(doc => {
             const registration = doc.data();
-            data.push({
-                'ФИО': registration.fullName || '',
-                'Телефон': registration.phone || '',
-                'Telegram': registration.telegram || '',
-                'Транспорт': registration.transport === 'self' ? 'Еду сам' : 'На автобусе',
-                'Водительские права': registration.hasLicense ? 'Да' : 'Нет',
-                'Активности': (registration.activities || []).join(', '),
-                'Сауна': registration.sauna ? 'Да' : 'Нет',
-                'Прятки': registration.hideAndSeek ? 'Да' : 'Нет',
-                'Статус отношений': registration.relationship || '',
-                'Снаряжение': registration.equipment || '',
-                'Музыка': (registration.musicLinks || []).join(', '),
-                'Оплата': registration.paymentDone ? 'Да' : 'Нет',
-                'Дата регистрации': registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
-            });
+            const row = [
+                registration.fullName || '',
+                registration.phone || '',
+                registration.telegram || '',
+                registration.transport === 'self' ? 'Еду сам' : 'На автобусе',
+                registration.hasLicense ? 'Да' : 'Нет',
+                (registration.activities || []).join('; '),
+                registration.sauna ? 'Да' : 'Нет',
+                registration.hideAndSeek ? 'Да' : 'Нет',
+                registration.relationship || '',
+                registration.equipment || '',
+                (registration.musicLinks || []).join('; '),
+                registration.paymentDone ? 'Да' : 'Нет',
+                registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
+            ].map(field => `"${field}"`).join(',');
+            csvContent += row + '\n';
         });
-
-        // Создание CSV
-        const headers = Object.keys(data[0]);
-        const csvContent = [
-            headers.join(','),
-            ...data.map(row => headers.map(header => {
-                let cell = row[header] || '';
-                // Экранируем запятые и кавычки
-                if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
-                    cell = `"${cell.replace(/"/g, '""')}"`;
-                }
-                return cell;
-            }).join(','))
-        ].join('\n');
-
-        // Создание и скачивание файла
-        const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `registrations_${new Date().toISOString().split('T')[0]}.csv`;
+        
+        // Create download link
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `registrations_${new Date().toISOString().split('T')[0]}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
-        return true;
     } catch (error) {
-        console.error('Ошибка при экспорте в CSV:', error);
+        console.error('Error exporting to CSV:', error);
         throw error;
     }
 }
