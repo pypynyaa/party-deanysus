@@ -236,7 +236,9 @@ if (form) {
                 fullName,
                 phone,
                 telegram,
-                wishes
+                wishes,
+                wishesType: typeof wishes,
+                wishesLength: wishes.length
             });
 
             if (!fullName || !phone || !telegram) {
@@ -275,7 +277,11 @@ if (form) {
                 lastUpdated: new Date().toISOString()
             };
 
-            console.log('Отправляемые данные:', data);
+            console.log('Отправляемые данные:', {
+                ...data,
+                wishesType: typeof data.wishes,
+                wishesLength: data.wishes ? data.wishes.length : 0
+            });
 
             // Конвертируем фото в base64, если оно есть
             if (paymentProofInput && paymentProofInput.files[0]) {
