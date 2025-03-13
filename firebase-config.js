@@ -168,10 +168,17 @@ async function exportToCSV() {
         snapshot.forEach(doc => {
             const registration = doc.data();
             console.log('Полные данные регистрации:', registration);
-            console.log('Данные регистрации при экспорте:', {
-                fullName: registration.fullName,
-                wishes: registration.wishes,
-                rawWishes: JSON.stringify(registration.wishes)
+            
+            // Обработка пожеланий
+            let wishesText = '';
+            if (typeof registration.wishes === 'string') {
+                wishesText = registration.wishes;
+            } else if (registration.wishes && typeof registration.wishes === 'object') {
+                wishesText = JSON.stringify(registration.wishes);
+            }
+            console.log('Обработанные пожелания:', {
+                original: registration.wishes,
+                processed: wishesText
             });
             
             // Подготовка данных для строки CSV
@@ -186,7 +193,7 @@ async function exportToCSV() {
                 hideAndSeek: registration.hideAndSeek ? 'Да' : 'Нет',
                 relationship: registration.relationship || '',
                 equipment: registration.equipment || '',
-                wishes: registration.wishes || '',
+                wishes: wishesText,
                 musicLinks: (registration.musicLinks || []).join('; '),
                 paymentDone: registration.paymentDone ? 'Да' : 'Нет',
                 timestamp: registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
@@ -209,7 +216,11 @@ async function exportToCSV() {
                 rowData.musicLinks,
                 rowData.paymentDone,
                 rowData.timestamp
-            ].map(field => `"${field}"`).join(',');
+            ].map(field => {
+                // Экранируем кавычки и добавляем кавычки вокруг поля
+                const escaped = String(field).replace(/"/g, '""');
+                return `"${escaped}"`;
+            }).join(',');
             
             console.log('Строка CSV перед добавлением:', row);
             csvContent += row + '\n';
