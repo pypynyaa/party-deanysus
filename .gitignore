@@ -33,4 +33,7 @@ google-config.js
 *.jpg
 *.jpeg
 *.png
-*.gif 
+*.gif
+
+# Добавляем директорию uploads
+uploads/ 

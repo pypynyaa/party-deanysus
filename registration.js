@@ -247,110 +247,30 @@ if (form) {
                 throw new Error('Пожалуйста, заполните все обязательные поля');
             }
 
-            const userId = generateUserId();
-
-            // Проверяем и удаляем существующую регистрацию
-            try {
-                await deleteExistingRegistration(fullName);
-            } catch (error) {
-                console.error('Ошибка при удалении существующей регистрации:', error);
-                alert('Произошла ошибка при обновлении регистрации. Пожалуйста, попробуйте еще раз.');
-                if (submitButton) submitButton.disabled = false;
-                return;
-            }
-
-            // Создаем объект с данными
-            const data = {
-                userId,
-                timestamp: serverTimestamp(),
-                fullName: fullName,
-                phone: phone,
-                telegram: telegram,
-                paymentDone: formData.get('paymentDone') === 'on',
-                hasLicense: formData.get('hasLicense') === 'on',
-                transport: formData.get('transport'),
-                activities: Array.from(formData.getAll('activities')),
-                sauna: formData.get('sauna') === 'on',
-                hideAndSeek: formData.get('hideAndSeek') === 'on',
-                relationship: formData.get('relationship'),
-                equipment: formData.get('equipment'),
-                wishes: wishes,
-                musicLinks: Array.from(document.querySelectorAll('.music-input')).map(input => input.value.trim()).filter(Boolean),
-                lastUpdated: new Date().toISOString()
-            };
-
-            console.log('Отправляемые данные:', {
-                ...data,
-                wishesType: typeof data.wishes,
-                wishesLength: data.wishes ? data.wishes.length : 0
+            // Отправляем данные на сервер
+            const response = await fetch('process_form.php', {
+                method: 'POST',
+                body: formData
             });
 
-            // Конвертируем фото в base64, если оно есть
-            if (paymentProofInput && paymentProofInput.files[0]) {
-                const paymentProof = paymentProofInput.files[0];
-                try {
-                    console.log('Начало обработки файла:', {
-                        name: paymentProof.name,
-                        type: paymentProof.type,
-                        size: paymentProof.size
-                    });
-                    
-                    if (paymentProof.size > 10 * 1024 * 1024) {
-                        throw new Error('Размер файла не должен превышать 10MB');
-                    }
-                    
-                    console.log('Конвертация файла в base64...');
-                    data.paymentProofBase64 = await getBase64(paymentProof);
-                    data.paymentProofFilename = paymentProof.name;
-                    data.paymentProofType = paymentProof.type;
-                    
-                    console.log('Файл успешно обработан:', {
-                        name: paymentProof.name,
-                        type: paymentProof.type,
-                        size: paymentProof.size,
-                        base64Length: data.paymentProofBase64.length
-                    });
-                } catch (error) {
-                    console.error('Ошибка обработки файла:', error);
-                    alert('Произошла ошибка при обработке файла. Убедитесь, что размер файла не превышает 10MB.');
-                    if (submitButton) submitButton.disabled = false;
-                    return;
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('Регистрация успешно завершена!');
+                form.reset();
+                resetFileInput();
+                // Очищаем музыкальные ссылки
+                const musicLinksContainer = document.getElementById('musicLinks');
+                if (musicLinksContainer) {
+                    musicLinksContainer.innerHTML = '';
+                    window.addMusicLink();
                 }
-            }
-
-            // Сохраняем данные в Firestore
-            const registrationRef = doc(collection(db, 'registrations'), userId);
-            await setDoc(registrationRef, data);
-            console.log("Документ успешно сохранен с ID:", userId);
-            
-            // Проверяем сохраненные данные
-            const savedDoc = await getDoc(registrationRef);
-            const savedData = savedDoc.data();
-            console.log('Данные после сохранения:', {
-                ...savedData,
-                wishes: {
-                    value: savedData.wishes,
-                    type: typeof savedData.wishes,
-                    length: savedData.wishes ? savedData.wishes.length : 0
-                }
-            });
-
-            // Сохраняем ID регистрации
-            localStorage.setItem('registrationId', userId);
-            
-            alert('Регистрация успешно завершена! Мы свяжемся с вами в ближайшее время.');
-            form.reset();
-            resetFileInput();
-            
-            // Очищаем музыкальные ссылки
-            const musicLinksContainer = document.getElementById('musicLinks');
-            if (musicLinksContainer) {
-                musicLinksContainer.innerHTML = '';
-                window.addMusicLink(); // Добавляем первое поле
+            } else {
+                throw new Error(result.message || 'Произошла ошибка при регистрации');
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
+            console.error('Ошибка при отправке формы:', error);
+            alert(error.message || 'Произошла ошибка при отправке формы');
         } finally {
             if (submitButton) submitButton.disabled = false;
         }
