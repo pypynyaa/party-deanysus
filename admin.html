@@ -32,8 +32,11 @@
         
         <div class="row mb-4">
             <div class="col">
-                <button class="btn btn-success export-btn" onclick="exportToExcel()">
+                <button class="btn btn-success export-btn me-2" onclick="exportToExcel()">
                     Экспорт в Excel
+                </button>
+                <button class="btn btn-primary export-btn" onclick="exportToCSV()">
+                    Экспорт в CSV
                 </button>
             </div>
         </div>
@@ -70,35 +73,18 @@
         // Загрузка всех регистраций
         async function loadRegistrations() {
             try {
-                console.log('Начинаем загрузку регистраций...');
-                const registrationsList = document.getElementById('registrationsList');
-                registrationsList.innerHTML = '<p>Загрузка данных...</p>';
-
                 const snapshot = await db.collection('registrations').orderBy('timestamp', 'desc').get();
-                console.log('Получено регистраций:', snapshot.size);
-
+                const registrationsList = document.getElementById('registrationsList');
                 registrationsList.innerHTML = '';
-                
-                if (snapshot.empty) {
-                    registrationsList.innerHTML = '<p>Нет зарегистрированных участников</p>';
-                    return;
-                }
 
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    console.log('Данные регистрации:', {
-                        fullName: data.fullName,
-                        phone: data.phone,
-                        telegram: data.telegram,
-                        timestamp: data.timestamp
-                    });
                     const card = createRegistrationCard(data);
                     registrationsList.appendChild(card);
                 });
             } catch (error) {
                 console.error('Ошибка загрузки регистраций:', error);
-                const registrationsList = document.getElementById('registrationsList');
-                registrationsList.innerHTML = '<p class="error">Ошибка при загрузке данных. Пожалуйста, обновите страницу.</p>';
+                alert('Ошибка загрузки данных');
             }
         }
 
@@ -110,11 +96,11 @@
             const timestamp = data.timestamp ? new Date(data.timestamp.seconds * 1000).toLocaleString() : 'Нет даты';
             
             card.innerHTML = `
-                <h3>${data.fullName || 'Без имени'}</h3>
-                <p><strong>Телефон:</strong> ${data.phone || 'Не указан'}</p>
-                <p><strong>Telegram:</strong> ${data.telegram || 'Не указан'}</p>
+                <h3>${data.fullName}</h3>
+                <p><strong>Телефон:</strong> ${data.phone}</p>
+                <p><strong>Telegram:</strong> ${data.telegram}</p>
                 <p><strong>Транспорт:</strong> ${data.transport === 'self' ? 'Еду сам' : 'На автобусе'}</p>
-                <p><strong>Активности:</strong> ${Array.isArray(data.activities) ? data.activities.join(', ') : 'Не указаны'}</p>
+                <p><strong>Активности:</strong> ${data.activities.join(', ')}</p>
                 <p><strong>Оплата:</strong> ${data.paymentDone ? 'Выполнена' : 'Не выполнена'}</p>
                 ${data.paymentProofBase64 ? `<img src="${data.paymentProofBase64}" class="payment-proof" alt="Подтверждение оплаты">` : ''}
                 <p><small>Дата регистрации: ${timestamp}</small></p>
@@ -130,11 +116,11 @@
                 snapshot.forEach(doc => {
                     const registration = doc.data();
                     data.push({
-                        'ФИО': registration.fullName,
-                        'Телефон': registration.phone,
-                        'Telegram': registration.telegram,
+                        'ФИО': registration.fullName || '',
+                        'Телефон': registration.phone || '',
+                        'Telegram': registration.telegram || '',
                         'Транспорт': registration.transport === 'self' ? 'Еду сам' : 'На автобусе',
-                        'Активности': registration.activities.join(', '),
+                        'Активности': Array.isArray(registration.activities) ? registration.activities.join(', ') : '',
                         'Оплата': registration.paymentDone ? 'Да' : 'Нет',
                         'Фото оплаты': registration.paymentProofBase64 ? 'Есть' : 'Нет',
                         'Дата регистрации': registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
@@ -145,6 +131,54 @@
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, "Регистрации");
                 XLSX.writeFile(wb, "registrations.xlsx");
+            });
+        }
+
+        // Экспорт в CSV
+        function exportToCSV() {
+            db.collection('registrations').get().then(snapshot => {
+                const data = [];
+                snapshot.forEach(doc => {
+                    const registration = doc.data();
+                    data.push({
+                        'ФИО': registration.fullName || '',
+                        'Телефон': registration.phone || '',
+                        'Telegram': registration.telegram || '',
+                        'Транспорт': registration.transport === 'self' ? 'Еду сам' : 'На автобусе',
+                        'Права': registration.hasLicense ? 'Да' : 'Нет',
+                        'Активности': Array.isArray(registration.activities) ? registration.activities.join(', ') : '',
+                        'Баня': registration.sauna ? 'Да' : 'Нет',
+                        'Прятки': registration.hideAndSeek ? 'Да' : 'Нет',
+                        'Статус отношений': registration.relationship || '',
+                        'Снаряжение': registration.equipment || '',
+                        'Музыка': Array.isArray(registration.musicLinks) ? registration.musicLinks.join(', ') : '',
+                        'Оплата': registration.paymentDone ? 'Да' : 'Нет',
+                        'Дата регистрации': registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
+                    });
+                });
+
+                // Создаем CSV строку
+                const headers = Object.keys(data[0]);
+                const csvRows = [
+                    headers.join(','), // Заголовки
+                    ...data.map(row => headers.map(header => {
+                        let cell = row[header] || '';
+                        // Экранируем запятые и кавычки
+                        if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
+                            cell = `"${cell.replace(/"/g, '""')}"`;
+                        }
+                        return cell;
+                    }).join(','))
+                ];
+                const csvString = csvRows.join('\n');
+
+                // Создаем Blob и скачиваем файл
+                const blob = new Blob(['\ufeff' + csvString], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'registrations.csv';
+                link.click();
+                URL.revokeObjectURL(link.href);
             });
         }
 
