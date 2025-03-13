@@ -124,6 +124,10 @@ h2::after {
     margin-bottom: 20px;
     position: relative;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 input[type="text"],
@@ -908,7 +912,7 @@ textarea:focus {
 .telegram-input-container {
     width: 100%;
     max-width: 400px;
-    margin: 0 auto;
+    margin: 20px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -917,6 +921,7 @@ textarea:focus {
 
 .telegram-input {
     width: 100%;
+    max-width: 400px;
     padding: 15px;
     background: var(--input-background);
     border: 1px solid var(--input-border);
@@ -939,29 +944,6 @@ textarea:focus {
     font-size: 14px;
     opacity: 0.8;
     margin-top: 4px;
-}
-
-@media screen and (max-width: 768px) {
-    .payment-modal {
-        width: 95%;
-        padding: 30px;
-    }
-    
-    .payment-modal h2 {
-        font-size: 24px;
-    }
-    
-    .payment-details p {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-    
-    .copy-button {
-        width: 100%;
-    }
-
-    .card-number {
-        font-size: 20px;
-    }
+    text-align: center;
+    width: 100%;
 }
