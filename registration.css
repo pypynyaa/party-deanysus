@@ -944,3 +944,29 @@ h2::after {
     text-align: center;
     width: 100%;
 }
+
+/* Стили для поля пожеланий */
+.wishes-input {
+    width: 100%;
+    padding: 15px;
+    background: var(--input-background);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    color: var(--text-color);
+    font-size: 16px;
+    resize: vertical;
+    min-height: 120px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.wishes-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+    transform: translateY(-2px);
+}
+
+.wishes-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
