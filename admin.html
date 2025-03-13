@@ -36,6 +36,11 @@
                     Экспорт в Excel
                 </button>
             </div>
+            <div class="col">
+                <button class="btn btn-secondary export-btn" onclick="handleExport('csv')">
+                    Экспорт в CSV
+                </button>
+            </div>
         </div>
 
         <div class="row">
@@ -55,7 +60,6 @@
 
     <script type="module">
         import { db, exportToCSV } from './firebase-config.js';
-        import { initGoogleAPI, exportToGoogleSheets } from './google-config.js';
         
         // Обработчик экспорта
         async function handleExport(type) {
@@ -102,10 +106,6 @@
                         
                     case 'csv':
                         await exportToCSV();
-                        break;
-                        
-                    case 'sheets':
-                        await exportToGoogleSheets(data);
                         break;
                 }
             } catch (error) {
