@@ -6,7 +6,8 @@ import {
     where, 
     getDocs,
     doc,
-    setDoc 
+    setDoc,
+    enableIndexedDbPersistence
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
 
@@ -30,6 +31,16 @@ try {
     app = initializeApp(firebaseConfig);
     db = getFirestore(app);
     storage = getStorage(app);
+    
+    // Включаем поддержку IndexedDB persistence
+    enableIndexedDbPersistence(db).catch((err) => {
+        if (err.code == 'failed-precondition') {
+            console.warn('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+        } else if (err.code == 'unimplemented') {
+            console.warn('The current browser does not support persistence.');
+        }
+    });
+    
     console.log('Firebase успешно инициализирован');
 } catch (error) {
     console.error('Ошибка при инициализации Firebase:', error);
@@ -38,12 +49,14 @@ try {
 // Функция для проверки подключения к базе данных
 async function testDatabaseConnection() {
     try {
-        const registrationsRef = collection(db, 'registrations');
-        const q = query(registrationsRef, where('test', '==', true));
-        await getDocs(q);
+        const db = getFirestore(app);
+        // Пробуем получить доступ к коллекции для проверки соединения
+        const testRef = db.collection('test');
+        await testRef.limit(1).get();
+        console.log('Соединение с Firestore успешно установлено');
         return true;
     } catch (error) {
-        console.error('Ошибка при тестировании подключения:', error);
+        console.error('Ошибка при проверке соединения с Firestore:', error);
         return false;
     }
 }
