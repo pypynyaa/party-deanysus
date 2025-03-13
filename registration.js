@@ -268,6 +268,7 @@ if (form) {
                 hideAndSeek: formData.get('hideAndSeek') === 'on',
                 relationship: formData.get('relationship'),
                 equipment: formData.get('equipment'),
+                wishes: formData.get('wishes') || '',
                 musicLinks: Array.from(document.querySelectorAll('.music-input')).map(input => input.value.trim()).filter(Boolean),
                 lastUpdated: new Date().toISOString()
             };

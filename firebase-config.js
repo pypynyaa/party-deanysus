@@ -160,7 +160,7 @@ async function exportToCSV() {
         const headers = [
             'ФИО', 'Телефон', 'Telegram', 'Транспорт', 'Водительские права',
             'Активности', 'Сауна', 'Прятки', 'Статус отношений', 'Снаряжение',
-            'Музыка', 'Оплата', 'Дата регистрации'
+            'Пожелания', 'Музыка', 'Оплата', 'Дата регистрации'
         ];
         csvContent += headers.join(',') + '\n';
         
@@ -178,6 +178,7 @@ async function exportToCSV() {
                 registration.hideAndSeek ? 'Да' : 'Нет',
                 registration.relationship || '',
                 registration.equipment || '',
+                registration.wishes || '',
                 (registration.musicLinks || []).join('; '),
                 registration.paymentDone ? 'Да' : 'Нет',
                 registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
