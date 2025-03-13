@@ -682,7 +682,7 @@ textarea:focus {
 
 .payment-toggle {
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
     margin: 0 auto 20px;
     display: flex;
     align-items: center;
