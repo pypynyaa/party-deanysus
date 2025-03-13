@@ -524,6 +524,32 @@
   <script src="registration.js"></script>
   <script src="music.js"></script>
   <script>
+    // Сохраняем текущее время воспроизведения видео при уходе со страницы
+    document.addEventListener('visibilitychange', function() {
+      const video = document.getElementById('bgVideo');
+      
+      if (document.hidden) {
+        // Сохраняем текущее время воспроизведения
+        sessionStorage.setItem('videoTime', video.currentTime);
+      } else {
+        // Восстанавливаем время воспроизведения
+        const savedTime = sessionStorage.getItem('videoTime');
+        if (savedTime) {
+          video.currentTime = parseFloat(savedTime);
+        }
+      }
+    });
+
+    // При загрузке страницы проверяем сохраненное время
+    document.addEventListener('DOMContentLoaded', function() {
+      const video = document.getElementById('bgVideo');
+      const savedTime = sessionStorage.getItem('videoTime');
+      
+      if (savedTime) {
+        video.currentTime = parseFloat(savedTime);
+      }
+    });
+
     function showPaymentModal() {
       const overlay = document.getElementById('modalOverlay');
       const modal = document.getElementById('paymentModal');
