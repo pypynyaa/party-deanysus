@@ -280,6 +280,26 @@
         const inputContainer = button.parentElement; // Находим контейнер
         inputContainer.remove(); // Удаляем контейнер
     }
+
+    // Обработчик для выпадающей плашки с реквизитами
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentToggle = document.querySelector('.payment-toggle');
+        const paymentInfo = document.getElementById('paymentInfo');
+
+        paymentToggle.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            
+            this.setAttribute('aria-expanded', !isExpanded);
+            paymentInfo.classList.toggle('visible');
+            
+            // Плавная прокрутка к плашке при открытии
+            if (!isExpanded) {
+                setTimeout(() => {
+                    paymentInfo.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        });
+    });
   </script>
 </head>
 <body>
@@ -490,12 +510,8 @@
         <h2>Реквизиты для оплаты</h2>
         <div class="payment-details">
           <p>
-            Сбербанк: 2202 2036 5341 5108
+            Сбербанк (Никита Н.): 5469 4500 1062 9285
             <button class="copy-button" onclick="copyToClipboard('2202203653415108')">Копировать</button>
-          </p>
-          <p>
-            Тинькофф: 2200 7007 8256 0534
-            <button class="copy-button" onclick="copyToClipboard('2200700782560534')">Копировать</button>
           </p>
         </div>
         <p>После оплаты отправьте скриншот чека в телеграм</p>
