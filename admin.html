@@ -69,12 +69,22 @@
     <!-- XLSX library for Excel export -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
+    <script>
+        // Глобальная переменная для хранения db
+        let dbInstance;
+    </script>
+
     <script type="module">
         import { db } from './admin-firebase.js';
         import { collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         
+        // Сохраняем db в глобальную переменную
+        window.dbInstance = db;
+    </script>
+
+    <script>
         // Обработчик экспорта
-        window.handleExport = async function(type) {
+        async function handleExport(type) {
             const button = event.target;
             const originalText = button.innerHTML;
             button.disabled = true;
@@ -82,7 +92,7 @@
             
             try {
                 let data = [];
-                const registrationsRef = collection(db, 'registrations');
+                const registrationsRef = collection(dbInstance, 'registrations');
                 const q = query(registrationsRef, orderBy('timestamp', 'desc'));
                 const snapshot = await getDocs(q);
                 
@@ -140,7 +150,7 @@
                 button.disabled = false;
                 button.innerHTML = originalText;
             }
-        };
+        }
     </script>
 </body>
 </html> 
