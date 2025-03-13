@@ -125,6 +125,63 @@ async function deleteExistingRegistration(fullName) {
     }
 }
 
+// Функция для экспорта данных в CSV
+async function exportToCSV() {
+    try {
+        const registrationsRef = collection(db, 'registrations');
+        const querySnapshot = await getDocs(registrationsRef);
+        
+        // Подготовка данных
+        const data = [];
+        querySnapshot.forEach(doc => {
+            const registration = doc.data();
+            data.push({
+                'ФИО': registration.fullName || '',
+                'Телефон': registration.phone || '',
+                'Telegram': registration.telegram || '',
+                'Транспорт': registration.transport === 'self' ? 'Еду сам' : 'На автобусе',
+                'Водительские права': registration.hasLicense ? 'Да' : 'Нет',
+                'Активности': (registration.activities || []).join(', '),
+                'Сауна': registration.sauna ? 'Да' : 'Нет',
+                'Прятки': registration.hideAndSeek ? 'Да' : 'Нет',
+                'Статус отношений': registration.relationship || '',
+                'Снаряжение': registration.equipment || '',
+                'Музыка': (registration.musicLinks || []).join(', '),
+                'Оплата': registration.paymentDone ? 'Да' : 'Нет',
+                'Дата регистрации': registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
+            });
+        });
+
+        // Создание CSV
+        const headers = Object.keys(data[0]);
+        const csvContent = [
+            headers.join(','),
+            ...data.map(row => headers.map(header => {
+                let cell = row[header] || '';
+                // Экранируем запятые и кавычки
+                if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
+                    cell = `"${cell.replace(/"/g, '""')}"`;
+                }
+                return cell;
+            }).join(','))
+        ].join('\n');
+
+        // Создание и скачивание файла
+        const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `registrations_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        return true;
+    } catch (error) {
+        console.error('Ошибка при экспорте в CSV:', error);
+        throw error;
+    }
+}
+
 export {
     db,
     storage,
@@ -140,5 +197,6 @@ export {
     findRegistrationByName,
     findRegistrationByPhone,
     findRegistrationByTelegram,
-    deleteExistingRegistration
+    deleteExistingRegistration,
+    exportToCSV
 }; 

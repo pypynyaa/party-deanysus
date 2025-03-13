@@ -228,7 +228,7 @@ if (form) {
 
         try {
             const formData = new FormData(form);
-            const fullName = formData.get('fullName');
+            const fullName = formData.get('fullName').trim();
             const userId = generateUserId();
 
             // Проверяем и удаляем существующую регистрацию
@@ -246,8 +246,8 @@ if (form) {
                 userId,
                 timestamp: serverTimestamp(),
                 fullName: fullName,
-                phone: formData.get('phone'),
-                telegram: formData.get('telegram'),
+                phone: formData.get('phone').trim(),
+                telegram: formData.get('telegram').trim(),
                 paymentDone: formData.get('paymentDone') === 'on',
                 hasLicense: formData.get('hasLicense') === 'on',
                 transport: formData.get('transport'),
@@ -256,9 +256,11 @@ if (form) {
                 hideAndSeek: formData.get('hideAndSeek') === 'on',
                 relationship: formData.get('relationship'),
                 equipment: formData.get('equipment'),
-                musicLinks: Array.from(document.querySelectorAll('.music-input')).map(input => input.value).filter(Boolean),
+                musicLinks: Array.from(document.querySelectorAll('.music-input')).map(input => input.value.trim()).filter(Boolean),
                 lastUpdated: new Date().toISOString()
             };
+
+            console.log('Отправляемые данные:', data);
 
             // Конвертируем фото в base64, если оно есть
             if (paymentProofInput && paymentProofInput.files[0]) {
@@ -270,6 +272,11 @@ if (form) {
                     data.paymentProofBase64 = await getBase64(paymentProof);
                     data.paymentProofFilename = paymentProof.name;
                     data.paymentProofType = paymentProof.type;
+                    console.log('Файл оплаты:', {
+                        name: paymentProof.name,
+                        type: paymentProof.type,
+                        size: paymentProof.size
+                    });
                 } catch (error) {
                     console.error('Ошибка обработки файла:', error);
                     alert('Произошла ошибка при обработке файла. Убедитесь, что размер файла не превышает 10MB.');
