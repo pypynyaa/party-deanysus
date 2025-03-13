@@ -11,7 +11,8 @@ import {
     enableIndexedDbPersistence,
     getDoc,
     orderBy,
-    serverTimestamp
+    serverTimestamp,
+    addDoc
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
@@ -252,5 +253,7 @@ export {
     findRegistrationByPhone,
     findRegistrationByTelegram,
     deleteExistingRegistration,
-    exportToCSV
+    exportToCSV,
+    addDoc,
+    getDoc
 }; 

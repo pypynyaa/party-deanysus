@@ -261,29 +261,28 @@ if (form) {
 
             // Создаем объект с данными
             const data = {
-                fullName: formData.get('fullName'),
-                phone: formData.get('phone'),
-                telegram: formData.get('telegram'),
+                userId,
+                timestamp: serverTimestamp(),
+                fullName: fullName,
+                phone: phone,
+                telegram: telegram,
+                paymentDone: formData.get('paymentDone') === 'on',
+                hasLicense: formData.get('hasLicense') === 'on',
                 transport: formData.get('transport'),
-                hasLicense: formData.get('hasLicense') === 'true',
                 activities: Array.from(formData.getAll('activities')),
-                sauna: formData.get('sauna') === 'true',
-                hideAndSeek: formData.get('hideAndSeek') === 'true',
+                sauna: formData.get('sauna') === 'on',
+                hideAndSeek: formData.get('hideAndSeek') === 'on',
                 relationship: formData.get('relationship'),
                 equipment: formData.get('equipment'),
+                wishes: wishes,
                 musicLinks: Array.from(document.querySelectorAll('.music-input')).map(input => input.value.trim()).filter(Boolean),
-                paymentDone: false,
-                timestamp: serverTimestamp(),
-                wishes: formData.get('wishes')
+                lastUpdated: new Date().toISOString()
             };
 
-            console.log('Данные перед сохранением в Firestore:', {
+            console.log('Отправляемые данные:', {
                 ...data,
-                wishes: {
-                    value: data.wishes,
-                    type: typeof data.wishes,
-                    length: data.wishes ? data.wishes.length : 0
-                }
+                wishesType: typeof data.wishes,
+                wishesLength: data.wishes ? data.wishes.length : 0
             });
 
             // Конвертируем фото в base64, если оно есть
@@ -320,11 +319,12 @@ if (form) {
             }
 
             // Сохраняем данные в Firestore
-            const docRef = await addDoc(collection(db, "registrations"), data);
-            console.log("Документ успешно сохранен с ID:", docRef.id);
+            const registrationRef = doc(collection(db, 'registrations'), userId);
+            await setDoc(registrationRef, data);
+            console.log("Документ успешно сохранен с ID:", userId);
             
             // Проверяем сохраненные данные
-            const savedDoc = await getDoc(docRef);
+            const savedDoc = await getDoc(registrationRef);
             const savedData = savedDoc.data();
             console.log('Данные после сохранения:', {
                 ...savedData,
