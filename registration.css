@@ -680,612 +680,24 @@ textarea:focus {
     margin: 0 auto 30px;
 }
 
-.payment-proof {
-    margin-top: 15px;
-    transition: all 0.3s ease;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.payment-proof.hidden {
-    display: none;
-}
-
-.file-upload-container {
-    position: relative;
-    width: 100%;
-    margin-top: 10px;
-}
-
-.file-upload-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 20px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.file-upload-label:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
-}
-
-.file-upload-label.file-selected {
-    background: var(--primary-color);
-}
-
-.file-name {
-    max-width: calc(100% - 30px);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 14px;
-}
-
-.delete-file {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    opacity: 0.8;
-    z-index: 1;
-}
-
-.delete-file:hover {
-    opacity: 1;
-    transform: translateY(-50%) scale(1.1);
-}
-
-.delete-file.hidden {
-    display: none;
-}
-
-input[type="file"] {
-    display: none;
-}
-
-/* Добавляем стили для состояния загрузки */
-.file-upload-label.loading {
-    background: var(--secondary-color);
-    pointer-events: none;
-    opacity: 0.8;
-}
-
-.file-upload-label.loading .file-name::after {
-    content: '...';
-    animation: loading 1s infinite;
-}
-
-@keyframes loading {
-    0% { content: '.'; }
-    33% { content: '..'; }
-    66% { content: '...'; }
-}
-
-.image-preview {
-    margin-top: 15px;
-    width: 100%;
-    height: 150px;
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative;
-    border: 2px solid var(--primary-color);
-    background: var(--input-background);
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.image-preview.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.image-preview img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-.preview-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.image-preview:hover .preview-overlay {
-    opacity: 1;
-}
-
-.preview-text {
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    padding: 8px 16px;
-    background: var(--primary-color);
-    border-radius: 20px;
-}
-
-.image-preview.hidden {
-    display: none;
-}
-
-.file-upload-label.file-selected {
-    background: var(--secondary-color);
-}
-
-/* Стили для уведомления */
-.upload-notification {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: var(--primary-color);
-    color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-
-.upload-notification.visible {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-}
-
-/* Улучшаем стили для контейнера загрузки файла */
-.file-upload-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    width: 100%;
-}
-
-.file-upload-label {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 20px;
-    background: var(--primary-color);
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-    min-height: 45px;
-    font-weight: bold;
-}
-
-.file-upload-label:hover {
-    background: var(--secondary-color);
-    transform: translateY(-2px);
-}
-
-.file-upload-label.file-selected {
-    background: var(--secondary-color);
-    box-shadow: 0 2px 8px rgba(78, 205, 196, 0.3);
-}
-
-.payment-info {
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 12px;
-    padding: 25px;
-    width: 100%;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-.payment-details {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 18px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.payment-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 20px;
-    margin: 15px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: all 0.3s ease;
-}
-
-.card-number {
-    font-size: 24px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    color: white;
-}
-
-.copy-button {
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    min-width: 120px;
-}
-
-.copy-button:hover {
-    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-}
-
-.copy-button.copied {
-    background: #4CAF50;
-    transform: scale(0.95);
-}
-
-.payment-name, .payment-bank, .payment-note {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 16px;
-    margin: 10px 0;
-    text-align: center;
-}
-
-.payment-note {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-@media screen and (max-width: 768px) {
-    .payment-card {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-
-    .card-number {
-        font-size: 20px;
-    }
-
-    .copy-button {
-        width: 100%;
-    }
-}
-
-.additional-info-section {
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 25px;
-    padding: 40px;
-    margin: 40px 0;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.info-group {
-    margin-bottom: 40px;
-    position: relative;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.5s ease forwards;
-}
-
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.info-group:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.info-group:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-.info-group:last-child {
-    margin-bottom: 0;
-}
-
-.info-title {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--text-color);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding-left: 10px;
-}
-
-.info-title::before {
-    font-size: 28px;
-    opacity: 0.9;
-}
-
-.info-title.relationship::before {
-    content: '❤️';
-    filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.5));
-}
-
-.info-title.equipment::before {
-    content: '📸';
-    filter: drop-shadow(0 0 10px rgba(78, 205, 196, 0.5));
-}
-
-.info-title.music::before {
-    content: '🎵';
-    filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.5));
-}
-
-.equipment-select {
-    width: 100%;
-    height: 60px;
-    padding: 0 50px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    color: white;
-    font-size: 18px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234ecdc4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 20px center;
-    background-size: 20px;
-    text-align: center;
-    text-align-last: center;
-    font-weight: 500;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-}
-
-.equipment-select:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-color: var(--secondary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
-}
-
-.equipment-select:focus {
-    outline: none;
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2), 0 6px 25px rgba(0, 0, 0, 0.4);
-}
-
-.equipment-select option {
-    background-color: rgba(0, 0, 0, 0.95);
-    color: white;
-    padding: 20px;
-    font-size: 18px;
-}
-
-/* Обновляем стили для музыкальных треков */
-.music-links {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.music-link-container {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 0 20px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    transition: all 0.3s ease;
-}
-
-.music-link-container:hover {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
-}
-
-.music-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 16px;
-    padding: 0 15px;
-    height: 100%;
-    text-align: center;
-}
-
-.music-input:focus {
-    outline: none;
-}
-
-.add-music-btn {
-    width: 100%;
-    height: 60px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 2px dashed rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-    margin-top: 15px;
-}
-
-.add-music-btn:hover {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
-}
-
-.add-music-btn::before {
-    content: '🎵';
-    font-size: 20px;
-}
-
-@media screen and (max-width: 768px) {
-    .additional-info-section {
-        padding: 30px;
-        margin: 30px 0;
-    }
-
-    .info-title {
-        font-size: 20px;
-    }
-
-    .equipment-select,
-    .music-link-container,
-    .add-music-btn {
-        height: 50px;
-    }
-
-    .music-input {
-        font-size: 14px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .additional-info-section {
-        padding: 20px;
-        margin: 20px 0;
-    }
-
-    .info-title {
-        font-size: 18px;
-    }
-
-    .info-title::before {
-        font-size: 24px;
-    }
-
-    .equipment-select,
-    .music-link-container,
-    .add-music-btn {
-        height: 45px;
-        font-size: 14px;
-    }
-}
-
-.form-group input[type="text"][name="telegram"] {
-    text-align: center;
-    margin: 0 auto;
-    display: block;
-    max-width: 400px;
-}
-
 .payment-toggle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
-    max-width: 600px;
-    margin: 0 auto 20px;
-    padding: 15px 30px;
-}
-
-.payment-info {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 15px;
-}
-
-.payment-card {
-    justify-content: center;
-    padding: 15px;
-    margin: 15px 0;
-}
-
-.payment-info {
-    transition: all 0.3s ease;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-}
-
-.payment-info.visible {
-    max-height: 500px;
-    opacity: 1;
-    padding: 20px;
-    margin: 20px auto;
-}
-
-.telegram-input-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin: 20px 0;
-}
-
-.telegram-input {
-    width: 100%;
-    max-width: 400px;
-    padding: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     color: white;
-    font-size: 16px;
-    text-align: center;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
     transition: all 0.3s ease;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.telegram-input:focus {
-    border-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-    outline: none;
+.payment-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .payment-modal {
@@ -1327,18 +739,26 @@ input[type="file"] {
     padding: 30px;
     border-radius: 15px;
     margin: 20px 0;
-    text-align: left;
 }
 
 .payment-details p {
     margin: 15px 0;
     font-size: 18px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 15px;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
+}
+
+.card-number {
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: white;
+    font-family: monospace;
 }
 
 .copy-button {
@@ -1351,12 +771,24 @@ input[type="file"] {
     font-size: 16px;
     transition: all 0.3s ease;
     min-width: 120px;
+    white-space: nowrap;
 }
 
 .copy-button:hover {
     background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.copy-button.copied {
+    background: #4CAF50;
+    transform: scale(0.95);
+}
+
+.payment-note {
+    margin-top: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
 }
 
 .modal-overlay {
@@ -1424,12 +856,16 @@ input[type="file"] {
     }
     
     .payment-details p {
-        font-size: 16px;
         flex-direction: column;
-        gap: 10px;
+        gap: 15px;
+        text-align: center;
     }
     
     .copy-button {
         width: 100%;
+    }
+
+    .card-number {
+        font-size: 20px;
     }
 }

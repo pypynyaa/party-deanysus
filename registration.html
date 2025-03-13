@@ -345,18 +345,9 @@
 
         <h2>Оплата</h2>
         <div class="form-group payment-section">
-            <div class="payment-info visible">
-                <p class="payment-details">Реквизиты для оплаты:</p>
-                <div class="payment-card">
-                    <span class="card-number">5469 4500 1062 9285</span>
-                    <button class="copy-button" onclick="copyToClipboard('5469450010629285')">
-                        Скопировать
-                    </button>
-                </div>
-                <p class="payment-name">Никита Н.</p>
-                <p class="payment-bank">Сбербанк</p>
-                <p class="payment-note">После оплаты отправьте скриншот чека в телеграм</p>
-            </div>
+            <button type="button" class="payment-toggle" onclick="showPaymentModal()">
+                <span class="button-text">Показать реквизиты для оплаты</span>
+            </button>
             <label class="checkbox-label">
                 <input type="checkbox" id="paymentDone" name="paymentDone">
                 <span>Я оплатил участие</span>
@@ -364,16 +355,16 @@
             <div class="form-group payment-proof hidden">
                 <input type="file" id="paymentProof" name="paymentProof" accept="image/*,.pdf,.doc,.docx">
                 <div class="file-upload-container">
-                  <label for="paymentProof" class="file-upload-label">
-                    <span class="file-name">Прикрепить файл оплаты</span>
-                  </label>
-                  <button type="button" class="delete-file hidden" onclick="removeFile()">×</button>
+                    <label for="paymentProof" class="file-upload-label">
+                        <span class="file-name">Прикрепить файл оплаты</span>
+                    </label>
+                    <button type="button" class="delete-file hidden" onclick="removeFile()">×</button>
                 </div>
                 <div class="image-preview hidden">
-                  <img id="previewImage" src="#" alt="Предпросмотр">
-                  <div class="preview-overlay">
-                    <span class="preview-text">Файл добавлен</span>
-                  </div>
+                    <img id="previewImage" src="#" alt="Предпросмотр">
+                    <div class="preview-overlay">
+                        <span class="preview-text">Файл добавлен</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -509,11 +500,17 @@
         <h2>Реквизиты для оплаты</h2>
         <div class="payment-details">
           <p>
-            Сбербанк (Никита Н.): 5469 4500 1062 9285
-            <button class="copy-button" onclick="copyToClipboard('2202203653415108')">Копировать</button>
+            <span class="card-number">5469 4500 1062 9285</span>
+            <button class="copy-button" onclick="copyToClipboard('5469450010629285')">
+              Скопировать
+            </button>
           </p>
+          <p>Сбербанк</p>
+          <p>Никита Игматьянов</p>
         </div>
-        <p>После оплаты отправьте скриншот чека в телеграм</p>
+        <div class="payment-note">
+          После оплаты, пожалуйста, отправьте чек в Telegram
+        </div>
       </div>
     </div>
   </div>

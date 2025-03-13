@@ -555,32 +555,25 @@ if (paymentToggle && paymentInfo) {
 
 // Функция для копирования номера карты
 async function copyCardNumber() {
-    const cardNumber = '5469 4500 1062 9285';
+    const cardNumber = document.querySelector('.card-number').textContent;
+    const button = document.querySelector('.copy-button');
     
     try {
         await navigator.clipboard.writeText(cardNumber);
+        button.textContent = 'Скопировано!';
+        button.classList.add('copied');
         
-        // Показываем уведомление
-        const notification = document.createElement('div');
-        notification.className = 'copy-notification';
-        notification.textContent = 'Номер карты скопирован!';
-        document.body.appendChild(notification);
-        
-        // Анимируем появление уведомления
-        requestAnimationFrame(() => {
-            notification.classList.add('visible');
-        });
-        
-        // Удаляем уведомление через 2 секунды
         setTimeout(() => {
-            notification.classList.remove('visible');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
+            button.textContent = 'Скопировать';
+            button.classList.remove('copied');
         }, 2000);
     } catch (err) {
         console.error('Ошибка при копировании:', err);
-        alert('Не удалось скопировать номер карты. Пожалуйста, скопируйте вручную.');
+        button.textContent = 'Ошибка';
+        
+        setTimeout(() => {
+            button.textContent = 'Скопировать';
+        }, 2000);
     }
 }
 
@@ -609,4 +602,52 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
+});
+
+// Функции для работы с модальным окном оплаты
+function showPaymentModal() {
+    document.querySelector('.modal-overlay').classList.add('show');
+    document.querySelector('.payment-modal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+function hidePaymentModal() {
+    document.querySelector('.modal-overlay').classList.remove('show');
+    document.querySelector('.payment-modal').classList.remove('show');
+    document.body.style.overflow = '';
+}
+
+// Добавляем обработчики событий
+document.addEventListener('DOMContentLoaded', () => {
+    const paymentToggle = document.querySelector('.payment-toggle');
+    const closeModal = document.querySelector('.close-modal');
+    const modalOverlay = document.querySelector('.modal-overlay');
+    const copyButton = document.querySelector('.copy-button');
+    
+    if (paymentToggle) {
+        paymentToggle.addEventListener('click', showPaymentModal);
+    }
+    
+    if (closeModal) {
+        closeModal.addEventListener('click', hidePaymentModal);
+    }
+    
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                hidePaymentModal();
+            }
+        });
+    }
+    
+    if (copyButton) {
+        copyButton.addEventListener('click', copyCardNumber);
+    }
+    
+    // Добавляем обработчик клавиши Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            hidePaymentModal();
+        }
+    });
 }); 
