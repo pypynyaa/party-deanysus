@@ -235,82 +235,12 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   
-  <script>
-    // Конфигурация Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
-      authDomain: "party-registration-web.firebaseapp.com",
-      projectId: "party-registration-web",
-      storageBucket: "party-registration-web.appspot.com",
-      messagingSenderId: "437696239321",
-      appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8"
-    };
+  <!-- Firebase Configuration -->
+  <script src="firebase-config.js" type="module"></script>
+  
+  <!-- Registration Logic -->
+  <script src="registration.js" type="module"></script>
 
-    // Инициализация Firebase
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-
-    // Инициализация Storage
-    const storage = firebase.storage();
-
-    // Функция для добавления нового поля ввода музыки
-    function addMusicLink() {
-        const container = document.getElementById('musicLinks');
-
-        // Создаем новый контейнер для поля ввода
-        const inputContainer = document.createElement('div');
-        inputContainer.className = 'music-input-container';
-
-        // Создаем поле ввода
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'music-input';
-        input.placeholder = 'Вставьте ссылку на трек';
-        input.required = true;
-
-        // Создаем кнопку удаления
-        const deleteBtn = document.createElement('button');
-        deleteBtn.type = 'button';
-        deleteBtn.className = 'delete-track-btn';
-        deleteBtn.innerHTML = '×';
-        deleteBtn.onclick = function() {
-            deleteMusicLink(this); // Удаляем контейнер при нажатии
-        };
-
-        // Добавляем поле ввода и кнопку в контейнер
-        inputContainer.appendChild(input);
-        inputContainer.appendChild(deleteBtn);
-
-        // Добавляем контейнер в основной блок
-        container.appendChild(inputContainer);
-    }
-
-    function deleteMusicLink(button) {
-        const inputContainer = button.parentElement; // Находим контейнер
-        inputContainer.remove(); // Удаляем контейнер
-    }
-
-    // Обработчик для выпадающей плашки с реквизитами
-    document.addEventListener('DOMContentLoaded', function() {
-        const paymentToggle = document.querySelector('.payment-toggle');
-        const paymentInfo = document.getElementById('paymentInfo');
-
-        paymentToggle.addEventListener('click', function() {
-            const isExpanded = this.getAttribute('aria-expanded') === 'true';
-            
-            this.setAttribute('aria-expanded', !isExpanded);
-            paymentInfo.classList.toggle('visible');
-            
-            // Плавная прокрутка к плашке при открытии
-            if (!isExpanded) {
-                setTimeout(() => {
-                    paymentInfo.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 100);
-            }
-        });
-    });
-  </script>
 </head>
 <body>
   <audio id="background-music" preload="auto" loop>

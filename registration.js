@@ -1,3 +1,12 @@
+import { 
+  db, 
+  storage, 
+  loadExistingRegistration,
+  findRegistrationByName,
+  findRegistrationByPhone,
+  findRegistrationByTelegram 
+} from './firebase-config.js';
+
 // Получение элементов формы
 const form = document.getElementById('registrationForm');
 const paymentCheckbox = document.getElementById('paymentDone');
@@ -12,58 +21,22 @@ const transportOptions = document.querySelectorAll('input[name="transport"]');
 const licenseGroup = document.querySelector('.license-group');
 const musicLinks = document.getElementById('musicLinks');
 
-// Объявляем переменную db глобально
-let db;
-
-// Функция для получения подключения к базе данных
-function getDatabase() {
-    try {
-        if (!db) {
-            // Проверяем, что Firebase уже инициализирован
-            if (!firebase.apps.length) {
-                // Конфигурация Firebase
-                const firebaseConfig = {
-                    apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
-                    authDomain: "party-registration-web.firebaseapp.com",
-                    projectId: "party-registration-web",
-                    storageBucket: "party-registration-web.firebasestorage.app",
-                    messagingSenderId: "437696239321",
-                    appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8",
-                    measurementId: "G-FBKQXVRD0D"
-                };
-                firebase.initializeApp(firebaseConfig);
-            }
-            db = firebase.firestore();
-            console.log('База данных успешно подключена');
-        }
-        return db;
-    } catch (error) {
-        console.error('Ошибка подключения к базе данных:', error);
-        throw error;
-    }
-}
-
-// Инициализация базы данных после загрузки DOM
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM загружен, пытаемся подключиться к базе данных...');
+// Инициализация после загрузки DOM
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('DOM загружен, начинаем инициализацию...');
     
     try {
-        // Получаем объект базы данных
-        db = getDatabase();
-        
         // Пробуем сделать тестовый запрос
-        db.collection('registrations').limit(1).get()
-            .then(() => {
-                console.log('Тестовый запрос к базе данных выполнен успешно');
-                // Загружаем существующую регистрацию
-                return loadExistingRegistration();
-            })
-            .catch((error) => {
-                console.error('Ошибка при выполнении тестового запроса:', error);
-                alert('Ошибка подключения к базе данных. Пожалуйста, обратитесь к администратору.');
-            });
+        await db.collection('registrations').limit(1).get();
+        console.log('Тестовый запрос к базе данных выполнен успешно');
+        
+        // Загружаем существующую регистрацию
+        const existingRegistration = await loadExistingRegistration();
+        if (existingRegistration) {
+            console.log('Найдена существующая регистрация');
+        }
     } catch (error) {
-        console.error('Ошибка подключения к базе данных:', error);
+        console.error('Ошибка при инициализации:', error);
         alert('Ошибка подключения к базе данных. Пожалуйста, обратитесь к администратору.');
     }
 });
@@ -238,7 +211,7 @@ if (form) {
 
         try {
             // Получаем подключение к базе данных
-            const database = getDatabase();
+            const database = db;
             
             const formData = new FormData(form);
             const fullName = formData.get('fullName');
