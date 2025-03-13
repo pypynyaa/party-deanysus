@@ -32,11 +32,8 @@
         
         <div class="row mb-4">
             <div class="col">
-                <button class="btn btn-success export-btn me-2" onclick="exportToExcel()">
+                <button class="btn btn-success export-btn" onclick="exportToExcel()">
                     Экспорт в Excel
-                </button>
-                <button class="btn btn-primary export-btn" onclick="handleExportToCSV()">
-                    Экспорт в CSV
                 </button>
             </div>
         </div>
@@ -49,37 +46,59 @@
     </div>
 
     <!-- Firebase -->
-    <script type="module">
-        import { 
-            db, 
-            exportToCSV 
-        } from './firebase-config.js';
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    
+    <!-- XLSX library for Excel export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-        // Делаем функцию экспорта доступной глобально
-        window.handleExportToCSV = async function() {
-            try {
-                await exportToCSV();
-            } catch (error) {
-                console.error('Ошибка при экспорте в CSV:', error);
-                alert('Ошибка при экспорте данных');
-            }
+    <script>
+        // Инициализация Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaS5Czs2d7EcM2-hzBZQMt7xnc8X2SRFq_VuK",
+            authDomain: "party-registration-26c8b.firebaseapp.com",
+            projectId: "party-registration-26c8b",
+            storageBucket: "party-registration-26c8b.firebasestorage.app",
+            messagingSenderId: "734748976300",
+            appId: "1:734748976300:web:82fc68a1ddda9d1011eb09"
         };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
         // Загрузка всех регистраций
         async function loadRegistrations() {
             try {
-                const snapshot = await db.collection('registrations').orderBy('timestamp', 'desc').get();
+                console.log('Начинаем загрузку регистраций...');
                 const registrationsList = document.getElementById('registrationsList');
+                registrationsList.innerHTML = '<p>Загрузка данных...</p>';
+
+                const snapshot = await db.collection('registrations').orderBy('timestamp', 'desc').get();
+                console.log('Получено регистраций:', snapshot.size);
+
                 registrationsList.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    registrationsList.innerHTML = '<p>Нет зарегистрированных участников</p>';
+                    return;
+                }
 
                 snapshot.forEach(doc => {
                     const data = doc.data();
+                    console.log('Данные регистрации:', {
+                        fullName: data.fullName,
+                        phone: data.phone,
+                        telegram: data.telegram,
+                        timestamp: data.timestamp
+                    });
                     const card = createRegistrationCard(data);
                     registrationsList.appendChild(card);
                 });
             } catch (error) {
                 console.error('Ошибка загрузки регистраций:', error);
-                alert('Ошибка загрузки данных');
+                const registrationsList = document.getElementById('registrationsList');
+                registrationsList.innerHTML = '<p class="error">Ошибка при загрузке данных. Пожалуйста, обновите страницу.</p>';
             }
         }
 
@@ -91,11 +110,11 @@
             const timestamp = data.timestamp ? new Date(data.timestamp.seconds * 1000).toLocaleString() : 'Нет даты';
             
             card.innerHTML = `
-                <h3>${data.fullName}</h3>
-                <p><strong>Телефон:</strong> ${data.phone}</p>
-                <p><strong>Telegram:</strong> ${data.telegram}</p>
+                <h3>${data.fullName || 'Без имени'}</h3>
+                <p><strong>Телефон:</strong> ${data.phone || 'Не указан'}</p>
+                <p><strong>Telegram:</strong> ${data.telegram || 'Не указан'}</p>
                 <p><strong>Транспорт:</strong> ${data.transport === 'self' ? 'Еду сам' : 'На автобусе'}</p>
-                <p><strong>Активности:</strong> ${data.activities.join(', ')}</p>
+                <p><strong>Активности:</strong> ${Array.isArray(data.activities) ? data.activities.join(', ') : 'Не указаны'}</p>
                 <p><strong>Оплата:</strong> ${data.paymentDone ? 'Выполнена' : 'Не выполнена'}</p>
                 ${data.paymentProofBase64 ? `<img src="${data.paymentProofBase64}" class="payment-proof" alt="Подтверждение оплаты">` : ''}
                 <p><small>Дата регистрации: ${timestamp}</small></p>
@@ -105,8 +124,8 @@
         }
 
         // Экспорт в Excel
-        window.exportToExcel = function() {
-            const snapshot = db.collection('registrations').get().then(snapshot => {
+        function exportToExcel() {
+            db.collection('registrations').get().then(snapshot => {
                 const data = [];
                 snapshot.forEach(doc => {
                     const registration = doc.data();
@@ -127,13 +146,10 @@
                 XLSX.utils.book_append_sheet(wb, ws, "Регистрации");
                 XLSX.writeFile(wb, "registrations.xlsx");
             });
-        };
+        }
 
         // Загружаем регистрации при загрузке страницы
         document.addEventListener('DOMContentLoaded', loadRegistrations);
     </script>
-
-    <!-- XLSX library for Excel export -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </body>
 </html> 

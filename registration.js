@@ -228,7 +228,20 @@ if (form) {
 
         try {
             const formData = new FormData(form);
-            const fullName = formData.get('fullName').trim();
+            const fullName = formData.get('fullName')?.trim() || '';
+            const phone = formData.get('phone')?.trim() || '';
+            const telegram = formData.get('telegram')?.trim() || '';
+
+            console.log('Данные формы перед отправкой:', {
+                fullName,
+                phone,
+                telegram
+            });
+
+            if (!fullName || !phone || !telegram) {
+                throw new Error('Пожалуйста, заполните все обязательные поля');
+            }
+
             const userId = generateUserId();
 
             // Проверяем и удаляем существующую регистрацию
@@ -246,8 +259,8 @@ if (form) {
                 userId,
                 timestamp: serverTimestamp(),
                 fullName: fullName,
-                phone: formData.get('phone').trim(),
-                telegram: formData.get('telegram').trim(),
+                phone: phone,
+                telegram: telegram,
                 paymentDone: formData.get('paymentDone') === 'on',
                 hasLicense: formData.get('hasLicense') === 'on',
                 transport: formData.get('transport'),
