@@ -7,11 +7,13 @@ import {
     getDocs,
     doc,
     setDoc,
+    deleteDoc,
     testDatabaseConnection,
     loadExistingRegistration,
     findRegistrationByName,
     findRegistrationByPhone,
-    findRegistrationByTelegram 
+    findRegistrationByTelegram,
+    deleteExistingRegistration
 } from './firebase-config.js';
 
 import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
@@ -226,13 +228,24 @@ if (form) {
 
         try {
             const formData = new FormData(form);
+            const fullName = formData.get('fullName');
             const userId = generateUserId();
+
+            // Проверяем и удаляем существующую регистрацию
+            try {
+                await deleteExistingRegistration(fullName);
+            } catch (error) {
+                console.error('Ошибка при удалении существующей регистрации:', error);
+                alert('Произошла ошибка при обновлении регистрации. Пожалуйста, попробуйте еще раз.');
+                if (submitButton) submitButton.disabled = false;
+                return;
+            }
 
             // Создаем объект с данными
             const data = {
                 userId,
                 timestamp: serverTimestamp(),
-                fullName: formData.get('fullName'),
+                fullName: fullName,
                 phone: formData.get('phone'),
                 telegram: formData.get('telegram'),
                 paymentDone: formData.get('paymentDone') === 'on',

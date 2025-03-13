@@ -7,6 +7,7 @@ import {
     getDocs,
     doc,
     setDoc,
+    deleteDoc,
     enableIndexedDbPersistence
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
@@ -107,6 +108,23 @@ const findRegistrationByName = (name) => findRegistrationByField('fullName', nam
 const findRegistrationByPhone = (phone) => findRegistrationByField('phone', phone);
 const findRegistrationByTelegram = (telegram) => findRegistrationByField('telegram', telegram);
 
+// Функция для удаления существующей регистрации
+async function deleteExistingRegistration(fullName) {
+    try {
+        const existingRegistration = await findRegistrationByName(fullName);
+        if (existingRegistration) {
+            const registrationRef = doc(db, 'registrations', existingRegistration.id);
+            await deleteDoc(registrationRef);
+            console.log('Существующая регистрация удалена');
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error('Ошибка при удалении существующей регистрации:', error);
+        throw error;
+    }
+}
+
 export {
     db,
     storage,
@@ -116,9 +134,11 @@ export {
     getDocs,
     doc,
     setDoc,
+    deleteDoc,
     testDatabaseConnection,
     loadExistingRegistration,
     findRegistrationByName,
     findRegistrationByPhone,
-    findRegistrationByTelegram
+    findRegistrationByTelegram,
+    deleteExistingRegistration
 }; 
