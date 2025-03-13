@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style2.css">
+  
+  <!-- Firebase Configuration -->
+  <script src="firebase-config.js" type="module"></script>
 </head>
 <body>
   <!-- Видео фон -->
@@ -102,6 +105,28 @@
       <a href="registration.html" class="party-btn">Хочу на тусу!</a>
     </div>
   </section>
+
+  <script type="module">
+    import { db } from './firebase-config.js';
+    
+    // Тест подключения к Firebase
+    async function testFirebaseConnection() {
+      try {
+        const testDoc = await db.collection('test').add({
+          timestamp: new Date(),
+          test: 'Тестовое подключение'
+        });
+        console.log('Firebase подключен успешно! ID документа:', testDoc.id);
+        // Удалим тестовый документ
+        await testDoc.delete();
+      } catch (error) {
+        console.error('Ошибка подключения к Firebase:', error);
+      }
+    }
+
+    // Запустим тест при загрузке страницы
+    document.addEventListener('DOMContentLoaded', testFirebaseConnection);
+  </script>
 
   <script>
     // Управление фоновым видео

@@ -220,6 +220,14 @@
         align-items: center;
         gap: 8px;
     }
+
+    .temp-input-for-copy {
+        position: fixed;
+        top: -1000px;
+        left: -1000px;
+        opacity: 0;
+        pointer-events: none;
+    }
   </style>
 
   <!-- Firebase SDK -->
@@ -233,16 +241,18 @@
       apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
       authDomain: "party-registration-web.firebaseapp.com",
       projectId: "party-registration-web",
-      storageBucket: "party-registration-web.firebasestorage.app",
+      storageBucket: "party-registration-web.appspot.com",
       messagingSenderId: "437696239321",
-      appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8",
-      measurementId: "G-FBKQXVRD0D"
+      appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8"
     };
 
     // Инициализация Firebase
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
+
+    // Инициализация Storage
+    const storage = firebase.storage();
 
     // Функция для добавления нового поля ввода музыки
     function addMusicLink() {
@@ -501,23 +511,20 @@
   <!-- Модальное окно с реквизитами -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="payment-modal" id="paymentModal">
-      <button class="close-modal" onclick="closePaymentModal()">×</button>
-      <div class="payment-modal-content">
-        <h2>Реквизиты для оплаты</h2>
-        <div class="payment-details">
-          <p>
-            <span class="card-number">5469 4500 1062 9285</span>
-            <button class="copy-button" onclick="copyToClipboard('5469450010629285')">
-              Скопировать
-            </button>
-          </p>
-          <p>Сбербанк</p>
-          <p>Никита Н.</p>
+        <button class="close-modal" onclick="closePaymentModal()">&times;</button>
+        <div class="payment-modal-content">
+            <h2>Реквизиты для оплаты</h2>
+            <div class="payment-details">
+                <p class="payment-card">
+                    <span class="card-number">2202 2024 2350 4239</span>
+                    <button class="copy-button" onclick="copyCardNumber(event)">Скопировать</button>
+                </p>
+                <div class="payment-note">
+                    <p>Сумма к оплате: 3000₽</p>
+                    <p>После оплаты не забудьте прикрепить скриншот в форме регистрации</p>
+                </div>
+            </div>
         </div>
-        <div class="payment-note">
-          После оплаты прикрепите чек об оплате
-        </div>
-      </div>
     </div>
   </div>
 
@@ -573,64 +580,96 @@
     });
 
     function showPaymentModal() {
-      const overlay = document.getElementById('modalOverlay');
-      const modal = document.getElementById('paymentModal');
+      const overlay = document.querySelector('.modal-overlay');
+      const modal = document.querySelector('.payment-modal');
       
-      overlay.classList.add('show');
-      modal.classList.add('show');
-      
-      // Предотвращаем прокрутку страницы
-      document.body.style.overflow = 'hidden';
+      if (overlay && modal) {
+        overlay.classList.add('show');
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
     }
 
     function closePaymentModal() {
-      const overlay = document.getElementById('modalOverlay');
-      const modal = document.getElementById('paymentModal');
+      const overlay = document.querySelector('.modal-overlay');
+      const modal = document.querySelector('.payment-modal');
       
-      overlay.classList.remove('show');
-      modal.classList.remove('show');
-      
-      // Возвращаем прокрутку страницы
-      document.body.style.overflow = '';
+      if (overlay && modal) {
+        overlay.classList.remove('show');
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+      }
     }
 
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            const button = event.target;
-            const originalText = button.textContent;
-            
-            // Меняем текст кнопки на подтверждение
+    function copyCardNumber(event) {
+        const cardNumber = document.querySelector('.card-number').textContent;
+        const button = event.target;
+        
+        // Создаем временный input
+        const tempInput = document.createElement('input');
+        tempInput.value = cardNumber.replace(/\s/g, '');
+        document.body.appendChild(tempInput);
+        
+        // Выбираем текст
+        tempInput.select();
+        tempInput.setSelectionRange(0, 99999);
+        
+        try {
+            // Пытаемся скопировать
+            document.execCommand('copy');
             button.textContent = 'Скопировано!';
             button.classList.add('copied');
             
-            // Возвращаем исходный текст через 2 секунды
             setTimeout(() => {
-                button.textContent = originalText;
+                button.textContent = 'Скопировать';
                 button.classList.remove('copied');
             }, 2000);
-        }).catch(err => {
-            console.error('Ошибка при копировании: ', err);
+        } catch (err) {
+            console.error('Ошибка при копировании:', err);
             alert('Не удалось скопировать номер карты. Пожалуйста, скопируйте вручную.');
-        });
+        } finally {
+            // Удаляем временный элемент
+            document.body.removeChild(tempInput);
+        }
     }
 
-    // Закрытие модального окна при клике вне его
-    document.getElementById('modalOverlay').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closePaymentModal();
-      }
-    });
+    // Добавляем стили для временного input
+    const style = document.createElement('style');
+    style.textContent = `
+        .temp-input-for-copy {
+            position: fixed;
+            top: -1000px;
+            left: -1000px;
+            opacity: 0;
+            pointer-events: none;
+        }
+    `;
+    document.head.appendChild(style);
 
-    // Закрытие по клавише Escape
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        closePaymentModal();
+    // Инициализация обработчиков событий для модального окна
+    document.addEventListener('DOMContentLoaded', function() {
+      // Открытие модального окна при клике на кнопку реквизитов
+      const paymentToggle = document.querySelector('.payment-toggle');
+      if (paymentToggle) {
+        paymentToggle.addEventListener('click', showPaymentModal);
       }
-    });
 
-    // Показ модального окна при клике на кнопку реквизитов
-    document.querySelector('.payment-toggle').addEventListener('click', function() {
-      showPaymentModal();
+      // Закрытие модального окна при клике вне его
+      const modalOverlay = document.querySelector('.modal-overlay');
+      if (modalOverlay) {
+        modalOverlay.addEventListener('click', function(e) {
+          if (e.target === this) {
+            closePaymentModal();
+          }
+        });
+      }
+
+      // Закрытие по клавише Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closePaymentModal();
+        }
+      });
     });
   </script>
 </body>
