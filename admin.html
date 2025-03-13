@@ -35,7 +35,7 @@
                 <button class="btn btn-success export-btn me-2" onclick="exportToExcel()">
                     Экспорт в Excel
                 </button>
-                <button class="btn btn-primary export-btn" onclick="exportToCSV()">
+                <button class="btn btn-primary export-btn" onclick="handleExportToCSV()">
                     Экспорт в CSV
                 </button>
             </div>
@@ -49,26 +49,21 @@
     </div>
 
     <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-    
-    <!-- XLSX library for Excel export -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script type="module">
+        import { 
+            db, 
+            exportToCSV 
+        } from './firebase-config.js';
 
-    <script>
-        // Инициализация Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaS5Czs2d7EcM2-hzBZQMt7xnc8X2SRFq_VuK",
-            authDomain: "party-registration-26c8b.firebaseapp.com",
-            projectId: "party-registration-26c8b",
-            storageBucket: "party-registration-26c8b.firebasestorage.app",
-            messagingSenderId: "734748976300",
-            appId: "1:734748976300:web:82fc68a1ddda9d1011eb09"
+        // Делаем функцию экспорта доступной глобально
+        window.handleExportToCSV = async function() {
+            try {
+                await exportToCSV();
+            } catch (error) {
+                console.error('Ошибка при экспорте в CSV:', error);
+                alert('Ошибка при экспорте данных');
+            }
         };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
 
         // Загрузка всех регистраций
         async function loadRegistrations() {
@@ -110,8 +105,8 @@
         }
 
         // Экспорт в Excel
-        function exportToExcel() {
-            db.collection('registrations').get().then(snapshot => {
+        window.exportToExcel = function() {
+            const snapshot = db.collection('registrations').get().then(snapshot => {
                 const data = [];
                 snapshot.forEach(doc => {
                     const registration = doc.data();
@@ -132,10 +127,13 @@
                 XLSX.utils.book_append_sheet(wb, ws, "Регистрации");
                 XLSX.writeFile(wb, "registrations.xlsx");
             });
-        }
+        };
 
         // Загружаем регистрации при загрузке страницы
         document.addEventListener('DOMContentLoaded', loadRegistrations);
     </script>
+
+    <!-- XLSX library for Excel export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </body>
 </html> 
