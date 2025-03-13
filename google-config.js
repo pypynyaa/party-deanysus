@@ -2,7 +2,8 @@
 export const GOOGLE_CONFIG = {
     API_KEY: 'YOUR_API_KEY', // Замените на ваш API ключ
     CLIENT_ID: 'YOUR_CLIENT_ID', // Замените на ваш Client ID
-    SCOPE: 'https://www.googleapis.com/auth/spreadsheets'
+    SCOPE: 'https://www.googleapis.com/auth/spreadsheets',
+    SPREADSHEET_ID: '1_vpIo5_zv3cuOWVVAyOfG7twphhknCUIXXf271VRZP8' // ID вашей таблицы
 };
 
 // Инициализация Google API
@@ -35,14 +36,13 @@ export async function exportToGoogleSheets(data) {
             await gapi.auth2.getAuthInstance().signIn();
         }
         
-        // Создаем новую таблицу
-        const response = await gapi.client.sheets.spreadsheets.create({
-            properties: {
-                title: `Регистрации_${new Date().toLocaleDateString()}`
-            }
-        });
+        const spreadsheetId = GOOGLE_CONFIG.SPREADSHEET_ID;
         
-        const spreadsheetId = response.result.spreadsheetId;
+        // Очищаем существующие данные
+        await gapi.client.sheets.spreadsheets.values.clear({
+            spreadsheetId: spreadsheetId,
+            range: 'A:Z'
+        });
         
         // Подготавливаем данные
         const headers = Object.keys(data[0]);
