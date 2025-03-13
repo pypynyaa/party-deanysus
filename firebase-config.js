@@ -178,15 +178,23 @@ async function exportToCSV() {
         // Добавляем BOM для корректного отображения кириллицы
         let csvContent = "\uFEFF";
         
-        // Добавляем заголовки
-        csvContent += headers.join(',') + '\n';
+        // Добавляем заголовки с экранированием
+        csvContent += headers.map(header => `"${header}"`).join(',') + '\n';
         
         // Add data
         snapshot.forEach(doc => {
             const registration = doc.data();
             console.log('Обработка документа:', doc.id);
-            console.log('Данные документа:', registration);
+            console.log('Данные документа:', {
+                ...registration,
+                wishes: {
+                    value: registration.wishes,
+                    type: typeof registration.wishes,
+                    length: registration.wishes ? registration.wishes.length : 0
+                }
+            });
             
+            // Подготовка данных для строки
             const row = [
                 registration.fullName || '',
                 registration.phone || '',
@@ -214,22 +222,25 @@ async function exportToCSV() {
             
             // Экранируем значения и оборачиваем в кавычки
             const escapedRow = row.map(field => {
-                const value = field === undefined || field === null ? '' : field;
-                const escaped = String(value).replace(/"/g, '""').replace(/\n/g, ' ');
+                const value = field === undefined || field === null ? '' : String(field);
+                // Заменяем кавычки на двойные кавычки и переносы строк на пробелы
+                const escaped = value.replace(/"/g, '""').replace(/\n/g, ' ');
                 return `"${escaped}"`;
             });
             
             csvContent += escapedRow.join(',') + '\n';
         });
         
-        // Create download link
+        // Create download link with correct MIME type
         const link = document.createElement("a");
-        const encodedContent = encodeURIComponent(csvContent);
-        link.setAttribute("href", "data:text/csv;charset=utf-8," + encodedContent);
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
         link.setAttribute("download", `registrations_${new Date().toISOString().split('T')[0]}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(url);
         
     } catch (error) {
         console.error("Ошибка при экспорте в CSV:", error);

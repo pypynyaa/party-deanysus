@@ -260,6 +260,8 @@ if (form) {
             }
 
             // Создаем объект с данными
+            const musicLinks = Array.from(document.querySelectorAll('.music-input')).map(input => input.value.trim()).filter(Boolean);
+            
             const data = {
                 fullName: formData.get('fullName'),
                 phone: formData.get('phone'),
@@ -282,7 +284,8 @@ if (form) {
                 wishes: {
                     value: data.wishes,
                     type: typeof data.wishes,
-                    length: data.wishes ? data.wishes.length : 0
+                    length: data.wishes ? data.wishes.length : 0,
+                    raw: formData.get('wishes')
                 }
             });
 
