@@ -11,9 +11,11 @@
 </head>
 <body>
   <!-- Видео фон -->
-  <video autoplay muted loop id="background-video">
-    <source src="фонтоп.mp4" type="video/mp4">
-  </video>
+  <div class="video-background">
+    <video autoplay muted loop playsinline disablePictureInPicture disableRemotePlayback id="bgVideo" style="object-fit: cover; pointer-events: none;">
+      <source src="фонтоп.mp4" type="video/mp4">
+    </video>
+  </div>
 
   <!-- Главная секция -->
   <section class="hero">
@@ -100,5 +102,30 @@
       <a href="registration.html" class="party-btn">Хочу на тусу!</a>
     </div>
   </section>
+
+  <script>
+    // Управление фоновым видео
+    document.addEventListener('DOMContentLoaded', function() {
+      const video = document.getElementById('bgVideo');
+      
+      // Предотвращаем любые действия с видео
+      video.addEventListener('click', function(e) {
+        e.preventDefault();
+        return false;
+      });
+
+      // Запрещаем контекстное меню на видео
+      video.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+      });
+
+      // Запрещаем двойной клик
+      video.addEventListener('dblclick', function(e) {
+        e.preventDefault();
+        return false;
+      });
+    });
+  </script>
 </body>
 </html>

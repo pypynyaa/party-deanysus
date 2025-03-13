@@ -15,6 +15,9 @@
     height: 100%;
     z-index: -1;
     overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 #bgVideo {
@@ -27,6 +30,9 @@
     width: auto;
     height: auto;
     object-fit: cover;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 body {
