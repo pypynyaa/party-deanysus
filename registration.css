@@ -907,21 +907,11 @@ input[type="file"] {
 .payment-info {
     background: rgba(0, 0, 0, 0.6);
     border-radius: 12px;
-    padding: 0;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: all 0.4s ease-in-out;
+    padding: 25px;
     width: 100%;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.payment-info.visible {
-    max-height: 500px;
-    opacity: 1;
-    padding: 25px;
-    margin-top: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .payment-details {
@@ -939,13 +929,7 @@ input[type="file"] {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    cursor: pointer;
     transition: all 0.3s ease;
-}
-
-.payment-card:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
 }
 
 .card-number {
@@ -955,150 +939,55 @@ input[type="file"] {
     color: white;
 }
 
-.copy-icon {
-    font-size: 20px;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-}
-
-.payment-card:hover .copy-icon {
-    opacity: 1;
-}
-
-.payment-name, .payment-bank {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 16px;
-    margin: 10px 0;
-    text-align: center;
-}
-
-@media screen and (max-width: 768px) {
-    .payment-toggle {
-        font-size: 16px;
-        padding: 12px 20px;
-    }
-
-    .payment-card {
-        padding: 15px;
-    }
-
-    .card-number {
-        font-size: 20px;
-    }
-}
-
-.payment-toggle {
-    width: 100%;
+.copy-button {
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-    color: white;
     border: none;
-    padding: 15px 30px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    transition: all 0.3s ease;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.payment-toggle:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.payment-toggle .icon {
-    transition: transform 0.3s ease;
-}
-
-.payment-toggle[aria-expanded="true"] .icon {
-    transform: rotate(180deg);
-}
-
-.payment-info {
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 12px;
-    padding: 0;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: all 0.4s ease-in-out;
-    width: 100%;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.payment-info.visible {
-    max-height: 500px;
-    opacity: 1;
-    padding: 25px;
-    margin-top: 15px;
-}
-
-.payment-details {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 18px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.payment-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 20px;
-    margin: 15px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.payment-card:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
-}
-
-.card-number {
-    font-size: 24px;
-    font-weight: 500;
-    letter-spacing: 1px;
+    padding: 10px 20px;
+    border-radius: 8px;
     color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    min-width: 120px;
 }
 
-.copy-icon {
-    font-size: 20px;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
+.copy-button:hover {
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
 }
 
-.payment-card:hover .copy-icon {
-    opacity: 1;
+.copy-button.copied {
+    background: #4CAF50;
+    transform: scale(0.95);
 }
 
-.payment-name, .payment-bank {
+.payment-name, .payment-bank, .payment-note {
     color: rgba(255, 255, 255, 0.8);
     font-size: 16px;
     margin: 10px 0;
     text-align: center;
 }
 
-@media screen and (max-width: 768px) {
-    .payment-toggle {
-        font-size: 16px;
-        padding: 12px 20px;
-    }
+.payment-note {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
 
+@media screen and (max-width: 768px) {
     .payment-card {
-        padding: 15px;
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
     }
 
     .card-number {
         font-size: 20px;
+    }
+
+    .copy-button {
+        width: 100%;
     }
 }
 

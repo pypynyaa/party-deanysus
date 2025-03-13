@@ -345,38 +345,37 @@
 
         <h2>Оплата</h2>
         <div class="form-group payment-section">
-            <button type="button" class="payment-toggle" aria-expanded="false" aria-controls="paymentInfo">
-                <span class="button-text">Показать реквизиты для оплаты</span>
-                <span class="icon">▼</span>
-            </button>
-            <div id="paymentInfo" class="payment-info">
+            <div class="payment-info visible">
                 <p class="payment-details">Реквизиты для оплаты:</p>
-                <div class="payment-card" onclick="showPaymentModal()" role="button" tabindex="0" aria-label="Нажмите, чтобы скопировать номер карты">
+                <div class="payment-card">
                     <span class="card-number">5469 4500 1062 9285</span>
-                    <span class="copy-icon" aria-hidden="true">📋</span>
+                    <button class="copy-button" onclick="copyToClipboard('5469450010629285')">
+                        Скопировать
+                    </button>
                 </div>
                 <p class="payment-name">Никита Н.</p>
                 <p class="payment-bank">Сбербанк</p>
+                <p class="payment-note">После оплаты отправьте скриншот чека в телеграм</p>
             </div>
-          <label class="checkbox-label">
-            <input type="checkbox" id="paymentDone" name="paymentDone">
-            <span>Я оплатил участие</span>
-          </label>
-          <div class="form-group payment-proof hidden">
-            <input type="file" id="paymentProof" name="paymentProof" accept="image/*,.pdf,.doc,.docx">
-            <div class="file-upload-container">
-              <label for="paymentProof" class="file-upload-label">
-                <span class="file-name">Прикрепить файл оплаты</span>
-              </label>
-              <button type="button" class="delete-file hidden" onclick="removeFile()">×</button>
+            <label class="checkbox-label">
+                <input type="checkbox" id="paymentDone" name="paymentDone">
+                <span>Я оплатил участие</span>
+            </label>
+            <div class="form-group payment-proof hidden">
+                <input type="file" id="paymentProof" name="paymentProof" accept="image/*,.pdf,.doc,.docx">
+                <div class="file-upload-container">
+                  <label for="paymentProof" class="file-upload-label">
+                    <span class="file-name">Прикрепить файл оплаты</span>
+                  </label>
+                  <button type="button" class="delete-file hidden" onclick="removeFile()">×</button>
+                </div>
+                <div class="image-preview hidden">
+                  <img id="previewImage" src="#" alt="Предпросмотр">
+                  <div class="preview-overlay">
+                    <span class="preview-text">Файл добавлен</span>
+                  </div>
+                </div>
             </div>
-            <div class="image-preview hidden">
-              <img id="previewImage" src="#" alt="Предпросмотр">
-              <div class="preview-overlay">
-                <span class="preview-text">Файл добавлен</span>
-              </div>
-            </div>
-          </div>
         </div>
 
         <h2>Как добираешься?</h2>
@@ -545,23 +544,23 @@
     }
 
     function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        const notification = document.createElement('div');
-        notification.className = 'copy-notification';
-        notification.textContent = 'Номер карты скопирован!';
-        document.body.appendChild(notification);
-        
-        // Показываем уведомление
-        setTimeout(() => notification.classList.add('visible'), 100);
-        
-        // Удаляем уведомление через 2 секунды
-        setTimeout(() => {
-          notification.classList.remove('visible');
-          setTimeout(() => notification.remove(), 300);
-        }, 2000);
-      }).catch(err => {
-        console.error('Ошибка при копировании: ', err);
-      });
+        navigator.clipboard.writeText(text).then(() => {
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            // Меняем текст кнопки на подтверждение
+            button.textContent = 'Скопировано!';
+            button.classList.add('copied');
+            
+            // Возвращаем исходный текст через 2 секунды
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('copied');
+            }, 2000);
+        }).catch(err => {
+            console.error('Ошибка при копировании: ', err);
+            alert('Не удалось скопировать номер карты. Пожалуйста, скопируйте вручную.');
+        });
     }
 
     // Закрытие модального окна при клике вне его
