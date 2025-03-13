@@ -14,7 +14,9 @@ import {
     findRegistrationByName,
     findRegistrationByPhone,
     findRegistrationByTelegram,
-    deleteExistingRegistration
+    deleteExistingRegistration,
+    addDoc,
+    getDoc
 } from './firebase-config.js';
 
 // Получение элементов формы
@@ -259,28 +261,29 @@ if (form) {
 
             // Создаем объект с данными
             const data = {
-                userId,
-                timestamp: serverTimestamp(),
-                fullName: fullName,
-                phone: phone,
-                telegram: telegram,
-                paymentDone: formData.get('paymentDone') === 'on',
-                hasLicense: formData.get('hasLicense') === 'on',
+                fullName: formData.get('fullName'),
+                phone: formData.get('phone'),
+                telegram: formData.get('telegram'),
                 transport: formData.get('transport'),
+                hasLicense: formData.get('hasLicense') === 'true',
                 activities: Array.from(formData.getAll('activities')),
-                sauna: formData.get('sauna') === 'on',
-                hideAndSeek: formData.get('hideAndSeek') === 'on',
+                sauna: formData.get('sauna') === 'true',
+                hideAndSeek: formData.get('hideAndSeek') === 'true',
                 relationship: formData.get('relationship'),
                 equipment: formData.get('equipment'),
-                wishes: wishes,
-                musicLinks: Array.from(document.querySelectorAll('.music-input')).map(input => input.value.trim()).filter(Boolean),
-                lastUpdated: new Date().toISOString()
+                musicLinks: musicLinks,
+                paymentDone: false,
+                timestamp: serverTimestamp(),
+                wishes: formData.get('wishes')
             };
 
-            console.log('Отправляемые данные:', {
+            console.log('Данные перед сохранением в Firestore:', {
                 ...data,
-                wishesType: typeof data.wishes,
-                wishesLength: data.wishes ? data.wishes.length : 0
+                wishes: {
+                    value: data.wishes,
+                    type: typeof data.wishes,
+                    length: data.wishes ? data.wishes.length : 0
+                }
             });
 
             // Конвертируем фото в base64, если оно есть
@@ -317,8 +320,20 @@ if (form) {
             }
 
             // Сохраняем данные в Firestore
-            const registrationRef = doc(collection(db, 'registrations'), userId);
-            await setDoc(registrationRef, data);
+            const docRef = await addDoc(collection(db, "registrations"), data);
+            console.log("Документ успешно сохранен с ID:", docRef.id);
+            
+            // Проверяем сохраненные данные
+            const savedDoc = await getDoc(docRef);
+            const savedData = savedDoc.data();
+            console.log('Данные после сохранения:', {
+                ...savedData,
+                wishes: {
+                    value: savedData.wishes,
+                    type: typeof savedData.wishes,
+                    length: savedData.wishes ? savedData.wishes.length : 0
+                }
+            });
 
             // Сохраняем ID регистрации
             localStorage.setItem('registrationId', userId);

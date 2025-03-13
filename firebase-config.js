@@ -151,10 +151,11 @@ async function deleteExistingRegistration(fullName) {
 // Функция для экспорта данных в CSV
 async function exportToCSV() {
     try {
-        const registrationsRef = collection(db, 'registrations');
+        const registrationsRef = collection(db, "registrations");
         const q = query(registrationsRef, orderBy('timestamp', 'desc'));
         const snapshot = await getDocs(q);
-        let csvContent = "\uFEFF";
+        
+        console.log('Получено документов:', snapshot.size);
         
         // Add headers
         const headers = [
@@ -174,96 +175,64 @@ async function exportToCSV() {
             'Пожелания'
         ];
         
-        // Создаем маппинг полей для обеспечения соответствия заголовков и данных
-        const fieldMapping = {
-            'ФИО': 'fullName',
-            'Телефон': 'phone',
-            'Telegram': 'telegram',
-            'Транспорт': 'transport',
-            'Водительские права': 'hasLicense',
-            'Активности': 'activities',
-            'Сауна': 'sauna',
-            'Прятки': 'hideAndSeek',
-            'Статус отношений': 'relationship',
-            'Снаряжение': 'equipment',
-            'Музыка': 'musicLinks',
-            'Оплата': 'paymentDone',
-            'Дата регистрации': 'timestamp',
-            'Пожелания': 'wishes'
-        };
-
+        // Добавляем BOM для корректного отображения кириллицы
+        let csvContent = "\uFEFF";
+        
         // Добавляем заголовки
-        csvContent += headers.map(header => `"${header}"`).join(',') + '\n';
+        csvContent += headers.join(',') + '\n';
         
         // Add data
         snapshot.forEach(doc => {
             const registration = doc.data();
-            console.log('Полные данные регистрации:', registration);
+            console.log('Обработка документа:', doc.id);
+            console.log('Данные документа:', registration);
             
-            // Обработка пожеланий
-            let wishesText = '';
-            if (registration.wishes) {
-                if (typeof registration.wishes === 'string') {
-                    wishesText = registration.wishes;
-                } else if (typeof registration.wishes === 'object') {
-                    if (Array.isArray(registration.wishes)) {
-                        wishesText = registration.wishes.join('; ');
-                    } else {
-                        wishesText = JSON.stringify(registration.wishes);
-                    }
-                }
-            }
+            const row = [
+                registration.fullName || '',
+                registration.phone || '',
+                registration.telegram || '',
+                registration.transport === 'self' ? 'Еду сам' : 'На автобусе',
+                registration.hasLicense ? 'Да' : 'Нет',
+                (registration.activities || []).join('; '),
+                registration.sauna ? 'Да' : 'Нет',
+                registration.hideAndSeek ? 'Да' : 'Нет',
+                registration.relationship || '',
+                registration.equipment || '',
+                (registration.musicLinks || []).join('; '),
+                registration.paymentDone ? 'Да' : 'Нет',
+                registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : '',
+                registration.wishes || ''
+            ];
             
-            console.log('Обработанные пожелания:', {
-                original: registration.wishes,
-                type: typeof registration.wishes,
-                isArray: Array.isArray(registration.wishes),
-                processed: wishesText
+            console.log('Подготовленная строка:', {
+                wishes: {
+                    original: registration.wishes,
+                    prepared: row[row.length - 1]
+                },
+                row: row
             });
             
-            // Подготовка данных для строки CSV
-            const rowData = {
-                fullName: registration.fullName || '',
-                phone: registration.phone || '',
-                telegram: registration.telegram || '',
-                transport: registration.transport === 'self' ? 'Еду сам' : 'На автобусе',
-                hasLicense: registration.hasLicense ? 'Да' : 'Нет',
-                activities: (registration.activities || []).join('; '),
-                sauna: registration.sauna ? 'Да' : 'Нет',
-                hideAndSeek: registration.hideAndSeek ? 'Да' : 'Нет',
-                relationship: registration.relationship || '',
-                equipment: registration.equipment || '',
-                musicLinks: (registration.musicLinks || []).join('; '),
-                paymentDone: registration.paymentDone ? 'Да' : 'Нет',
-                timestamp: registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : '',
-                wishes: wishesText || ''
-            };
-            
-            console.log('Подготовленные данные для CSV:', rowData);
-            
-            // Формируем строку CSV, используя тот же порядок, что и в заголовках
-            const row = headers.map(header => {
-                const fieldName = fieldMapping[header];
-                const field = rowData[fieldName];
-                console.log(`Обработка поля ${header} (${fieldName}):`, field);
+            // Экранируем значения и оборачиваем в кавычки
+            const escapedRow = row.map(field => {
                 const value = field === undefined || field === null ? '' : field;
                 const escaped = String(value).replace(/"/g, '""').replace(/\n/g, ' ');
                 return `"${escaped}"`;
-            }).join(',');
+            });
             
-            console.log('Строка CSV перед добавлением:', row);
-            csvContent += row + '\n';
+            csvContent += escapedRow.join(',') + '\n';
         });
         
         // Create download link
         const link = document.createElement("a");
-        link.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent));
+        const encodedContent = encodeURIComponent(csvContent);
+        link.setAttribute("href", "data:text/csv;charset=utf-8," + encodedContent);
         link.setAttribute("download", `registrations_${new Date().toISOString().split('T')[0]}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        
     } catch (error) {
-        console.error('Error exporting to CSV:', error);
+        console.error("Ошибка при экспорте в CSV:", error);
         throw error;
     }
 }
