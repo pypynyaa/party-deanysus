@@ -285,25 +285,10 @@
             <button type="button" class="payment-toggle" onclick="showPaymentModal()">
                 <span class="button-text">Показать реквизиты для оплаты</span>
             </button>
-          <label class="checkbox-label">
-            <input type="checkbox" id="paymentDone" name="paymentDone">
+            <label class="checkbox-label">
+                <input type="checkbox" id="paymentDone" name="paymentDone">
                 <span>Я оплатил участие</span>
             </label>
-            <div class="form-group payment-proof hidden">
-                <input type="file" id="paymentProof" name="paymentProof" accept="image/*,.pdf,.doc,.docx">
-                <div class="file-upload-container">
-                    <label for="paymentProof" class="file-upload-label">
-                        <span class="file-name">Прикрепить файл оплаты</span>
-                    </label>
-                    <button type="button" class="delete-file hidden" onclick="removeFile()">×</button>
-                </div>
-                <div class="image-preview hidden">
-                    <img id="previewImage" src="#" alt="Предпросмотр">
-                    <div class="preview-overlay">
-                        <span class="preview-text">Файл добавлен</span>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <h2>Как добираешься?</h2>

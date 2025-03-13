@@ -1,6 +1,5 @@
 import { 
     db, 
-    storage,
     collection,
     query,
     where,
@@ -22,13 +21,6 @@ import {
 // Получение элементов формы
 const form = document.getElementById('registrationForm');
 const paymentCheckbox = document.getElementById('paymentDone');
-const paymentProofDiv = document.querySelector('.payment-proof');
-const paymentProofInput = document.getElementById('paymentProof');
-const fileNameSpan = document.querySelector('.file-name');
-const deleteFileBtn = document.querySelector('.delete-file');
-const imagePreview = document.querySelector('.image-preview');
-const previewImage = document.getElementById('previewImage');
-const fileUploadLabel = document.querySelector('.file-upload-label');
 const transportOptions = document.querySelectorAll('input[name="transport"]');
 const licenseGroup = document.querySelector('.license-group');
 const musicLinks = document.getElementById('musicLinks');
@@ -63,13 +55,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // Обработка показа/скрытия поля для загрузки скриншота
-if (paymentCheckbox && paymentProofDiv) {
-    paymentProofDiv.classList.toggle('hidden', !paymentCheckbox.checked);
-    
+if (paymentCheckbox) {
     paymentCheckbox.addEventListener('change', () => {
-        paymentProofDiv.classList.toggle('hidden', !paymentCheckbox.checked);
-        if (!paymentCheckbox.checked) {
-            removeFile();
+        const paymentProofDiv = document.querySelector('.payment-proof');
+        if (paymentProofDiv) {
+            paymentProofDiv.classList.toggle('hidden', !paymentCheckbox.checked);
         }
     });
 }
@@ -80,97 +70,6 @@ if (transportOptions && licenseGroup) {
         option.addEventListener('change', () => {
             licenseGroup.classList.toggle('hidden', option.value !== 'self');
         });
-    });
-}
-
-// Обработка загрузки файла
-if (paymentProofInput) {
-    paymentProofInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            // Проверяем тип файла
-            const allowedTypes = [
-                'image/jpeg', 
-                'image/png', 
-                'image/jpg', 
-                'application/pdf'
-            ];
-            if (!allowedTypes.includes(file.type)) {
-                alert('Пожалуйста, выберите изображение (JPG, JPEG, PNG) или документ (PDF)');
-                removeFile();
-                return;
-            }
-            
-            // Проверяем размер файла (не более 10MB)
-            if (file.size > 10 * 1024 * 1024) {
-                alert('Размер файла не должен превышать 10MB');
-                removeFile();
-                return;
-            }
-
-            // Получаем только имя файла без пути
-            const fileName = file.name.split('\\').pop().split('/').pop();
-            console.log('Загружаемый файл:', fileName, 'Тип:', file.type, 'Размер:', file.size);
-
-            // Показываем имя файла и кнопку удаления
-            fileNameSpan.textContent = fileName;
-            deleteFileBtn.classList.remove('hidden');
-            fileUploadLabel.classList.add('file-selected');
-
-            // Добавляем класс для мобильных устройств
-            if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                fileUploadLabel.classList.add('mobile');
-            }
-
-            // Показываем уведомление
-            showNotification('Файл успешно выбран');
-        } else {
-            resetFileInput();
-        }
-    });
-}
-
-function removeFile() {
-    if (paymentProofInput) {
-        paymentProofInput.value = '';
-        resetFileInput();
-    }
-}
-
-function resetFileInput() {
-    if (fileNameSpan) fileNameSpan.textContent = 'Прикрепить файл оплаты';
-    if (deleteFileBtn) deleteFileBtn.classList.add('hidden');
-    if (fileUploadLabel) {
-        fileUploadLabel.classList.remove('file-selected');
-        fileUploadLabel.classList.remove('mobile');
-    }
-}
-
-// Функция для показа уведомления
-function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.className = 'upload-notification';
-    notification.textContent = message;
-    document.body.appendChild(notification);
-
-    requestAnimationFrame(() => {
-        notification.classList.add('visible');
-    });
-
-    setTimeout(() => {
-        notification.classList.remove('visible');
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
-    }, 3000);
-}
-
-// Обработка клика по кнопке удаления файла
-if (deleteFileBtn) {
-    deleteFileBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        removeFile();
     });
 }
 
@@ -219,7 +118,7 @@ if (form) {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        if (paymentCheckbox && paymentCheckbox.checked && (!paymentProofInput || !paymentProofInput.files[0])) {
+        if (paymentCheckbox && paymentCheckbox.checked) {
             alert('Пожалуйста, прикрепите скриншот оплаты');
             return;
         }
@@ -258,7 +157,6 @@ if (form) {
             if (result.success) {
                 alert('Регистрация успешно завершена!');
                 form.reset();
-                resetFileInput();
                 // Очищаем музыкальные ссылки
                 const musicLinksContainer = document.getElementById('musicLinks');
                 if (musicLinksContainer) {
@@ -280,16 +178,6 @@ if (form) {
 // Вспомогательная функция для генерации ID
 function generateUserId() {
     return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-}
-
-// Функция для конвертации файла в base64
-function getBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
 }
 
 // Копирование номера карты
