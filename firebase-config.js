@@ -201,13 +201,22 @@ async function exportToCSV() {
             
             // Обработка пожеланий
             let wishesText = '';
-            if (typeof registration.wishes === 'string') {
-                wishesText = registration.wishes;
-            } else if (registration.wishes && typeof registration.wishes === 'object') {
-                wishesText = JSON.stringify(registration.wishes);
+            if (registration.wishes) {
+                if (typeof registration.wishes === 'string') {
+                    wishesText = registration.wishes;
+                } else if (typeof registration.wishes === 'object') {
+                    if (Array.isArray(registration.wishes)) {
+                        wishesText = registration.wishes.join('; ');
+                    } else {
+                        wishesText = JSON.stringify(registration.wishes);
+                    }
+                }
             }
+            
             console.log('Обработанные пожелания:', {
                 original: registration.wishes,
+                type: typeof registration.wishes,
+                isArray: Array.isArray(registration.wishes),
                 processed: wishesText
             });
             
@@ -223,7 +232,7 @@ async function exportToCSV() {
                 hideAndSeek: registration.hideAndSeek ? 'Да' : 'Нет',
                 relationship: registration.relationship || '',
                 equipment: registration.equipment || '',
-                wishes: wishesText,
+                wishes: wishesText || '',
                 musicLinks: (registration.musicLinks || []).join('; '),
                 paymentDone: registration.paymentDone ? 'Да' : 'Нет',
                 timestamp: registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
@@ -233,9 +242,11 @@ async function exportToCSV() {
             
             // Формируем строку CSV, используя тот же порядок, что и в заголовках
             const row = headers.map(header => {
-                const field = rowData[fieldMapping[header]];
-                const value = field === undefined ? '' : field;
-                const escaped = String(value).replace(/"/g, '""');
+                const fieldName = fieldMapping[header];
+                const field = rowData[fieldName];
+                console.log(`Обработка поля ${header} (${fieldName}):`, field);
+                const value = field === undefined || field === null ? '' : field;
+                const escaped = String(value).replace(/"/g, '""').replace(/\n/g, ' ');
                 return `"${escaped}"`;
             }).join(',');
             
