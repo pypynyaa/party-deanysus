@@ -230,11 +230,13 @@ if (form) {
             const fullName = formData.get('fullName')?.trim() || '';
             const phone = formData.get('phone')?.trim() || '';
             const telegram = formData.get('telegram')?.trim() || '';
+            const wishes = formData.get('wishes')?.trim() || '';
 
             console.log('Данные формы перед отправкой:', {
                 fullName,
                 phone,
-                telegram
+                telegram,
+                wishes
             });
 
             if (!fullName || !phone || !telegram) {
@@ -268,7 +270,7 @@ if (form) {
                 hideAndSeek: formData.get('hideAndSeek') === 'on',
                 relationship: formData.get('relationship'),
                 equipment: formData.get('equipment'),
-                wishes: formData.get('wishes') || '',
+                wishes: wishes,
                 musicLinks: Array.from(document.querySelectorAll('.music-input')).map(input => input.value.trim()).filter(Boolean),
                 lastUpdated: new Date().toISOString()
             };

@@ -167,6 +167,10 @@ async function exportToCSV() {
         // Add data
         snapshot.forEach(doc => {
             const registration = doc.data();
+            console.log('Данные регистрации при экспорте:', {
+                fullName: registration.fullName,
+                wishes: registration.wishes
+            });
             const row = [
                 registration.fullName || '',
                 registration.phone || '',
