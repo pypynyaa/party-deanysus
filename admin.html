@@ -136,8 +136,13 @@
 
         // Экспорт в CSV
         function exportToCSV() {
-            db.collection('registrations').get().then(snapshot => {
+            db.collection('registrations').orderBy('timestamp', 'desc').get().then(snapshot => {
                 const data = [];
+                if (snapshot.empty) {
+                    alert('Нет данных для экспорта');
+                    return;
+                }
+
                 snapshot.forEach(doc => {
                     const registration = doc.data();
                     data.push({
@@ -157,28 +162,38 @@
                     });
                 });
 
-                // Создаем CSV строку
-                const headers = Object.keys(data[0]);
-                const csvRows = [
-                    headers.join(','), // Заголовки
-                    ...data.map(row => headers.map(header => {
-                        let cell = row[header] || '';
-                        // Экранируем запятые и кавычки
-                        if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
-                            cell = `"${cell.replace(/"/g, '""')}"`;
-                        }
-                        return cell;
-                    }).join(','))
-                ];
-                const csvString = csvRows.join('\n');
+                try {
+                    // Создаем CSV строку
+                    const headers = Object.keys(data[0]);
+                    const csvRows = [
+                        headers.join(','), // Заголовки
+                        ...data.map(row => headers.map(header => {
+                            let cell = row[header] || '';
+                            // Экранируем запятые и кавычки
+                            if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
+                                cell = `"${cell.replace(/"/g, '""')}"`;
+                            }
+                            return cell;
+                        }).join(','))
+                    ];
+                    const csvString = csvRows.join('\n');
 
-                // Создаем Blob и скачиваем файл
-                const blob = new Blob(['\ufeff' + csvString], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'registrations.csv';
-                link.click();
-                URL.revokeObjectURL(link.href);
+                    // Создаем Blob и скачиваем файл
+                    const blob = new Blob(['\ufeff' + csvString], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'registrations.csv';
+                    document.body.appendChild(link); // Добавляем ссылку в DOM
+                    link.click();
+                    document.body.removeChild(link); // Удаляем ссылку из DOM
+                    URL.revokeObjectURL(link.href);
+                } catch (error) {
+                    console.error('Ошибка при создании CSV:', error);
+                    alert('Произошла ошибка при создании CSV файла');
+                }
+            }).catch(error => {
+                console.error('Ошибка при получении данных:', error);
+                alert('Ошибка при получении данных из базы');
             });
         }
 
