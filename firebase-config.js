@@ -158,10 +158,40 @@ async function exportToCSV() {
         
         // Add headers
         const headers = [
-            'ФИО', 'Телефон', 'Telegram', 'Транспорт', 'Водительские права',
-            'Активности', 'Сауна', 'Прятки', 'Статус отношений', 'Снаряжение',
-            'Пожелания', 'Музыка', 'Оплата', 'Дата регистрации'
+            'ФИО',
+            'Телефон',
+            'Telegram',
+            'Транспорт',
+            'Водительские права',
+            'Активности',
+            'Сауна',
+            'Прятки',
+            'Статус отношений',
+            'Снаряжение',
+            'Пожелания',
+            'Музыка',
+            'Оплата',
+            'Дата регистрации'
         ];
+        
+        // Создаем маппинг полей для обеспечения соответствия заголовков и данных
+        const fieldMapping = {
+            'ФИО': 'fullName',
+            'Телефон': 'phone',
+            'Telegram': 'telegram',
+            'Транспорт': 'transport',
+            'Водительские права': 'hasLicense',
+            'Активности': 'activities',
+            'Сауна': 'sauna',
+            'Прятки': 'hideAndSeek',
+            'Статус отношений': 'relationship',
+            'Снаряжение': 'equipment',
+            'Пожелания': 'wishes',
+            'Музыка': 'musicLinks',
+            'Оплата': 'paymentDone',
+            'Дата регистрации': 'timestamp'
+        };
+
         csvContent += headers.join(',') + '\n';
         
         // Add data
@@ -201,24 +231,11 @@ async function exportToCSV() {
             
             console.log('Подготовленные данные для CSV:', rowData);
             
-            const row = [
-                rowData.fullName,
-                rowData.phone,
-                rowData.telegram,
-                rowData.transport,
-                rowData.hasLicense,
-                rowData.activities,
-                rowData.sauna,
-                rowData.hideAndSeek,
-                rowData.relationship,
-                rowData.equipment,
-                rowData.wishes,
-                rowData.musicLinks,
-                rowData.paymentDone,
-                rowData.timestamp
-            ].map(field => {
-                // Экранируем кавычки и добавляем кавычки вокруг поля
-                const escaped = String(field).replace(/"/g, '""');
+            // Формируем строку CSV, используя тот же порядок, что и в заголовках
+            const row = headers.map(header => {
+                const field = rowData[fieldMapping[header]];
+                const value = field === undefined ? '' : field;
+                const escaped = String(value).replace(/"/g, '""');
                 return `"${escaped}"`;
             }).join(',');
             
