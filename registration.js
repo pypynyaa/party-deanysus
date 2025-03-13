@@ -7,6 +7,18 @@ import {
   findRegistrationByTelegram 
 } from './firebase-config.js';
 
+import { 
+    collection, 
+    getDocs, 
+    query, 
+    limit,
+    doc,
+    setDoc,
+    updateDoc,
+    deleteDoc,
+    serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
 // Получение элементов формы
 const form = document.getElementById('registrationForm');
 const paymentCheckbox = document.getElementById('paymentDone');
@@ -27,7 +39,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     try {
         // Пробуем сделать тестовый запрос
-        await db.collection('registrations').limit(1).get();
+        const registrationsRef = collection(db, 'registrations');
+        const q = query(registrationsRef, limit(1));
+        await getDocs(q);
         console.log('Тестовый запрос к базе данных выполнен успешно');
         
         // Загружаем существующую регистрацию
@@ -204,34 +218,16 @@ if (form) {
         }
 
         const submitButton = form.querySelector('.submit-btn');
-        animateSubmitButton(submitButton, true);
+        if (submitButton) submitButton.disabled = true;
 
         try {
-            // Получаем подключение к базе данных
-            const database = db;
-            
             const formData = new FormData(form);
-            const fullName = formData.get('fullName');
-            const phone = formData.get('phone');
-            const telegram = formData.get('telegram');
-
-            // Проверяем, существует ли уже регистрация
-            let existingRegistration = await findRegistrationByName(fullName) || 
-                                     await findRegistrationByPhone(phone) || 
-                                     await findRegistrationByTelegram(telegram);
-
-            // Если найдена существующая регистрация, удаляем её
-            if (existingRegistration) {
-                await database.collection('registrations').doc(existingRegistration.id).delete();
-                console.log('Старая регистрация удалена');
-            }
-
-            // Создаем новый ID для регистрации
             const userId = generateUserId();
-            
+
+            // Создаем объект с данными
             const data = {
                 userId,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                timestamp: serverTimestamp(),
                 fullName: formData.get('fullName'),
                 phone: formData.get('phone'),
                 telegram: formData.get('telegram'),
@@ -242,8 +238,7 @@ if (form) {
                 sauna: formData.get('sauna') === 'on',
                 hideAndSeek: formData.get('hideAndSeek') === 'on',
                 relationship: formData.get('relationship'),
-                foodPreferences: formData.get('foodPreferences'),
-                camera: formData.get('camera'),
+                equipment: formData.get('equipment'),
                 musicLinks: Array.from(document.querySelectorAll('.music-input')).map(input => input.value).filter(Boolean),
                 lastUpdated: new Date().toISOString()
             };
@@ -252,7 +247,6 @@ if (form) {
             if (paymentProofInput && paymentProofInput.files[0]) {
                 const paymentProof = paymentProofInput.files[0];
                 try {
-                    // Проверяем размер файла (не более 10MB для base64)
                     if (paymentProof.size > 10 * 1024 * 1024) {
                         throw new Error('Размер файла не должен превышать 10MB');
                     }
@@ -262,31 +256,49 @@ if (form) {
                 } catch (error) {
                     console.error('Ошибка обработки файла:', error);
                     alert('Произошла ошибка при обработке файла. Убедитесь, что размер файла не превышает 10MB.');
-                    animateSubmitButton(submitButton, false);
+                    if (submitButton) submitButton.disabled = false;
                     return;
                 }
             }
 
-            // Сохраняем или обновляем данные
-            if (existingRegistration) {
-                await database.collection('registrations').doc(userId).update(data);
-                alert('Ваша регистрация успешно обновлена!');
-            } else {
-                await database.collection('registrations').doc(userId).set(data);
-                alert('Регистрация успешно завершена! Мы свяжемся с вами в ближайшее время.');
-            }
+            // Сохраняем данные в Firestore
+            const registrationRef = doc(collection(db, 'registrations'), userId);
+            await setDoc(registrationRef, data);
 
-            // Сохраняем ID регистрации в localStorage
+            // Сохраняем ID регистрации
             localStorage.setItem('registrationId', userId);
             
+            alert('Регистрация успешно завершена! Мы свяжемся с вами в ближайшее время.');
             form.reset();
             resetFileInput();
+            
+            // Очищаем музыкальные ссылки
+            const musicLinksContainer = document.getElementById('musicLinks');
+            if (musicLinksContainer) {
+                musicLinksContainer.innerHTML = '';
+                window.addMusicLink(); // Добавляем первое поле
+            }
         } catch (error) {
             console.error('Error:', error);
             alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
         } finally {
-            animateSubmitButton(submitButton, false);
+            if (submitButton) submitButton.disabled = false;
         }
+    });
+}
+
+// Вспомогательная функция для генерации ID
+function generateUserId() {
+    return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+// Функция для конвертации файла в base64
+function getBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
     });
 }
 
