@@ -24,6 +24,19 @@
         .export-btn {
             margin-bottom: 20px;
         }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,.1);
+            border-radius: 50%;
+            border-top-color: #007bff;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -35,9 +48,7 @@
                 <button class="btn btn-success export-btn" onclick="handleExport('excel')">
                     Экспорт в Excel
                 </button>
-            </div>
-            <div class="col">
-                <button class="btn btn-secondary export-btn" onclick="handleExport('csv')">
+                <button class="btn btn-primary export-btn" onclick="handleExport('csv')">
                     Экспорт в CSV
                 </button>
             </div>
@@ -51,15 +62,16 @@
     </div>
 
     <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js"></script>
     
     <!-- XLSX library for Excel export -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <script type="module">
         import { db, exportToCSV } from './firebase-config.js';
+        import { collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
         
         // Обработчик экспорта
         async function handleExport(type) {
@@ -70,8 +82,9 @@
             
             try {
                 let data = [];
-                const registrationsRef = db.collection('registrations');
-                const snapshot = await registrationsRef.orderBy('timestamp', 'desc').get();
+                const registrationsRef = collection(db, 'registrations');
+                const q = query(registrationsRef, orderBy('timestamp', 'desc'));
+                const snapshot = await getDocs(q);
                 
                 snapshot.forEach(doc => {
                     const registration = doc.data();
