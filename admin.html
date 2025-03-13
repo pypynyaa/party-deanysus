@@ -24,42 +24,16 @@
         .export-btn {
             margin-bottom: 20px;
         }
-        .error-message {
-            color: #dc3545;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-        }
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0,0,0,.1);
-            border-radius: 50%;
-            border-top-color: #007bff;
-            animation: spin 1s ease-in-out infinite;
-            margin-left: 10px;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Панель администратора</h1>
         
-        <div id="connectionStatus"></div>
-
         <div class="row mb-4">
             <div class="col">
-                <button class="btn btn-success export-btn me-2" onclick="handleExport('excel')">
+                <button class="btn btn-success export-btn" onclick="exportToExcel()">
                     Экспорт в Excel
-                </button>
-                <button class="btn btn-primary export-btn" onclick="handleExport('csv')">
-                    Экспорт в CSV
                 </button>
             </div>
         </div>
@@ -80,144 +54,57 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <script>
-        let db;
-        let isInitialized = false;
-        let isOffline = false;
-
         // Инициализация Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyCzs2d7EcM2-hzBZQMt7xnc8X2SRFq_VuK",
+            apiKey: "AIzaS5Czs2d7EcM2-hzBZQMt7xnc8X2SRFq_VuK",
             authDomain: "party-registration-26c8b.firebaseapp.com",
             projectId: "party-registration-26c8b",
-            storageBucket: "party-registration-26c8b.appspot.com",
+            storageBucket: "party-registration-26c8b.firebasestorage.app",
             messagingSenderId: "734748976300",
             appId: "1:734748976300:web:82fc68a1ddda9d1011eb09"
         };
 
-        // Инициализация Firebase с обработкой ошибок
-        async function initializeFirebase() {
-            try {
-                if (!isInitialized) {
-                    if (!firebase.apps.length) {
-                        firebase.initializeApp(firebaseConfig);
-                    }
-                    db = firebase.firestore();
-                    
-                    // Включаем поддержку офлайн режима
-                    await db.enablePersistence()
-                        .catch((err) => {
-                            if (err.code == 'failed-precondition') {
-                                console.warn('Multiple tabs open, persistence can only be enabled in one tab at a a time.');
-                            } else if (err.code == 'unimplemented') {
-                                console.warn('The current browser does not support persistence');
-                            }
-                        });
-
-                    // Слушаем состояние подключения
-                    db.enableNetwork().catch(console.error);
-                    
-                    isInitialized = true;
-                    updateConnectionStatus('online');
-                }
-                return true;
-            } catch (error) {
-                console.error('Ошибка инициализации Firebase:', error);
-                updateConnectionStatus('error', error);
-                return false;
-            }
-        }
-
-        // Обновление статуса подключения
-        function updateConnectionStatus(status, error = null) {
-            const statusDiv = document.getElementById('connectionStatus');
-            if (status === 'online') {
-                statusDiv.innerHTML = '<div class="alert alert-success">Подключено к базе данных</div>';
-                isOffline = false;
-            } else if (status === 'offline') {
-                statusDiv.innerHTML = '<div class="alert alert-warning">Работа в офлайн режиме</div>';
-                isOffline = true;
-            } else if (status === 'error') {
-                statusDiv.innerHTML = `<div class="alert alert-danger">Ошибка подключения: ${error?.message || 'Неизвестная ошибка'}</div>`;
-                isOffline = true;
-            }
-        }
-
-        // Проверка подключения к Firestore
-        async function checkFirestoreConnection() {
-            try {
-                if (!isInitialized) {
-                    const initialized = await initializeFirebase();
-                    if (!initialized) return false;
-                }
-
-                await db.collection('registrations').limit(1).get();
-                updateConnectionStatus('online');
-                return true;
-            } catch (error) {
-                console.error('Ошибка подключения к Firestore:', error);
-                updateConnectionStatus('error', error);
-                return false;
-            }
-        }
-
-        // Обработчик экспорта
-        async function handleExport(type) {
-            const button = event.target;
-            const originalText = button.innerHTML;
-            button.disabled = true;
-            button.innerHTML = `${originalText} <span class="loading"></span>`;
-
-            try {
-                if (type === 'excel') {
-                    await exportToExcel();
-                } else {
-                    await exportToCSV();
-                }
-            } catch (error) {
-                console.error(`Ошибка экспорта в ${type}:`, error);
-                alert(`Произошла ошибка при экспорте данных: ${error.message}`);
-            } finally {
-                button.disabled = false;
-                button.innerHTML = originalText;
-            }
-        }
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
         // Загрузка всех регистраций
         async function loadRegistrations() {
+            const registrationsContainer = document.getElementById('registrationsList');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const errorMessage = document.getElementById('errorMessage');
+            
             try {
+                // Проверяем подключение
                 const isConnected = await checkFirestoreConnection();
-                if (!isConnected && !isOffline) {
+                if (!isConnected) {
                     throw new Error('Нет подключения к базе данных');
                 }
-
-                const registrationsList = document.getElementById('registrationsList');
-                registrationsList.innerHTML = '<div class="alert alert-info">Загрузка данных...</div>';
-
-                const snapshot = await db.collection('registrations')
-                    .orderBy('timestamp', 'desc')
-                    .get();
-
-                if (snapshot.empty) {
-                    registrationsList.innerHTML = '<div class="alert alert-warning">Нет зарегистрированных участников</div>';
+                
+                loadingIndicator.style.display = 'block';
+                errorMessage.style.display = 'none';
+                
+                const registrationsRef = db.collection('registrations');
+                const q = registrationsRef.orderBy('timestamp', 'desc');
+                const querySnapshot = await q.get();
+                
+                if (querySnapshot.empty) {
+                    registrationsContainer.innerHTML = '<p>Нет зарегистрированных участников</p>';
                     return;
                 }
-
-                registrationsList.innerHTML = '';
-                snapshot.forEach(doc => {
+                
+                registrationsContainer.innerHTML = '';
+                querySnapshot.forEach(doc => {
                     const data = doc.data();
                     const card = createRegistrationCard(data);
-                    registrationsList.appendChild(card);
+                    registrationsContainer.appendChild(card);
                 });
             } catch (error) {
-                console.error('Ошибка загрузки регистраций:', error);
-                document.getElementById('registrationsList').innerHTML = 
-                    `<div class="error-message">
-                        Ошибка при загрузке данных: ${error.message}
-                        <br>
-                        <button class="btn btn-sm btn-primary mt-2" onclick="loadRegistrations()">
-                            Попробовать снова
-                        </button>
-                    </div>`;
+                console.error('Ошибка при загрузке регистраций:', error);
+                errorMessage.textContent = `Ошибка: ${error.message}`;
+                errorMessage.style.display = 'block';
+                registrationsContainer.innerHTML = '';
+            } finally {
+                loadingIndicator.style.display = 'none';
             }
         }
 
@@ -242,30 +129,18 @@
             return card;
         }
 
-        // Экспорт в Excel с проверкой подключения
-        async function exportToExcel() {
-            try {
-                const isConnected = await checkFirestoreConnection();
-                if (!isConnected) return;
-
-                const snapshot = await db.collection('registrations')
-                    .orderBy('timestamp', 'desc')
-                    .get();
-
-                if (snapshot.empty) {
-                    alert('Нет данных для экспорта');
-                    return;
-                }
-
+        // Экспорт в Excel
+        function exportToExcel() {
+            db.collection('registrations').get().then(snapshot => {
                 const data = [];
                 snapshot.forEach(doc => {
                     const registration = doc.data();
                     data.push({
-                        'ФИО': registration.fullName || '',
-                        'Телефон': registration.phone || '',
-                        'Telegram': registration.telegram || '',
+                        'ФИО': registration.fullName,
+                        'Телефон': registration.phone,
+                        'Telegram': registration.telegram,
                         'Транспорт': registration.transport === 'self' ? 'Еду сам' : 'На автобусе',
-                        'Активности': Array.isArray(registration.activities) ? registration.activities.join(', ') : '',
+                        'Активности': registration.activities.join(', '),
                         'Оплата': registration.paymentDone ? 'Да' : 'Нет',
                         'Фото оплаты': registration.paymentProofBase64 ? 'Есть' : 'Нет',
                         'Дата регистрации': registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
@@ -276,82 +151,50 @@
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, "Регистрации");
                 XLSX.writeFile(wb, "registrations.xlsx");
-            } catch (error) {
-                console.error('Ошибка при экспорте в Excel:', error);
-                alert('Произошла ошибка при экспорте данных');
-            }
+            });
         }
 
-        // Экспорт в CSV с проверкой подключения
-        async function exportToCSV() {
+        // Добавляем обработчик для кнопки повторной попытки
+        document.getElementById('retryButton').addEventListener('click', async () => {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            loadingIndicator.style.display = 'block';
+            
             try {
-                const isConnected = await checkFirestoreConnection();
-                if (!isConnected) return;
-
-                const snapshot = await db.collection('registrations')
-                    .orderBy('timestamp', 'desc')
-                    .get();
-
-                if (snapshot.empty) {
-                    alert('Нет данных для экспорта');
-                    return;
-                }
-
-                const data = [];
-                snapshot.forEach(doc => {
-                    const registration = doc.data();
-                    data.push({
-                        'ФИО': registration.fullName || '',
-                        'Телефон': registration.phone || '',
-                        'Telegram': registration.telegram || '',
-                        'Транспорт': registration.transport === 'self' ? 'Еду сам' : 'На автобусе',
-                        'Права': registration.hasLicense ? 'Да' : 'Нет',
-                        'Активности': Array.isArray(registration.activities) ? registration.activities.join(', ') : '',
-                        'Баня': registration.sauna ? 'Да' : 'Нет',
-                        'Прятки': registration.hideAndSeek ? 'Да' : 'Нет',
-                        'Статус отношений': registration.relationship || '',
-                        'Снаряжение': registration.equipment || '',
-                        'Музыка': Array.isArray(registration.musicLinks) ? registration.musicLinks.join(', ') : '',
-                        'Оплата': registration.paymentDone ? 'Да' : 'Нет',
-                        'Дата регистрации': registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
-                    });
-                });
-
-                // Создаем CSV строку
-                const headers = Object.keys(data[0]);
-                const csvRows = [
-                    headers.join(','), // Заголовки
-                    ...data.map(row => headers.map(header => {
-                        let cell = row[header] || '';
-                        // Экранируем запятые и кавычки
-                        if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
-                            cell = `"${cell.replace(/"/g, '""')}"`;
-                        }
-                        return cell;
-                    }).join(','))
-                ];
-                const csvString = csvRows.join('\n');
-
-                // Создаем Blob и скачиваем файл
-                const blob = new Blob(['\ufeff' + csvString], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'registrations.csv';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(link.href);
+                await loadRegistrations();
             } catch (error) {
-                console.error('Ошибка при экспорте в CSV:', error);
-                alert('Произошла ошибка при экспорте данных');
+                console.error('Ошибка при повторной попытке:', error);
+            } finally {
+                loadingIndicator.style.display = 'none';
             }
-        }
+        });
 
         // Загружаем регистрации при загрузке страницы
-        document.addEventListener('DOMContentLoaded', async () => {
-            await initializeFirebase();
-            loadRegistrations();
-        });
+        document.addEventListener('DOMContentLoaded', loadRegistrations);
+
+        async function checkFirestoreConnection() {
+            try {
+                const connectionStatus = document.getElementById('connectionStatus');
+                const retryButton = document.getElementById('retryButton');
+                
+                // Проверяем подключение
+                const isConnected = await testDatabaseConnection();
+                
+                if (isConnected) {
+                    connectionStatus.textContent = 'Подключено к базе данных';
+                    connectionStatus.className = 'connection-status connected';
+                    retryButton.style.display = 'none';
+                    return true;
+                } else {
+                    connectionStatus.textContent = 'Ошибка подключения к базе данных';
+                    connectionStatus.className = 'connection-status error';
+                    retryButton.style.display = 'block';
+                    return false;
+                }
+            } catch (error) {
+                console.error('Ошибка при проверке подключения:', error);
+                return false;
+            }
+        }
     </script>
 </body>
 </html> 
