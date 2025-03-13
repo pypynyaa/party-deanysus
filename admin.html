@@ -70,16 +70,24 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <script>
-        // Глобальная переменная для хранения db
+        // Глобальные переменные для Firebase
         let dbInstance;
+        let collectionFn;
+        let queryFn;
+        let orderByFn;
+        let getDocsFn;
     </script>
 
     <script type="module">
         import { db } from './admin-firebase.js';
         import { collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         
-        // Сохраняем db в глобальную переменную
+        // Сохраняем функции в глобальные переменные
         window.dbInstance = db;
+        window.collectionFn = collection;
+        window.queryFn = query;
+        window.orderByFn = orderBy;
+        window.getDocsFn = getDocs;
     </script>
 
     <script>
@@ -92,9 +100,9 @@
             
             try {
                 let data = [];
-                const registrationsRef = collection(dbInstance, 'registrations');
-                const q = query(registrationsRef, orderBy('timestamp', 'desc'));
-                const snapshot = await getDocs(q);
+                const registrationsRef = collectionFn(dbInstance, 'registrations');
+                const q = queryFn(registrationsRef, orderByFn('timestamp', 'desc'));
+                const snapshot = await getDocsFn(q);
                 
                 if (snapshot.empty) {
                     throw new Error('Нет данных для экспорта');
