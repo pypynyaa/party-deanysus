@@ -1,1 +1,36 @@
- 
+# IDE и редакторы
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# Зависимости
+node_modules/
+vendor/
+
+# Логи и временные файлы
+*.log
+*.tmp
+*.temp
+
+# Конфиденциальные данные
+.env
+*.key
+firebase-config.js
+google-config.js
+
+# Скомпилированные файлы
+*.min.js
+*.min.css
+
+# Медиафайлы
+*.mp3
+*.mp4
+*.jpg
+*.jpeg
+*.png
+*.gif 
