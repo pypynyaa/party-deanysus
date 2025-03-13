@@ -85,7 +85,7 @@ async function testDatabaseConnection() {
 }
 
 // Инициализируем Firebase при загрузке
-initializeFirebase();
+await initializeFirebase();
 
 // Функции для работы с базой данных
 async function loadExistingRegistration() {
