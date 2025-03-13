@@ -281,16 +281,26 @@ if (form) {
             if (paymentProofInput && paymentProofInput.files[0]) {
                 const paymentProof = paymentProofInput.files[0];
                 try {
-                    if (paymentProof.size > 10 * 1024 * 1024) {
-                        throw new Error('Размер файла не должен превышать 10MB');
-                    }
-                    data.paymentProofBase64 = await getBase64(paymentProof);
-                    data.paymentProofFilename = paymentProof.name;
-                    data.paymentProofType = paymentProof.type;
-                    console.log('Файл оплаты:', {
+                    console.log('Начало обработки файла:', {
                         name: paymentProof.name,
                         type: paymentProof.type,
                         size: paymentProof.size
+                    });
+                    
+                    if (paymentProof.size > 10 * 1024 * 1024) {
+                        throw new Error('Размер файла не должен превышать 10MB');
+                    }
+                    
+                    console.log('Конвертация файла в base64...');
+                    data.paymentProofBase64 = await getBase64(paymentProof);
+                    data.paymentProofFilename = paymentProof.name;
+                    data.paymentProofType = paymentProof.type;
+                    
+                    console.log('Файл успешно обработан:', {
+                        name: paymentProof.name,
+                        type: paymentProof.type,
+                        size: paymentProof.size,
+                        base64Length: data.paymentProofBase64.length
                     });
                 } catch (error) {
                     console.error('Ошибка обработки файла:', error);
