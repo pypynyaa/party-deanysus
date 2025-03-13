@@ -26,20 +26,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log('DOM загружен, начинаем инициализацию...');
     
     try {
-        // Проверяем подключение к базе данных
-        const database = db;
-        if (!database) {
-            throw new Error('База данных не инициализирована');
-        }
-
-        // Пробуем сделать тестовый запрос с таймаутом
-        const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Timeout')), 10000)
-        );
-        
-        const testQuery = database.collection('registrations').limit(1).get();
-        await Promise.race([testQuery, timeoutPromise]);
-        
+        // Пробуем сделать тестовый запрос
+        await db.collection('registrations').limit(1).get();
         console.log('Тестовый запрос к базе данных выполнен успешно');
         
         // Загружаем существующую регистрацию
@@ -49,13 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     } catch (error) {
         console.error('Ошибка при инициализации:', error);
-        if (error.code === 'permission-denied') {
-            alert('Ошибка доступа к базе данных. Пожалуйста, проверьте права доступа.');
-        } else if (error.message === 'Timeout') {
-            alert('Превышено время ожидания подключения к базе данных. Пожалуйста, проверьте подключение к интернету.');
-        } else {
-            alert('Ошибка подключения к базе данных. Пожалуйста, обратитесь к администратору.');
-        }
+        alert('Ошибка подключения к базе данных. Пожалуйста, обратитесь к администратору.');
     }
 });
 
@@ -145,24 +127,15 @@ function resetFileInput() {
 
 // Функция для показа уведомления
 function showNotification(message) {
-    // Удаляем существующие уведомления
-    const existingNotifications = document.querySelectorAll('.upload-notification');
-    existingNotifications.forEach(notification => notification.remove());
-
-    // Создаем новое уведомление
     const notification = document.createElement('div');
     notification.className = 'upload-notification';
     notification.textContent = message;
+    document.body.appendChild(notification);
 
-    // Добавляем уведомление в body
-    document.body.insertBefore(notification, document.body.firstChild);
-
-    // Анимируем появление
-    setTimeout(() => {
+    requestAnimationFrame(() => {
         notification.classList.add('visible');
-    }, 10);
+    });
 
-    // Удаляем уведомление
     setTimeout(() => {
         notification.classList.remove('visible');
         setTimeout(() => {
@@ -202,21 +175,21 @@ window.addMusicLink = function() {
     deleteBtn.className = 'delete-track-btn';
     deleteBtn.innerHTML = '×';
     deleteBtn.onclick = function() {
-        deleteMusicLink(this);
+        inputContainer.remove();
     };
 
-    // Добавляем поле ввода и кнопку в контейнер
+    // Добавляем элементы в контейнер
     inputContainer.appendChild(input);
     inputContainer.appendChild(deleteBtn);
 
-    // Добавляем контейнер в основной блок
+    // Добавляем новый контейнер в основной блок
     container.appendChild(inputContainer);
 };
 
 window.deleteMusicLink = function(button) {
-    const inputContainer = button.parentElement;
-    if (inputContainer) {
-        inputContainer.remove();
+    const container = button.closest('.music-input-container');
+    if (container) {
+        container.remove();
     }
 };
 

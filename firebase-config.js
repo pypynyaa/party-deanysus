@@ -1,79 +1,68 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
 
-// Firebase configuration
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCZgzf39KPvFoR-0Tg33TjypbjK-dxiUVI",
-  authDomain: "party-registration-web.firebaseapp.com",
-  projectId: "party-registration-web",
-  storageBucket: "party-registration-web.appspot.com",
-  messagingSenderId: "437696239321",
-  appId: "1:437696239321:web:ea38f2ed5d3cd75434d0c8"
+    apiKey: "AIzaSyA-14teCRf0g25whWzxuVGvboO_8a8hCmM",
+    authDomain: "party31-19af4.firebaseapp.com",
+    projectId: "party31-19af4",
+    storageBucket: "party31-19af4.firebasestorage.app",
+    messagingSenderId: "692315230973",
+    appId: "1:692315230973:web:10871adfa544f501706494",
+    measurementId: "G-06K7VD5GD6"
 };
 
-// Initialize Firebase if not already initialized
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-// Get Firestore instance
-const db = firebase.firestore();
-
-// Get Storage instance
-const storage = firebase.storage();
-
-// Function to load existing registration
+// Функции для работы с базой данных
 async function loadExistingRegistration() {
-  // This function will be implemented when needed
-  console.log('Loading existing registration...');
-  return null;
+    const registrationId = localStorage.getItem('registrationId');
+    if (!registrationId) return null;
+    
+    try {
+        const registrationsRef = collection(db, 'registrations');
+        const q = query(registrationsRef, where('userId', '==', registrationId));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+            return { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+        }
+        return null;
+    } catch (error) {
+        console.error('Ошибка при загрузке регистрации:', error);
+        return null;
+    }
 }
 
-// Function to find registration by name
-async function findRegistrationByName(name) {
-  try {
-    const snapshot = await db.collection('registrations')
-      .where('fullName', '==', name)
-      .get();
-    return snapshot.empty ? null : snapshot.docs[0].data();
-  } catch (error) {
-    console.error('Error finding registration by name:', error);
-    return null;
-  }
+async function findRegistrationByField(field, value) {
+    try {
+        const registrationsRef = collection(db, 'registrations');
+        const q = query(registrationsRef, where(field, '==', value));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+            return { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+        }
+        return null;
+    } catch (error) {
+        console.error(`Ошибка при поиске по полю ${field}:`, error);
+        return null;
+    }
 }
 
-// Function to find registration by phone
-async function findRegistrationByPhone(phone) {
-  try {
-    const snapshot = await db.collection('registrations')
-      .where('phone', '==', phone)
-      .get();
-    return snapshot.empty ? null : snapshot.docs[0].data();
-  } catch (error) {
-    console.error('Error finding registration by phone:', error);
-    return null;
-  }
-}
+const findRegistrationByName = (name) => findRegistrationByField('fullName', name);
+const findRegistrationByPhone = (phone) => findRegistrationByField('phone', phone);
+const findRegistrationByTelegram = (telegram) => findRegistrationByField('telegram', telegram);
 
-// Function to find registration by telegram
-async function findRegistrationByTelegram(telegram) {
-  try {
-    const snapshot = await db.collection('registrations')
-      .where('telegram', '==', telegram)
-      .get();
-    return snapshot.empty ? null : snapshot.docs[0].data();
-  } catch (error) {
-    console.error('Error finding registration by telegram:', error);
-    return null;
-  }
-}
-
-export { 
-  db, 
-  storage, 
-  loadExistingRegistration,
-  findRegistrationByName,
-  findRegistrationByPhone,
-  findRegistrationByTelegram
+export {
+    db,
+    storage,
+    loadExistingRegistration,
+    findRegistrationByName,
+    findRegistrationByPhone,
+    findRegistrationByTelegram
 }; 
