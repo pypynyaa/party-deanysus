@@ -167,26 +167,51 @@ async function exportToCSV() {
         // Add data
         snapshot.forEach(doc => {
             const registration = doc.data();
+            console.log('Полные данные регистрации:', registration);
             console.log('Данные регистрации при экспорте:', {
                 fullName: registration.fullName,
-                wishes: registration.wishes
+                wishes: registration.wishes,
+                rawWishes: JSON.stringify(registration.wishes)
             });
+            
+            // Подготовка данных для строки CSV
+            const rowData = {
+                fullName: registration.fullName || '',
+                phone: registration.phone || '',
+                telegram: registration.telegram || '',
+                transport: registration.transport === 'self' ? 'Еду сам' : 'На автобусе',
+                hasLicense: registration.hasLicense ? 'Да' : 'Нет',
+                activities: (registration.activities || []).join('; '),
+                sauna: registration.sauna ? 'Да' : 'Нет',
+                hideAndSeek: registration.hideAndSeek ? 'Да' : 'Нет',
+                relationship: registration.relationship || '',
+                equipment: registration.equipment || '',
+                wishes: registration.wishes || '',
+                musicLinks: (registration.musicLinks || []).join('; '),
+                paymentDone: registration.paymentDone ? 'Да' : 'Нет',
+                timestamp: registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
+            };
+            
+            console.log('Подготовленные данные для CSV:', rowData);
+            
             const row = [
-                registration.fullName || '',
-                registration.phone || '',
-                registration.telegram || '',
-                registration.transport === 'self' ? 'Еду сам' : 'На автобусе',
-                registration.hasLicense ? 'Да' : 'Нет',
-                (registration.activities || []).join('; '),
-                registration.sauna ? 'Да' : 'Нет',
-                registration.hideAndSeek ? 'Да' : 'Нет',
-                registration.relationship || '',
-                registration.equipment || '',
-                registration.wishes || '',
-                (registration.musicLinks || []).join('; '),
-                registration.paymentDone ? 'Да' : 'Нет',
-                registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
+                rowData.fullName,
+                rowData.phone,
+                rowData.telegram,
+                rowData.transport,
+                rowData.hasLicense,
+                rowData.activities,
+                rowData.sauna,
+                rowData.hideAndSeek,
+                rowData.relationship,
+                rowData.equipment,
+                rowData.wishes,
+                rowData.musicLinks,
+                rowData.paymentDone,
+                rowData.timestamp
             ].map(field => `"${field}"`).join(',');
+            
+            console.log('Строка CSV перед добавлением:', row);
             csvContent += row + '\n';
         });
         
