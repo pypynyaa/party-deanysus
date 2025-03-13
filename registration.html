@@ -338,7 +338,7 @@
         </div>
         
         <div class="form-group">
-          <input type="text" placeholder="Ваш t.me/pypynyaa" required>
+          <input type="text" placeholder="t.me/pypynyaa" required>
           <span class="input-label">Ссылка на tg</span>
         </div>
 
@@ -524,30 +524,52 @@
   <script src="registration.js"></script>
   <script src="music.js"></script>
   <script>
-    // Сохраняем текущее время воспроизведения видео при уходе со страницы
-    document.addEventListener('visibilitychange', function() {
-      const video = document.getElementById('bgVideo');
-      
-      if (document.hidden) {
-        // Сохраняем текущее время воспроизведения
-        sessionStorage.setItem('videoTime', video.currentTime);
-      } else {
-        // Восстанавливаем время воспроизведения
-        const savedTime = sessionStorage.getItem('videoTime');
-        if (savedTime) {
-          video.currentTime = parseFloat(savedTime);
-        }
-      }
-    });
-
-    // При загрузке страницы проверяем сохраненное время
+    // Управление фоновым видео
     document.addEventListener('DOMContentLoaded', function() {
       const video = document.getElementById('bgVideo');
-      const savedTime = sessionStorage.getItem('videoTime');
-      
-      if (savedTime) {
-        video.currentTime = parseFloat(savedTime);
-      }
+      let isPlaying = true;
+
+      // Сохраняем состояние воспроизведения перед уходом со страницы
+      window.addEventListener('beforeunload', function() {
+        if (video) {
+          sessionStorage.setItem('videoTime', video.currentTime);
+          sessionStorage.setItem('isPlaying', isPlaying);
+        }
+      });
+
+      // Восстанавливаем состояние при возвращении
+      window.addEventListener('pageshow', function(event) {
+        if (video) {
+          const savedTime = sessionStorage.getItem('videoTime');
+          const wasPlaying = sessionStorage.getItem('isPlaying') === 'true';
+          
+          if (savedTime) {
+            video.currentTime = parseFloat(savedTime);
+          }
+          
+          if (wasPlaying) {
+            video.play().catch(function(error) {
+              console.log("Автовоспроизведение не удалось:", error);
+            });
+          }
+        }
+      });
+
+      // Обработка видимости страницы
+      document.addEventListener('visibilitychange', function() {
+        if (video) {
+          if (document.hidden) {
+            isPlaying = !video.paused;
+            video.pause();
+          } else {
+            if (isPlaying) {
+              video.play().catch(function(error) {
+                console.log("Автовоспроизведение не удалось:", error);
+              });
+            }
+          }
+        }
+      });
     });
 
     function showPaymentModal() {
