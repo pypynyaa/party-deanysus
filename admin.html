@@ -24,18 +24,41 @@
         .export-btn {
             margin-bottom: 20px;
         }
+        .error-message {
+            color: #dc3545;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,.1);
+            border-radius: 50%;
+            border-top-color: #007bff;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Панель администратора</h1>
         
+        <div id="connectionStatus"></div>
+
         <div class="row mb-4">
             <div class="col">
-                <button class="btn btn-success export-btn me-2" onclick="exportToExcel()">
+                <button class="btn btn-success export-btn me-2" onclick="handleExport('excel')">
                     Экспорт в Excel
                 </button>
-                <button class="btn btn-primary export-btn" onclick="exportToCSV()">
+                <button class="btn btn-primary export-btn" onclick="handleExport('csv')">
                     Экспорт в CSV
                 </button>
             </div>
@@ -57,6 +80,10 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <script>
+        let db;
+        let isInitialized = false;
+        let isOffline = false;
+
         // Инициализация Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCzs2d7EcM2-hzBZQMt7xnc8X2SRFq_VuK",
@@ -67,22 +94,91 @@
             appId: "1:734748976300:web:82fc68a1ddda9d1011eb09"
         };
 
-        // Инициализация Firebase с проверкой
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+        // Инициализация Firebase с обработкой ошибок
+        async function initializeFirebase() {
+            try {
+                if (!isInitialized) {
+                    if (!firebase.apps.length) {
+                        firebase.initializeApp(firebaseConfig);
+                    }
+                    db = firebase.firestore();
+                    
+                    // Включаем поддержку офлайн режима
+                    await db.enablePersistence()
+                        .catch((err) => {
+                            if (err.code == 'failed-precondition') {
+                                console.warn('Multiple tabs open, persistence can only be enabled in one tab at a a time.');
+                            } else if (err.code == 'unimplemented') {
+                                console.warn('The current browser does not support persistence');
+                            }
+                        });
+
+                    // Слушаем состояние подключения
+                    db.enableNetwork().catch(console.error);
+                    
+                    isInitialized = true;
+                    updateConnectionStatus('online');
+                }
+                return true;
+            } catch (error) {
+                console.error('Ошибка инициализации Firebase:', error);
+                updateConnectionStatus('error', error);
+                return false;
+            }
         }
-        const db = firebase.firestore();
+
+        // Обновление статуса подключения
+        function updateConnectionStatus(status, error = null) {
+            const statusDiv = document.getElementById('connectionStatus');
+            if (status === 'online') {
+                statusDiv.innerHTML = '<div class="alert alert-success">Подключено к базе данных</div>';
+                isOffline = false;
+            } else if (status === 'offline') {
+                statusDiv.innerHTML = '<div class="alert alert-warning">Работа в офлайн режиме</div>';
+                isOffline = true;
+            } else if (status === 'error') {
+                statusDiv.innerHTML = `<div class="alert alert-danger">Ошибка подключения: ${error?.message || 'Неизвестная ошибка'}</div>`;
+                isOffline = true;
+            }
+        }
 
         // Проверка подключения к Firestore
         async function checkFirestoreConnection() {
             try {
+                if (!isInitialized) {
+                    const initialized = await initializeFirebase();
+                    if (!initialized) return false;
+                }
+
                 await db.collection('registrations').limit(1).get();
-                console.log('Подключение к Firestore успешно установлено');
+                updateConnectionStatus('online');
                 return true;
             } catch (error) {
                 console.error('Ошибка подключения к Firestore:', error);
-                alert('Ошибка подключения к базе данных. Пожалуйста, проверьте подключение к интернету и обновите страницу.');
+                updateConnectionStatus('error', error);
                 return false;
+            }
+        }
+
+        // Обработчик экспорта
+        async function handleExport(type) {
+            const button = event.target;
+            const originalText = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = `${originalText} <span class="loading"></span>`;
+
+            try {
+                if (type === 'excel') {
+                    await exportToExcel();
+                } else {
+                    await exportToCSV();
+                }
+            } catch (error) {
+                console.error(`Ошибка экспорта в ${type}:`, error);
+                alert(`Произошла ошибка при экспорте данных: ${error.message}`);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = originalText;
             }
         }
 
@@ -90,22 +186,23 @@
         async function loadRegistrations() {
             try {
                 const isConnected = await checkFirestoreConnection();
-                if (!isConnected) return;
+                if (!isConnected && !isOffline) {
+                    throw new Error('Нет подключения к базе данных');
+                }
 
                 const registrationsList = document.getElementById('registrationsList');
-                registrationsList.innerHTML = '<p>Загрузка данных...</p>';
+                registrationsList.innerHTML = '<div class="alert alert-info">Загрузка данных...</div>';
 
                 const snapshot = await db.collection('registrations')
                     .orderBy('timestamp', 'desc')
                     .get();
 
-                registrationsList.innerHTML = '';
-
                 if (snapshot.empty) {
-                    registrationsList.innerHTML = '<p>Нет зарегистрированных участников</p>';
+                    registrationsList.innerHTML = '<div class="alert alert-warning">Нет зарегистрированных участников</div>';
                     return;
                 }
 
+                registrationsList.innerHTML = '';
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const card = createRegistrationCard(data);
@@ -113,8 +210,14 @@
                 });
             } catch (error) {
                 console.error('Ошибка загрузки регистраций:', error);
-                const registrationsList = document.getElementById('registrationsList');
-                registrationsList.innerHTML = '<p class="error">Ошибка при загрузке данных. Пожалуйста, проверьте подключение к интернету и обновите страницу.</p>';
+                document.getElementById('registrationsList').innerHTML = 
+                    `<div class="error-message">
+                        Ошибка при загрузке данных: ${error.message}
+                        <br>
+                        <button class="btn btn-sm btn-primary mt-2" onclick="loadRegistrations()">
+                            Попробовать снова
+                        </button>
+                    </div>`;
             }
         }
 
@@ -245,7 +348,10 @@
         }
 
         // Загружаем регистрации при загрузке страницы
-        document.addEventListener('DOMContentLoaded', loadRegistrations);
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initializeFirebase();
+            loadRegistrations();
+        });
     </script>
 </body>
 </html> 
