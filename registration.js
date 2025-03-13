@@ -7,6 +7,7 @@ import {
     getDocs,
     doc,
     setDoc,
+    testDatabaseConnection,
     loadExistingRegistration,
     findRegistrationByName,
     findRegistrationByPhone,
@@ -34,16 +35,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log('DOM загружен, начинаем инициализацию...');
     
     try {
-        // Пробуем сделать тестовый запрос
-        const registrationsRef = collection(db, 'registrations');
-        const q = query(registrationsRef, where('test', '==', true));
-        await getDocs(q);
-        console.log('Тестовый запрос к базе данных выполнен успешно');
+        // Проверяем подключение к базе данных
+        const isConnected = await testDatabaseConnection();
+        if (!isConnected) {
+            throw new Error('Не удалось подключиться к базе данных');
+        }
+        console.log('Подключение к базе данных успешно установлено');
         
         // Загружаем существующую регистрацию
         const existingRegistration = await loadExistingRegistration();
         if (existingRegistration) {
             console.log('Найдена существующая регистрация');
+        }
+
+        // Добавляем первое поле для музыкальной ссылки
+        const musicLinksContainer = document.getElementById('musicLinks');
+        if (musicLinksContainer && !musicLinksContainer.children.length) {
+            window.addMusicLink();
         }
     } catch (error) {
         console.error('Ошибка при инициализации:', error);

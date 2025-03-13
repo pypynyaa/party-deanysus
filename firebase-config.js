@@ -21,10 +21,32 @@ const firebaseConfig = {
     measurementId: "G-06K7VD5GD6"
 };
 
+let app;
+let db;
+let storage;
+
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const storage = getStorage(app);
+try {
+    app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    storage = getStorage(app);
+    console.log('Firebase успешно инициализирован');
+} catch (error) {
+    console.error('Ошибка при инициализации Firebase:', error);
+}
+
+// Функция для проверки подключения к базе данных
+async function testDatabaseConnection() {
+    try {
+        const registrationsRef = collection(db, 'registrations');
+        const q = query(registrationsRef, where('test', '==', true));
+        await getDocs(q);
+        return true;
+    } catch (error) {
+        console.error('Ошибка при тестировании подключения:', error);
+        return false;
+    }
+}
 
 // Функции для работы с базой данных
 async function loadExistingRegistration() {
@@ -79,6 +101,7 @@ export {
     getDocs,
     doc,
     setDoc,
+    testDatabaseConnection,
     loadExistingRegistration,
     findRegistrationByName,
     findRegistrationByPhone,
