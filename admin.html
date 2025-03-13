@@ -62,31 +62,16 @@
     </div>
 
     <!-- Firebase -->
-    <script type="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
     
     <!-- XLSX library for Excel export -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-        
-        // Конфигурация Firebase
-        const firebaseConfig = {
-            // Ваша конфигурация Firebase
-            apiKey: "AIzaSyDxGxGxGxGxGxGxGxGxGxGxGxGxGxGxGxGx",
-            authDomain: "party-deanysus.firebaseapp.com",
-            projectId: "party-deanysus",
-            storageBucket: "party-deanysus.appspot.com",
-            messagingSenderId: "123456789012",
-            appId: "1:123456789012:web:abcdef1234567890"
-        };
-
-        // Инициализация Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        import { db } from './admin-firebase.js';
+        import { collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         
         // Обработчик экспорта
         async function handleExport(type) {
@@ -148,13 +133,14 @@
                 }
             } catch (error) {
                 console.error('Ошибка при экспорте:', error);
-                alert(`Ошибка при экспорте: ${error.message}`);
+                alert('Произошла ошибка при экспорте данных. Пожалуйста, попробуйте позже.');
             } finally {
                 button.disabled = false;
                 button.innerHTML = originalText;
             }
         }
-        
+
+        // Делаем функцию доступной глобально
         window.handleExport = handleExport;
     </script>
 </body>
