@@ -8,6 +8,7 @@ import {
     doc,
     setDoc,
     deleteDoc,
+    serverTimestamp,
     testDatabaseConnection,
     loadExistingRegistration,
     findRegistrationByName,

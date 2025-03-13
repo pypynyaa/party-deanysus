@@ -10,7 +10,8 @@ import {
     deleteDoc,
     enableIndexedDbPersistence,
     getDoc,
-    orderBy
+    orderBy,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
@@ -208,6 +209,7 @@ export {
     doc,
     setDoc,
     deleteDoc,
+    serverTimestamp,
     testDatabaseConnection,
     loadExistingRegistration,
     findRegistrationByName,
