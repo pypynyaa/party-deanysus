@@ -1,23 +1,19 @@
 import { 
-  db, 
-  storage, 
-  loadExistingRegistration,
-  findRegistrationByName,
-  findRegistrationByPhone,
-  findRegistrationByTelegram 
-} from './firebase-config.js';
-
-import { 
-    collection, 
-    getDocs, 
-    query, 
-    limit,
+    db, 
+    storage,
+    collection,
+    query,
+    where,
+    getDocs,
     doc,
     setDoc,
-    updateDoc,
-    deleteDoc,
-    serverTimestamp 
-} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+    loadExistingRegistration,
+    findRegistrationByName,
+    findRegistrationByPhone,
+    findRegistrationByTelegram 
+} from './firebase-config.js';
+
+import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
 // Получение элементов формы
 const form = document.getElementById('registrationForm');
@@ -40,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         // Пробуем сделать тестовый запрос
         const registrationsRef = collection(db, 'registrations');
-        const q = query(registrationsRef, limit(1));
+        const q = query(registrationsRef, where('test', '==', true));
         await getDocs(q);
         console.log('Тестовый запрос к базе данных выполнен успешно');
         

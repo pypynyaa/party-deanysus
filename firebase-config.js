@@ -1,5 +1,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { 
+    getFirestore, 
+    collection, 
+    query, 
+    where, 
+    getDocs,
+    doc,
+    setDoc 
+} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
 
 // Your web app's Firebase configuration
@@ -29,7 +37,8 @@ async function loadExistingRegistration() {
         const querySnapshot = await getDocs(q);
         
         if (!querySnapshot.empty) {
-            return { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+            const doc = querySnapshot.docs[0];
+            return { id: doc.id, ...doc.data() };
         }
         return null;
     } catch (error) {
@@ -39,13 +48,16 @@ async function loadExistingRegistration() {
 }
 
 async function findRegistrationByField(field, value) {
+    if (!value) return null;
+    
     try {
         const registrationsRef = collection(db, 'registrations');
         const q = query(registrationsRef, where(field, '==', value));
         const querySnapshot = await getDocs(q);
         
         if (!querySnapshot.empty) {
-            return { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+            const doc = querySnapshot.docs[0];
+            return { id: doc.id, ...doc.data() };
         }
         return null;
     } catch (error) {
@@ -61,6 +73,12 @@ const findRegistrationByTelegram = (telegram) => findRegistrationByField('telegr
 export {
     db,
     storage,
+    collection,
+    query,
+    where,
+    getDocs,
+    doc,
+    setDoc,
     loadExistingRegistration,
     findRegistrationByName,
     findRegistrationByPhone,
