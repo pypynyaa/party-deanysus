@@ -105,8 +105,8 @@
                         'Снаряжение': registration.equipment || '',
                         'Музыка': (registration.musicLinks || []).join(', '),
                         'Оплата': registration.paymentDone ? 'Да' : 'Нет',
-                        'Дата регистрации': registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
-                        'Пожелания': registration.fullName || ' '
+                        'Дата регистрации': registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : '',
+                        'Пожелания': registration.wishes || ''
                     });
                 });
                 
