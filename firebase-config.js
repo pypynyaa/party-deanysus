@@ -49,10 +49,12 @@ try {
 // Функция для проверки подключения к базе данных
 async function testDatabaseConnection() {
     try {
-        const db = getFirestore(app);
-        // Пробуем получить доступ к коллекции для проверки соединения
-        const testRef = db.collection('test');
-        await testRef.limit(1).get();
+        const testCollection = collection(db, 'test');
+        // Создаем тестовый документ
+        await setDoc(doc(testCollection, 'test-connection'), {
+            timestamp: new Date().toISOString(),
+            status: 'ok'
+        });
         console.log('Соединение с Firestore успешно установлено');
         return true;
     } catch (error) {
