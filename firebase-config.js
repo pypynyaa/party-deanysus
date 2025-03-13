@@ -154,7 +154,7 @@ async function exportToCSV() {
         const registrationsRef = collection(db, 'registrations');
         const q = query(registrationsRef, orderBy('timestamp', 'desc'));
         const snapshot = await getDocs(q);
-        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+        let csvContent = "\uFEFF";
         
         // Add headers
         const headers = [
@@ -168,10 +168,10 @@ async function exportToCSV() {
             'Прятки',
             'Статус отношений',
             'Снаряжение',
-            'Пожелания',
             'Музыка',
             'Оплата',
-            'Дата регистрации'
+            'Дата регистрации',
+            'Пожелания'
         ];
         
         // Создаем маппинг полей для обеспечения соответствия заголовков и данных
@@ -186,13 +186,14 @@ async function exportToCSV() {
             'Прятки': 'hideAndSeek',
             'Статус отношений': 'relationship',
             'Снаряжение': 'equipment',
-            'Пожелания': 'wishes',
             'Музыка': 'musicLinks',
             'Оплата': 'paymentDone',
-            'Дата регистрации': 'timestamp'
+            'Дата регистрации': 'timestamp',
+            'Пожелания': 'wishes'
         };
 
-        csvContent += headers.join(',') + '\n';
+        // Добавляем заголовки
+        csvContent += headers.map(header => `"${header}"`).join(',') + '\n';
         
         // Add data
         snapshot.forEach(doc => {
@@ -232,10 +233,10 @@ async function exportToCSV() {
                 hideAndSeek: registration.hideAndSeek ? 'Да' : 'Нет',
                 relationship: registration.relationship || '',
                 equipment: registration.equipment || '',
-                wishes: wishesText || '',
                 musicLinks: (registration.musicLinks || []).join('; '),
                 paymentDone: registration.paymentDone ? 'Да' : 'Нет',
-                timestamp: registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
+                timestamp: registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : '',
+                wishes: wishesText || ''
             };
             
             console.log('Подготовленные данные для CSV:', rowData);
@@ -255,9 +256,8 @@ async function exportToCSV() {
         });
         
         // Create download link
-        const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
+        link.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent));
         link.setAttribute("download", `registrations_${new Date().toISOString().split('T')[0]}.csv`);
         document.body.appendChild(link);
         link.click();
