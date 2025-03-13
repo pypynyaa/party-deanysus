@@ -174,17 +174,30 @@ async function exportToCSV() {
             'Пожелания'
         ];
         
-        // Добавляем BOM для корректного отображения кириллицы
-        let csvContent = "\uFEFF";
-        
-        // Добавляем заголовки
+        // Создаем маппинг полей для обеспечения соответствия заголовков и данных
+        const fieldMapping = {
+            'ФИО': 'fullName',
+            'Телефон': 'phone',
+            'Telegram': 'telegram',
+            'Транспорт': 'transport',
+            'Водительские права': 'hasLicense',
+            'Активности': 'activities',
+            'Сауна': 'sauna',
+            'Прятки': 'hideAndSeek',
+            'Статус отношений': 'relationship',
+            'Снаряжение': 'equipment',
+            'Музыка': 'musicLinks',
+            'Оплата': 'paymentDone',
+            'Дата регистрации': 'timestamp',
+            'Пожелания': 'wishes'
+        };
+
         csvContent += headers.join(',') + '\n';
         
         // Add data
         snapshot.forEach(doc => {
             const registration = doc.data();
-            console.log('Обработка документа:', doc.id);
-            console.log('Данные документа:', registration);
+            console.log('Полные данные регистрации:', registration);
             
             const row = [
                 registration.fullName || '',
