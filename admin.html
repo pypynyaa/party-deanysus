@@ -59,23 +59,52 @@
     <script>
         // Инициализация Firebase
         const firebaseConfig = {
-            apiKey: "AIzaS5Czs2d7EcM2-hzBZQMt7xnc8X2SRFq_VuK",
+            apiKey: "AIzaSyCzs2d7EcM2-hzBZQMt7xnc8X2SRFq_VuK",
             authDomain: "party-registration-26c8b.firebaseapp.com",
             projectId: "party-registration-26c8b",
-            storageBucket: "party-registration-26c8b.firebasestorage.app",
+            storageBucket: "party-registration-26c8b.appspot.com",
             messagingSenderId: "734748976300",
             appId: "1:734748976300:web:82fc68a1ddda9d1011eb09"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        // Инициализация Firebase с проверкой
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const db = firebase.firestore();
+
+        // Проверка подключения к Firestore
+        async function checkFirestoreConnection() {
+            try {
+                await db.collection('registrations').limit(1).get();
+                console.log('Подключение к Firestore успешно установлено');
+                return true;
+            } catch (error) {
+                console.error('Ошибка подключения к Firestore:', error);
+                alert('Ошибка подключения к базе данных. Пожалуйста, проверьте подключение к интернету и обновите страницу.');
+                return false;
+            }
+        }
 
         // Загрузка всех регистраций
         async function loadRegistrations() {
             try {
-                const snapshot = await db.collection('registrations').orderBy('timestamp', 'desc').get();
+                const isConnected = await checkFirestoreConnection();
+                if (!isConnected) return;
+
                 const registrationsList = document.getElementById('registrationsList');
+                registrationsList.innerHTML = '<p>Загрузка данных...</p>';
+
+                const snapshot = await db.collection('registrations')
+                    .orderBy('timestamp', 'desc')
+                    .get();
+
                 registrationsList.innerHTML = '';
+
+                if (snapshot.empty) {
+                    registrationsList.innerHTML = '<p>Нет зарегистрированных участников</p>';
+                    return;
+                }
 
                 snapshot.forEach(doc => {
                     const data = doc.data();
@@ -84,7 +113,8 @@
                 });
             } catch (error) {
                 console.error('Ошибка загрузки регистраций:', error);
-                alert('Ошибка загрузки данных');
+                const registrationsList = document.getElementById('registrationsList');
+                registrationsList.innerHTML = '<p class="error">Ошибка при загрузке данных. Пожалуйста, проверьте подключение к интернету и обновите страницу.</p>';
             }
         }
 
@@ -109,9 +139,21 @@
             return card;
         }
 
-        // Экспорт в Excel
-        function exportToExcel() {
-            db.collection('registrations').get().then(snapshot => {
+        // Экспорт в Excel с проверкой подключения
+        async function exportToExcel() {
+            try {
+                const isConnected = await checkFirestoreConnection();
+                if (!isConnected) return;
+
+                const snapshot = await db.collection('registrations')
+                    .orderBy('timestamp', 'desc')
+                    .get();
+
+                if (snapshot.empty) {
+                    alert('Нет данных для экспорта');
+                    return;
+                }
+
                 const data = [];
                 snapshot.forEach(doc => {
                     const registration = doc.data();
@@ -131,18 +173,28 @@
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, "Регистрации");
                 XLSX.writeFile(wb, "registrations.xlsx");
-            });
+            } catch (error) {
+                console.error('Ошибка при экспорте в Excel:', error);
+                alert('Произошла ошибка при экспорте данных');
+            }
         }
 
-        // Экспорт в CSV
-        function exportToCSV() {
-            db.collection('registrations').orderBy('timestamp', 'desc').get().then(snapshot => {
-                const data = [];
+        // Экспорт в CSV с проверкой подключения
+        async function exportToCSV() {
+            try {
+                const isConnected = await checkFirestoreConnection();
+                if (!isConnected) return;
+
+                const snapshot = await db.collection('registrations')
+                    .orderBy('timestamp', 'desc')
+                    .get();
+
                 if (snapshot.empty) {
                     alert('Нет данных для экспорта');
                     return;
                 }
 
+                const data = [];
                 snapshot.forEach(doc => {
                     const registration = doc.data();
                     data.push({
@@ -162,39 +214,34 @@
                     });
                 });
 
-                try {
-                    // Создаем CSV строку
-                    const headers = Object.keys(data[0]);
-                    const csvRows = [
-                        headers.join(','), // Заголовки
-                        ...data.map(row => headers.map(header => {
-                            let cell = row[header] || '';
-                            // Экранируем запятые и кавычки
-                            if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
-                                cell = `"${cell.replace(/"/g, '""')}"`;
-                            }
-                            return cell;
-                        }).join(','))
-                    ];
-                    const csvString = csvRows.join('\n');
+                // Создаем CSV строку
+                const headers = Object.keys(data[0]);
+                const csvRows = [
+                    headers.join(','), // Заголовки
+                    ...data.map(row => headers.map(header => {
+                        let cell = row[header] || '';
+                        // Экранируем запятые и кавычки
+                        if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
+                            cell = `"${cell.replace(/"/g, '""')}"`;
+                        }
+                        return cell;
+                    }).join(','))
+                ];
+                const csvString = csvRows.join('\n');
 
-                    // Создаем Blob и скачиваем файл
-                    const blob = new Blob(['\ufeff' + csvString], { type: 'text/csv;charset=utf-8;' });
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.download = 'registrations.csv';
-                    document.body.appendChild(link); // Добавляем ссылку в DOM
-                    link.click();
-                    document.body.removeChild(link); // Удаляем ссылку из DOM
-                    URL.revokeObjectURL(link.href);
-                } catch (error) {
-                    console.error('Ошибка при создании CSV:', error);
-                    alert('Произошла ошибка при создании CSV файла');
-                }
-            }).catch(error => {
-                console.error('Ошибка при получении данных:', error);
-                alert('Ошибка при получении данных из базы');
-            });
+                // Создаем Blob и скачиваем файл
+                const blob = new Blob(['\ufeff' + csvString], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'registrations.csv';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+            } catch (error) {
+                console.error('Ошибка при экспорте в CSV:', error);
+                alert('Произошла ошибка при экспорте данных');
+            }
         }
 
         // Загружаем регистрации при загрузке страницы
