@@ -106,6 +106,7 @@
                         'Музыка': (registration.musicLinks || []).join(', '),
                         'Оплата': registration.paymentDone ? 'Да' : 'Нет',
                         'Дата регистрации': registration.timestamp ? new Date(registration.timestamp.seconds * 1000).toLocaleString() : ''
+                        'Пожелания': registration.fullName || ' '
                     });
                 });
                 
@@ -123,7 +124,7 @@
                                 typeof cell === 'string' ? `"${cell}"` : cell
                             ).join(',')
                         );
-                        const csv = ['ФИО,Телефон,Telegram,Транспорт,Водительские права,Активности,Сауна,Прятки,Статус отношений,Снаряжение,Музыка,Оплата,Дата регистрации', ...csvContent].join('\n');
+                        const csv = ['ФИО,Телефон,Telegram,Транспорт,Водительские права,Активности,Сауна,Прятки,Статус отношений,Снаряжение,Музыка,Оплата,Дата регистрации, Пожелания', ...csvContent].join('\n');
                         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
                         const link = document.createElement('a');
                         link.href = URL.createObjectURL(blob);
