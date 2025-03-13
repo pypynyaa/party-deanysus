@@ -1,5 +1,6 @@
-import { db, storage } from './registration-firebase.js';
 import { 
+    db, 
+    storage,
     collection,
     query,
     where,
@@ -7,10 +8,6 @@ import {
     doc,
     setDoc,
     deleteDoc,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-
-import { 
     testDatabaseConnection,
     loadExistingRegistration,
     findRegistrationByName,

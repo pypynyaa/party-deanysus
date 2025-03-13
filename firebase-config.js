@@ -9,7 +9,8 @@ import {
     setDoc,
     deleteDoc,
     enableIndexedDbPersistence,
-    getDoc
+    getDoc,
+    orderBy
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
@@ -149,7 +150,9 @@ async function deleteExistingRegistration(fullName) {
 // Функция для экспорта данных в CSV
 async function exportToCSV() {
     try {
-        const snapshot = await db.collection('registrations').orderBy('timestamp', 'desc').get();
+        const registrationsRef = collection(db, 'registrations');
+        const q = query(registrationsRef, orderBy('timestamp', 'desc'));
+        const snapshot = await getDocs(q);
         let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
         
         // Add headers
