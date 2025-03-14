@@ -118,11 +118,6 @@ if (form) {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        if (paymentCheckbox && paymentCheckbox.checked) {
-            alert('Пожалуйста, прикрепите скриншот оплаты');
-            return;
-        }
-
         const submitButton = form.querySelector('.submit-btn');
         if (submitButton) submitButton.disabled = true;
 
@@ -146,25 +141,49 @@ if (form) {
                 throw new Error('Пожалуйста, заполните все обязательные поля');
             }
 
-            // Отправляем данные на сервер
-            const response = await fetch('process_form.php', {
-                method: 'POST',
-                body: formData
-            });
+            // Проверяем и удаляем существующую регистрацию
+            try {
+                await deleteExistingRegistration(fullName);
+            } catch (error) {
+                console.error('Ошибка при удалении существующей регистрации:', error);
+                throw new Error('Произошла ошибка при обновлении регистрации. Пожалуйста, попробуйте еще раз.');
+            }
 
-            const result = await response.json();
-            
-            if (result.success) {
-                alert('Регистрация успешно завершена!');
-                form.reset();
-                // Очищаем музыкальные ссылки
-                const musicLinksContainer = document.getElementById('musicLinks');
-                if (musicLinksContainer) {
-                    musicLinksContainer.innerHTML = '';
-                    window.addMusicLink();
-                }
-            } else {
-                throw new Error(result.message || 'Произошла ошибка при регистрации');
+            // Создаем объект с данными
+            const data = {
+                userId: generateUserId(),
+                timestamp: serverTimestamp(),
+                fullName: fullName,
+                phone: phone,
+                telegram: telegram,
+                paymentDone: formData.get('paymentDone') === 'on',
+                hasLicense: formData.get('hasLicense') === 'on',
+                transport: formData.get('transport'),
+                activities: Array.from(formData.getAll('activities')),
+                sauna: formData.get('sauna') === 'on',
+                hideAndSeek: formData.get('hideAndSeek') === 'on',
+                relationship: formData.get('relationship'),
+                equipment: formData.get('equipment'),
+                wishes: wishes,
+                musicLinks: Array.from(document.querySelectorAll('.music-input')).map(input => input.value.trim()).filter(Boolean),
+                lastUpdated: new Date().toISOString()
+            };
+
+            // Сохраняем данные в Firestore
+            const registrationRef = doc(collection(db, 'registrations'), data.userId);
+            await setDoc(registrationRef, data);
+            console.log("Документ успешно сохранен с ID:", data.userId);
+
+            // Сохраняем ID регистрации
+            localStorage.setItem('registrationId', data.userId);
+
+            alert('Регистрация успешно завершена! Мы свяжемся с вами в ближайшее время.');
+            form.reset();
+            // Очищаем музыкальные ссылки
+            const musicLinksContainer = document.getElementById('musicLinks');
+            if (musicLinksContainer) {
+                musicLinksContainer.innerHTML = '';
+                window.addMusicLink();
             }
         } catch (error) {
             console.error('Ошибка при отправке формы:', error);
