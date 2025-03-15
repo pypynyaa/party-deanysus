@@ -5,11 +5,6 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
     die('Доступ запрещен');
 }
 
-// Конфигурация базы данных
-$host = 'localhost';
-$dbname = 'ваше_имя_базы';
-$user = 'ваш_пользователь';
-$password = 'ваш_пароль';
 
 try {
     // Подключение к PostgreSQL
