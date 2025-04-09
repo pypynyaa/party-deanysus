@@ -626,61 +626,101 @@ body {
 .contacts {
     text-align: center;
     padding: 80px 10%;
+    background: rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.contacts::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 107, 107, 0.1), rgba(255, 142, 142, 0.1));
+    z-index: -1;
+}
+
+.contacts-container {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .contacts-content {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.6);
     padding: 40px;
     border-radius: 20px;
     backdrop-filter: blur(10px);
-    max-width: 600px;
-    margin: 0 auto;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .contacts-content:hover {
     transform: scale(1.02);
+    border-color: rgba(255, 107, 107, 0.3);
 }
 
-.contacts-content p {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.contact-info p {
+    font-size: 1.8rem;
     color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 10px;
 }
 
-/* Стили для контактной ссылки */
 .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     color: #ff6b6b;
     text-decoration: none;
     font-weight: 600;
-    font-size: 1.8rem;
+    font-size: 2rem;
     transition: all 0.3s ease;
     position: relative;
-    padding: 0 5px;
-    display: inline-block;
+    padding: 10px 20px;
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 30px;
+}
+
+.telegram-icon {
+    font-size: 1.5em;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
 .contact-link::after {
     content: '';
     position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
+    bottom: 0;
+    left: 50%;
+    width: 0;
     height: 2px;
     background: #ff6b6b;
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
 }
 
 .contact-link:hover {
     color: #ff8e8e;
+    background: rgba(255, 107, 107, 0.2);
+    transform: translateY(-2px);
 }
 
 .contact-link:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
+    width: 80%;
 }
 
 @media (max-width: 768px) {
@@ -692,11 +732,12 @@ body {
         padding: 20px;
     }
     
-    .contacts-content p {
-        font-size: 1.2rem;
+    .contact-info p {
+        font-size: 1.4rem;
     }
     
     .contact-link {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
+        padding: 8px 16px;
     }
 }
