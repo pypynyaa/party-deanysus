@@ -626,68 +626,40 @@ body {
 .contacts {
     text-align: center;
     padding: 80px 10%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
 }
 
-.contacts::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, rgba(255, 107, 107, 0.1), rgba(255, 142, 142, 0.1));
-    z-index: -1;
-}
-
-.contacts-container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
 .contacts-content {
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.8);
     padding: 40px;
     border-radius: 20px;
     backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.contacts-content:hover {
-    transform: scale(1.02);
-    border-color: rgba(255, 107, 107, 0.3);
-}
-
-.contact-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .contact-info p {
-    font-size: 1.8rem;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 10px;
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 20px;
 }
 
 .contact-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
     color: #ff6b6b;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 2rem;
-    transition: all 0.3s ease;
-    position: relative;
-    padding: 10px 20px;
-    background: rgba(255, 107, 107, 0.1);
+    font-size: 2.2rem;
+    background: rgba(255, 107, 107, 0.2);
+    padding: 15px 25px;
     border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.contact-link:hover {
+    color: #ffffff;
+    background: #ff6b6b;
+    transform: translateY(-5px);
 }
 
 .telegram-icon {
@@ -714,9 +686,9 @@ body {
 }
 
 .contact-link:hover {
-    color: #ff8e8e;
-    background: rgba(255, 107, 107, 0.2);
-    transform: translateY(-2px);
+    color: #ffffff;
+    background: #ff6b6b;
+    transform: translateY(-5px);
 }
 
 .contact-link:hover::after {
