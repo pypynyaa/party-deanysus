@@ -662,12 +662,33 @@ body {
     padding: 15px 25px;
     border-radius: 30px;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-link::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 107, 107, 0.4);
+    transition: all 0.5s ease;
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.contact-link:hover::before {
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .contact-link:hover {
     color: #ffffff;
     background: #ff6b6b;
     transform: translateY(-5px);
+    z-index: 1;
 }
 
 .telegram-icon {
