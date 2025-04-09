@@ -225,6 +225,14 @@ section::before {
     }
 }
 
+.photo {
+    animation: fadeInPhoto 0.8s ease-out forwards;
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                filter 0.4s ease-out,
+                opacity 0.4s linear;
+}
+
 .photo:hover {
     transform: scale(1.05) translateY(-20px);
     filter: blur(0) brightness(1.1);
