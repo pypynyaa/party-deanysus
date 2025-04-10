@@ -30,7 +30,6 @@ google-config.js
 # Медиафайлы
 *.mp3
 *.mp4
-*.jpg
 *.jpeg
 *.png
 *.gif
