@@ -721,3 +721,7 @@ body {
         padding: 8px 16px;
     }
 }
+
+.contacts-container {
+    background: transparent;
+}
