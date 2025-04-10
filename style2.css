@@ -600,20 +600,19 @@ body {
 
 /* Стили для контактной ссылки */
 .contact-link {
-    display: inline-block;
-    padding: 25px 60px;
-    font-size: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    font-size: 1.5rem;
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     text-decoration: none;
     color: white;
-    background: linear-gradient(-45deg, #ff6b6b, #ff8e8e, #ff6b6b);
-    background-size: 200% 200%;
-    border-radius: 50px;
+    background-color: #ff6b6b;
+    border-radius: 25px;
     border: none;
-    box-shadow: 0 15px 30px rgba(255, 107, 107, 0.3);
-    transition: all 0.5s ease;
-    transform-origin: center;
+    transition: all 0.3s ease;
     letter-spacing: 1px;
 }
 
@@ -727,11 +726,4 @@ body {
         font-size: 1.6rem;
         padding: 8px 16px;
     }
-}
-
-.contacts-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
 }
