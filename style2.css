@@ -603,9 +603,14 @@ body {
     color: #ff6b6b;
     text-decoration: none;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease, background 0.3s ease;
     position: relative;
     padding: 0 5px;
+}
+
+.contact-link:hover {
+    color: #ff8e8e;
+    background: rgba(255, 107, 107, 0.1);
 }
 
 .contact-link::after {
@@ -619,10 +624,6 @@ body {
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.3s ease;
-}
-
-.contact-link:hover {
-    color: #ff8e8e;
 }
 
 .contact-link:hover::after {
